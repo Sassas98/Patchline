@@ -1,0 +1,47 @@
+interfaccia virtuale 2d statica
+dialoghi consecutivi
+personaggi ricorrenti
+- snake
+- manager
+- ???
+meccaniche di coding parallelo (sx dx) con targets
+comandi drag and drop con costo
+
+comandi pseudo js?
+- let numerico 
+	<2> 
+	{number n = 5}
+- assegnamento 
+	<1> 
+	{n = 5}
+- if(n (<|>|==|combin.) n) 
+	<2> 
+	{if n < m}
+- else 
+	<1> 
+	{else}
+- for i (j l m n...) 
+	<4> 
+	{for i from 0 to 4}
+- let [n] array di dim n 
+	<3> 
+	{number[] array = [5]}
+- assegnamento in [] 
+	<1> 
+	{array[n] = 4}
+- while(n (<|>|==|combin.) n) 
+	<3> 
+	{while n >= 0}
+- break/skip 
+	<1> 
+	{break} {skip}
+
+(target finali > 1) + no loop + no error
+INT 32 bit
+NO scambi di tipi
+
+sviluppi futuri 
+- char come int?
+- bool da 0 e != 0?
+- array complessi?
+- 
