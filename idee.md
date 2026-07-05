@@ -1,36 +1,32 @@
+### **PATCHLINE**
+
+
+
 interfaccia virtuale 2d statica
 
 dialoghi consecutivi
 
 personaggi ricorrenti
 
-* snake
-* manager
-* ???
+* paramix - ai basata sulla coordinazione, buon esempio
+* os - generatore del processo, elemento di comando e di tensione
+* citty - elemento di comicità instabile
 
-~~meccaniche di coding parallelo (sx dx) con targets~~
-
-meccanica di coding in "hack" del codice
-
-hack precisi o meno (abilità di aprirli dove si vuole? <5>)
-
-
+meccaniche di coding parallelo (sx dx)
 
 comandi drag and drop con costo
+
+tot "run" x serie, se finiscono vieni resettato all'inizio
+
+dopo ogni task recuperi un run, prima della task finale ottieni un extra di un run o 3 energy
 
 
 
 comandi pseudo js?
 
-* new numerico
-
-&#x09;<2>
-
-&#x09;{new n = 5}
-
 * assegnamento
 
-&#x09;<1>
+&#x09;<1> --<2> se anche dichiarazione
 
 &#x09;{n = 5}
 
@@ -40,11 +36,11 @@ comandi pseudo js?
 
 &#x09;{if n < m}
 
-* elif 
+* elif
 
 &#x09;<1>
 
-&#x09;{elif n + 2 == 5}
+&#x09;{elif n == 5}
 
 * else
 
@@ -60,9 +56,9 @@ comandi pseudo js?
 
 * let \[n] array di dim n
 
-&#x09;<3>
+&#x09;<2> --<3> se anche dichiarazione
 
-&#x09;{new array = <5>} (LOGICA HEAP!?!?)
+&#x09;{array = <5>} (LOGICA HEAP!?!?)
 
 * assegnamento in \[] o in generale
 
@@ -76,28 +72,17 @@ comandi pseudo js?
 
 &#x09;{loop n >= 0}
 
-* stop/skip
+* stop/skip/wait
 
 &#x09;<1>
 
-&#x09;{stop} {skip}
-
-* return <1>
-{<|==} // l'idea è che lo usi solo in funzioni
-* fun <5> // ogni istruzione che contiene costa 1 in meno, e chiamarla è gratis
-{
-  fun pow a b // 5 + 4 = 9
-    new result = 1 // 1
-    for i from 0 to b // 3
-    result = result \* a // 0
-    <|== result // 0
-}
+&#x09;{stop} {skip} {wait}
 
 
 
-Operatori + - \* / % costano sempre 0
+Operatori + - \* / %
 
-es. number power = energy \* 2
+es. power = energy \* 2
 
 
 
@@ -105,13 +90,18 @@ es. number power = energy \* 2
 
 INT 32 bit
 
-NO scambi di tipi
+possibile scambio di tipi
+
+parallelismo implicito
+
+
 
 
 
 sviluppi futuri
 
-* dec => "new" ma più figo
-* bool da 0 e != 0?
-* array complessi?
+* introduzione primitive mancanti (decimal, bool, string)
+* introduzione espressioni complesse (!, \&, |)
+* uso e dichiarazione funzioni
+* uso e dichiarazione strutture
 

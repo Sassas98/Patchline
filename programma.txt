@@ -1,0 +1,12 @@
+week 1
+1. progetto unity + libreria compilatore base
+2. interfaccia gioco drag and drop elementi con argomenti
+3. introduzione variabili, sequenzialità, only mini gioco
+week 2
+1. sistema di dialoghi + integrazione nel puzzle
+2. scrittura di tutti gli altri dialoghi e rifinitura grafica
+3. dettagli delle prime sequenze e completamento gioco grafica + sound
+week 3
+1. scrittura gdd
+2. pitch
+3. presentazione
