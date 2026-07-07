@@ -28,7 +28,7 @@ comandi pseudo js?
 
 &#x09;<1> --<2> se anche dichiarazione
 
-&#x09;{n = 5}
+&#x09;{let n = 5}
 
 * if(n (<|>|==|combin.) n)
 
@@ -58,7 +58,7 @@ comandi pseudo js?
 
 &#x09;<2> --<3> se anche dichiarazione
 
-&#x09;{array = <5>} (LOGICA HEAP!?!?)
+&#x09;{let array = <5>} (LOGICA HEAP!?!?)
 
 * assegnamento in \[] o in generale
 
