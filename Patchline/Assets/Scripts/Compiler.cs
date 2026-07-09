@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
-
-public class Compiler
+public class Compiler : ConditionReader
 {
     private Memory memory;
     private List<Line> lines;
@@ -23,19 +21,9 @@ public class Compiler
     {
         return ended;
     }
-
-    private Condition GetCondition(string condition)
+    public int GetRow()
     {
-        return condition switch
-        {
-            "==" => Condition.Equal,
-            "!=" => Condition.NotEqual,
-            ">" => Condition.GreaterThan,
-            "<" => Condition.LessThan,
-            ">=" => Condition.GreaterThanOrEqual,
-            "<=" => Condition.LessThanOrEqual,
-            _ => throw new Exception($"Invalid condition: {condition}")
-        };
+        return row;
     }
     public void MakesOneStep()
     {

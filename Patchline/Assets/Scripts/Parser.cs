@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class Parser
+public class Parser : ConditionReader
 {
     public List<Line> Parse(string[] code)
     {
@@ -20,6 +20,22 @@ public class Parser
             list.Add(new Line { Command = cmd, Args = args, LeftSpace = ls });
         }
         return list;
+    }
+
+    public Goal[] GetGoals(string[] code)
+    {
+        var goals = new List<Goal>();
+        foreach (var line in code)
+        {
+            var parts = line.Trim().ToLower().Split(' ');
+            goals.Add(new Goal { 
+                Label = line.Trim().ToLower(),
+                Arg1 = parts[0], 
+                Arg2 = parts[2], 
+                Condition = this.GetCondition(parts[1]) 
+            });
+        }
+        return goals.ToArray();
     }
 
     private bool ArgomentiNonCorretti(CMD cmd, int length)

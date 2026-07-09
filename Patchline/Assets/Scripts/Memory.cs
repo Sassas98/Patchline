@@ -6,6 +6,8 @@ using System.Linq;
 public class Memory
 {
     private Dictionary<string, int> memory = new Dictionary<string, int>();
+    private bool InError = false;
+    private string ErrorMessage = "";
 
     public int Get(string name)
     {
@@ -15,7 +17,9 @@ public class Memory
         }
         if (!memory.ContainsKey(name))
         {
-            throw new Exception($"Variable {name} not found");
+            ErrorMessage = $"Variable {name} not found";
+            InError = true;
+            return -1;
         }
         return memory[name];
     }
@@ -42,12 +46,18 @@ public class Memory
         }
         else
         {
-            throw new Exception($"Invalid value: {value}");
+            ErrorMessage = $"Invalid value: {value}";
+            InError = true;
         }
     } 
-    public string[] GetAll()
+    public MemoryState GetState()
     {
-        return memory.Select(x => x.Key + " = " + x.Value).ToArray();
+        return new MemoryState
+        {
+            InError = InError,
+            ErrorMessage = ErrorMessage,
+            Memory = memory.Select(x => x.Key + " = " + x.Value).ToArray()
+        };
     }
     public bool CheckCondition(string arg1, string arg2, Condition condition)
     {
