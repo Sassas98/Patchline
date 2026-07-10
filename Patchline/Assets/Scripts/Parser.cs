@@ -9,7 +9,7 @@ public class Parser : ConditionReader
         var list =  new List<Line>();
         foreach(var line in code)
         {
-            int ls = line.Length - line.TrimStart().Length;
+            int ls = (line.Length - line.TrimStart().Length) / 3;
             var parts = line.Trim().ToLower().Split(' ');
             var cmd = (CMD)Enum.Parse(typeof(CMD), parts[0], true);
             var args = parts.Length > 1 ? parts[1..] : new string[0];

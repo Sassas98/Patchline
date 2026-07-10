@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameMaster : MonoBehaviour
 {
     private TextMeshProUGUI std;
-    private string text = "let x = 10\nif x > 5\n x = -9";
+    private string text = "let x = 10\nif x > 5\n   x = -9";
 
     // Start is called before the first frame update
     void Start()
@@ -23,8 +23,9 @@ public class GameMaster : MonoBehaviour
 
     private string MarkText(string text, int line, bool patch)
     {
-        string color = patch ? "#FB3640" : "#FB3640";
+        string color = patch ? "#1EFC1E" : "#FB3640";
         string[] parts = text.Split("\n");
+        if (parts.Length <= line) return text;
         parts[line] = $"<color={color}>{parts[line]}</color>";
         return string.Join("\n", parts);
     }

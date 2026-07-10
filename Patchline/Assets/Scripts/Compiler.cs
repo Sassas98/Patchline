@@ -39,6 +39,11 @@ public class Compiler : ConditionReader
         var line = lines[this.row];
         if(line.Command == CMD.Let)
         {
+            memory.Let(line.Args[0], line.Args[2]);
+            this.row++;
+        }
+        else if(line.Command == CMD.Set)
+        {
             memory.Set(line.Args[0], line.Args[2]);
             this.row++;
         }
@@ -101,8 +106,7 @@ public class Compiler : ConditionReader
             {
                 return;
             }
-            int value = memory.GetOrElse(line.Args[0], from - 1);
-            memory.Set(line.Args[0], (++value).ToString());
+            int value = memory.GetForCounter(line.Args[0], from, to);
             if (value <= to)
             {
                 int end = this.row;

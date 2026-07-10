@@ -6,6 +6,7 @@ using System.Linq;
 public class Memory
 {
     private Dictionary<string, int> memory = new Dictionary<string, int>();
+    private Dictionary<string, int> forCounters = new Dictionary<string, int>();
     private bool InError = false;
     private string ErrorMessage = "";
 
@@ -23,18 +24,55 @@ public class Memory
         }
         return memory[name];
     }
-    public int GetOrElse(string name, int @else)
+    public int GetForCounter(string name, int from, int to)
     {
-        try
+        if (forCounters.ContainsKey(name))
         {
-            return Get(name);
+            var value = forCounters[name] + 1;
+            if(value > to)
+            {
+                forCounters.Remove(name);
+                memory.Remove(name);
+            }
+            else
+            {
+                memory[name] = value;
+                forCounters[name] = value;
+            }
+            return value;
         }
-        catch 
-        { 
-            return @else; 
+        else
+        {
+            if (memory.ContainsKey(name))
+            {
+                ErrorMessage = "This variable wasnì already declared: " + name;
+                InError = true;
+                return -1;
+            }
+            forCounters[name] = from;
+            memory[name] = from;
+            return forCounters[name];
         }
     }
+    public void Let(string name, string value)
+    {
+        if (memory.ContainsKey(name))
+        {
+            ErrorMessage = "Impossible declare again " + name;
+            InError = true;
+        }
+        else Save(name, value);
+    }
     public void Set(string name, string value)
+    {
+        if (!memory.ContainsKey(name))
+        {
+            ErrorMessage = "This variable wasn't declared: " + name;
+            InError = true;
+        }
+        else Save(name, value);
+    }
+    private void Save(string name, string value)
     {
         if (int.TryParse(value, out int intValue))
         {
