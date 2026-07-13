@@ -7,7 +7,7 @@ public class Memory
 {
     private Dictionary<string, int> memory = new Dictionary<string, int>();
     private Dictionary<string, int> forCounters = new Dictionary<string, int>();
-    private bool InError = false;
+    public bool InError {get; private set;} = false;
     private string ErrorMessage = "";
 
     public int Get(string name)
@@ -18,8 +18,7 @@ public class Memory
         }
         if (!memory.ContainsKey(name))
         {
-            ErrorMessage = $"Variable {name} not found";
-            InError = true;
+            SetOnError($"Variable {name} not found");
             return -1;
         }
         return memory[name];
@@ -45,8 +44,7 @@ public class Memory
         {
             if (memory.ContainsKey(name))
             {
-                ErrorMessage = "This variable wasnì already declared: " + name;
-                InError = true;
+                SetOnError("This variable wasnì already declared: " + name);
                 return -1;
             }
             forCounters[name] = from;
@@ -54,40 +52,30 @@ public class Memory
             return forCounters[name];
         }
     }
-    public void Let(string name, string value)
+    public void Let(string name, int value)
     {
         if (memory.ContainsKey(name))
         {
-            ErrorMessage = "Impossible declare again " + name;
-            InError = true;
+            SetOnError("Impossible declare again " + name);
         }
         else Save(name, value);
     }
-    public void Set(string name, string value)
+    public void Set(string name, int value)
     {
         if (!memory.ContainsKey(name))
         {
-            ErrorMessage = "This variable wasn't declared: " + name;
-            InError = true;
+            SetOnError("This variable wasn't declared: " + name);
         }
         else Save(name, value);
     }
-    private void Save(string name, string value)
+    private void Save(string name, int value)
     {
-        if (int.TryParse(value, out int intValue))
-        {
-            memory[name] = intValue;
-        }
-        else if (memory.ContainsKey(value))
-        {
-            memory[name] = memory[value];
-        }
-        else
-        {
-            ErrorMessage = $"Invalid value: {value}";
-            InError = true;
-        }
+        memory[name] = intValue;
     } 
+    public void SetOnError(string error){
+        ErrorMessage = error;
+        InError = true;
+    }
     public MemoryState GetState()
     {
         return new MemoryState
