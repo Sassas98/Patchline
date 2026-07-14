@@ -42,8 +42,8 @@ public class GameMaster : MonoBehaviour
             .onClick.AddListener(() =>
             {
                 if (running) return;
-                work += "WAIT\n";
-                wk.SetText(work);
+                AddOnCodeWork("WAIT");
+
             });
         GameObject.Find("set_show_btn").GetComponent<Button>()
             .onClick.AddListener(() =>
@@ -88,11 +88,22 @@ public class GameMaster : MonoBehaviour
             {
                 var value = GetAllVariables()[GameObject.Find("Set_Dropdown").GetComponent<TMP_Dropdown>().value].Trim();
                 var input = GameObject.Find("set_input").GetComponent<TextMeshProUGUI>().text.Trim();
-                work += $"SET {value} = {input}\n";
+                AddOnCodeWork($"SET {value} = {input}");
                 set_modal.SetActive(false);
-                wk.SetText(work);
             });
         set_modal.SetActive(false);
+    }
+
+    private void AddOnCodeWork(string line)
+    {
+        var lastLine = work.Split("\n").Last();
+        var spaces = lastLine.Lenght - lastLine.TrimStart();
+        work += line + "\n";
+        for(int i = 0; i < spaces; i++) 
+        {
+            work += " ";
+        }
+        wk.SetText(work);
     }
 
     private GameExecuter exec;

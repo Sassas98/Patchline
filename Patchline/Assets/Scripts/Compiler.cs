@@ -94,24 +94,6 @@ public class Compiler : ConditionReader
             }
             this.row++;
         }
-        else if (line.Command == CMD.For)
-        {
-            int now = this.row;
-            SkipToNextRelevantLine();
-            int from = memory.Get(line.Args[2]);
-            int to = memory.Get(line.Args[4]);
-            if(from > to)
-            {
-                return;
-            }
-            int value = memory.GetForCounter(line.Args[0], from, to);
-            if (value <= to)
-            {
-                int end = this.row;
-                this.row = now + 1;
-                LoopGates[end] = now;
-            }
-        }
         else if (line.Command == CMD.Loop)
         {
             int now = this.row;

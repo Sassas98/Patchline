@@ -28,7 +28,9 @@ comandi pseudo js?
 
 &#x09;<1> --<2> se anche dichiarazione
 
-&#x09;{let n = 5}
+&#x09;{let n = 5}	
+
+&#x09;{set n = n + 1}
 
 * if(n (<|>|==|combin.) n)
 
@@ -48,24 +50,6 @@ comandi pseudo js?
 
 &#x09;{else}
 
-* for i (j l m n...)
-
-&#x09;<4>
-
-&#x09;{for i from 0 to 4}
-
-* let \[n] array di dim n
-
-&#x09;<2> --<3> se anche dichiarazione
-
-&#x09;{let array = <5>} (LOGICA HEAP!?!?)
-
-* assegnamento in \[] o in generale
-
-&#x09;<1>
-
-&#x09;{array <n> = 4}
-
 * loop(n (<|>|==|combin.) n)
 
 &#x09;<3>
@@ -77,6 +61,12 @@ comandi pseudo js?
 &#x09;<1>
 
 &#x09;{stop} {skip} {wait}
+
+* wait
+
+&#x09;<2>
+
+&#x09;{wait}
 
 
 
@@ -101,7 +91,8 @@ parallelismo implicito
 sviluppi futuri
 
 * introduzione primitive mancanti (decimal, bool, string)
-* introduzione espressioni complesse (!, \&, |)
+* introduzione espressioni complesse
 * uso e dichiarazione funzioni
+* uso e dichiarazione array
 * uso e dichiarazione strutture
 

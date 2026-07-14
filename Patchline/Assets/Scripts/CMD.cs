@@ -5,7 +5,6 @@
     If,
     Elif,
     Else,
-    For,
     Loop,
     Stop,
     Skip,

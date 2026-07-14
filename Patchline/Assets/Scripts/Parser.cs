@@ -47,7 +47,6 @@ public class Parser : ConditionReader
             CMD.If => (length + 1) % 4 != 0,
             CMD.Elif => (length + 1) % 4 != 0,
             CMD.Else => length != 0,
-            CMD.For => length != 5,
             CMD.Loop => (length + 1) % 4 != 0,
             CMD.Stop => length != 0,
             CMD.Skip => length != 0,
