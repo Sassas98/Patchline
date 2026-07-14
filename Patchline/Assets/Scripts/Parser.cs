@@ -42,12 +42,13 @@ public class Parser : ConditionReader
     {
         return cmd switch
         {
-            CMD.Let => length != 3,
-            CMD.If => length != 3,
-            CMD.Elif => length != 3,
+            CMD.Let => length % 2 == 0,
+            CMD.Set => length % 2 == 0,
+            CMD.If => (length + 1) % 4 != 0,
+            CMD.Elif => (length + 1) % 4 != 0,
             CMD.Else => length != 0,
             CMD.For => length != 5,
-            CMD.Loop => length != 3,
+            CMD.Loop => (length + 1) % 4 != 0,
             CMD.Stop => length != 0,
             CMD.Skip => length != 0,
             CMD.Wait => length != 0,

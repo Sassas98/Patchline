@@ -150,46 +150,46 @@ public class Compiler : ConditionReader
     }
 
     private bool HandleCondition(string[] args){
-        if(args.length+1%4!=0) 
+        if(args.Length+1%4!=0) 
         {
             memory.SetOnError("Condizione non corretta a riga " + this.row);
             return false;
         }
         bool result = true;
-        for(int i = 0; i+2 < args.length && !memory.InError; i+=3){
-            var condition = GetCondition(line.Args[1+i]);
-            result = memory.CheckCondition(line.Args[0+i], line.Args[2+i], condition);
-            if(i+3 == args.length) break;
-            if(args[i+3].ToLower() == 'and' && !result) return false;
-            if(args[i+3].ToLower() == 'or' && result) return true;
+        for(int i = 0; i+2 < args.Length && !memory.InError; i+=3){
+            var condition = GetCondition(args[1+i]);
+            result = memory.CheckCondition(args[0+i], args[2+i], condition);
+            if(i+3 == args.Length) break;
+            if(args[i+3].ToLower() == "and" && !result) return false;
+            if(args[i+3].ToLower() == "or" && result) return true;
         }
         return result;
     }
 
     private int HandleExpression(string[] args){
-        if(args.length+1%2!=0 || args[1] != "=") 
+        if((args.Length+1)%2!=0 || args[1] != "=") 
         {
             memory.SetOnError("Espressione non corretta a riga " + this.row);
             return -1;
         }
         int result = memory.Get(args[2]);
-        for(int i = 3; i+1 < args.length && !memory.InError; i+=2){
-            var v2 = memory.Get(args[1+i])
+        for(int i = 3; i+1 < args.Length && !memory.InError; i+=2){
+            var v2 = memory.Get(args[1 + i]);
             result = ApplyOperator(args[i], result, v2);
         }
         return result;
     }
 
-    private int ApplyOperator(string operator, int v1, int v2){
-        if(operator == '+')
+    private int ApplyOperator(string op, int v1, int v2){
+        if(op == "+")
             return v1 + v2;
-        else if(operator == '-')
+        else if(op == "-")
             return v1 - v2;
-        else if(operator == '*')
+        else if(op == "*")
             return v1 * v2;
-        else if(operator == '/')
+        else if(op == "/")
             return v1 / v2;
-        else if(operator == '%')
+        else if(op == "%")
             return v1 % v2;
         else {
             memory.SetOnError("Operatore non riconosciuto a riga " + this.row);

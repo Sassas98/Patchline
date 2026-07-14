@@ -14,7 +14,12 @@ namespace Assets.Scripts
         private Compiler CompilerPlayer;
         private Goal[] Goals;
 
-        public void ExecuteGame(string[] lineStd, string[] goals, string[] linePlayer)
+        private static string[] GetLines(string s) => s.Split('\n').Where(x => !string.IsNullOrEmpty(x)).ToArray();
+
+        public GameExecuter(string lineStd, string goals, string linePlayer)
+            : this(GetLines(lineStd), GetLines(goals), GetLines(linePlayer)) { }
+
+        public GameExecuter(string[] lineStd, string[] goals, string[] linePlayer)
         {
             var parser = new Parser();
             Goals = parser.GetGoals(goals);

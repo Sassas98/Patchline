@@ -70,7 +70,7 @@ public class Memory
     }
     private void Save(string name, int value)
     {
-        memory[name] = intValue;
+        memory[name] = value;
     } 
     public void SetOnError(string error){
         ErrorMessage = error;
@@ -82,7 +82,7 @@ public class Memory
         {
             InError = InError,
             ErrorMessage = ErrorMessage,
-            Memory = memory.Select(x => x.Key + " = " + x.Value).ToArray()
+            Memory = string.Join("; ", memory.Select(x => x.Key + " : " + x.Value))
         };
     }
     public bool CheckCondition(string arg1, string arg2, Condition condition)
