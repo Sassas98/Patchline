@@ -150,7 +150,7 @@ public class Compiler : ConditionReader
     }
 
     private bool HandleCondition(string[] args){
-        if(args.Length+1%4!=0) 
+        if((args.Length+1)%4!=0) 
         {
             memory.SetOnError("Condizione non corretta a riga " + this.row);
             return false;

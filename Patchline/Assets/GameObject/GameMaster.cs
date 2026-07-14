@@ -38,11 +38,11 @@ public class GameMaster : MonoBehaviour
                 string.Join("", work.Split("\n")[..^2].Select(x => x + "\n"));
                 wk.SetText(work);
             });
-        GameObject.Find("SKIP").GetComponent<Button>()
+        GameObject.Find("WAIT").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
                 if (running) return;
-                work += "SKIP\n";
+                work += "WAIT\n";
                 wk.SetText(work);
             });
         GameObject.Find("set_show_btn").GetComponent<Button>()

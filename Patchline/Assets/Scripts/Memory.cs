@@ -87,8 +87,15 @@ public class Memory
     }
     public bool CheckCondition(string arg1, string arg2, Condition condition)
     {
+        var err = InError;
         int val1 = Get(arg1);
         int val2 = Get(arg2);
+        if(!err && InError)
+        {
+            InError = false;
+            ErrorMessage = string.Empty;
+            return false;
+        }
         return condition switch
         {
             Condition.Equal => val1 == val2,
@@ -97,7 +104,7 @@ public class Memory
             Condition.LessThan => val1 < val2,
             Condition.GreaterThanOrEqual => val1 >= val2,
             Condition.LessThanOrEqual => val1 <= val2,
-            _ => throw new Exception("Invalid condition")
+            _ => false
         };
     }
 }
