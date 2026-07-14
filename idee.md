@@ -28,7 +28,7 @@ comandi pseudo js?
 
 &#x09;<1> --<2> se anche dichiarazione
 
-&#x09;{let n = 5}	
+&#x09;{let n = 5}
 
 &#x09;{set n = n + 1}
 
@@ -95,4 +95,30 @@ sviluppi futuri
 * uso e dichiarazione funzioni
 * uso e dichiarazione array
 * uso e dichiarazione strutture
+
+
+
+
+
+LET TEMP = LIST
+
+PUSH TEMP = 7
+
+LOOP TEMP:LENGHT < 20
+
+&#x20;  PUSH TEMP = TEMP:LAST + 1
+
+
+
+INJECT PUSH
+
+FIRST LAST
+
+SHIFT POP
+
+LENGHT
+
+
+
+
 
