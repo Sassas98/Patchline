@@ -211,12 +211,20 @@ public class GameMaster : MonoBehaviour
     private List<string> GetAllVariables(){
         return (text + "\n" + work)
             .Split("\n")
-            .SelectMany(x => x.Split(" "))
-            .Where(x => !string.IsNullOrEmpty(x))
-            .Where (x => !IsCMD(x))
-            .Where (x => x.All(c => char.IsLetter(c)))
-            .Select (x => x.ToUpper())
-            .Distinct().ToList();
+            .Select(x => x.Split(" "))
+            .Where(x => x[0].ToUpper() == "LET")
+            .Select (x => x[1].ToUpper())
+            .Concat(
+                (text + "\n" + work)
+                .Split("\n")
+                .Select(x => x.Split(" "))
+                .Where(x => x[0].ToUpper() == "LIST")
+                .Select(x => x[1].ToUpper())
+                .SelectMany(x => new string[]
+                { "LENGTH", "FIRST", "LAST", "POP", "SHIFT" }
+                .Select(y => y + ":" + x))
+            )
+            .ToList();
     }
 
     private bool IsCMD(string word)

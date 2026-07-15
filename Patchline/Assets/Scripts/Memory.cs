@@ -153,7 +153,9 @@ public class Memory
         {
             InError = InError,
             ErrorMessage = ErrorMessage,
-            Memory = string.Join("; ", memory.Select(x => x.Key + " : " + x.Value))
+            Memory = string.Join("; ", memory.Select(x => x.Key + " : " + x.Value).Concat(
+                    listMemory.Select(x => x.Key + " : [" + string.Join(",", x.Value.Select(x => x.ToString())) + "]")
+                ))
         };
     }
     public bool CheckCondition(string arg1, string arg2, Condition condition)
