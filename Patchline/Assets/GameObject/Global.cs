@@ -2,18 +2,20 @@ using Assets.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Windows;
+using File = System.IO.File;
 
 public class SaveData
 {
-    public int LivelloCorrente { get; set; } = 1;
-    public int Crediti { get; set; } = 0
-    public int ResetCounter { get; set; } = 0
-    public int ResetRimasti { get; set; } = 3
+    public int LivelloCorrente { get; set; } = 0;
+    public int Crediti { get; set; } = 0;
+    public int ResetCounter { get; set; } = 0;
+    public int ResetRimasti { get; set; } = 3;
     public string NomeGiocatore { get; set; } = "";
 }
 
@@ -21,10 +23,10 @@ public class Global : MonoBehaviour
 {
     public static Global State { get; private set; }
 
-    public int LivelloCorrente { get; set; } = 1;
-    public int Crediti { get; set; } = 0
-    public int ResetCounter { get; set; } = 0
-    public int ResetRimasti { get; set; } = 3
+    public int LivelloCorrente { get; set; } = 0;
+    public int Crediti { get; set; } = 0;
+    public int ResetCounter { get; set; } = 0;
+    public int ResetRimasti { get; set; } = 3;
     public string NomeGiocatore { get; set; } = "";
 
     private void Awake()
@@ -55,7 +57,7 @@ public class Global : MonoBehaviour
 
         string json = JsonUtility.ToJson(dati, true);
 
-        File.WriteAllText(SavePath, json);
+        System.IO.File.WriteAllText(SavePath, json);
 
         Debug.Log($"Partita salvata in: {SavePath}");
     }
@@ -68,7 +70,7 @@ public class Global : MonoBehaviour
             return false;
         }
 
-        string json = File.ReadAllText(SavePath);
+        string json = System.IO.File.ReadAllText(SavePath);
         SaveData dati = JsonUtility.FromJson<SaveData>(json);
 
         State.LivelloCorrente = dati.LivelloCorrente;

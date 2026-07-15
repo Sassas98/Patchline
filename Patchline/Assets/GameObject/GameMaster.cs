@@ -4,52 +4,164 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Burst.Intrinsics;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using UnityEngine.Windows;
+using static Unity.Burst.Intrinsics.X86.Avx;
+using static UnityEditor.Progress;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class GameMaster : MonoBehaviour
 {
-    private TextMeshProUGUI std, wk, vars;
+    private int lvl = 5;
+    private int step = 0;
+    private int lives = 3;
+    private int energy = 0;
+
+
+    private readonly string[] energy_colors = { "#3BC55C", "#c5ac3b", "#c53963" };
+    private TextMeshProUGUI std, wk, gs, vars, runs, ene, lv;
     private string text = "LET TEMP = 10\nIF TEMP > 5\n   SET TEMP = -9";
     private string work = "";
     private string goals = "TEMP >= 100";
     private bool running = false;
+    private GameExecuter exec;
+    private float run_time = 1.6f;
+    private LevelMaster levelMaster;
+    private CMD cmd = CMD.Set;
+    private List<GameObject> change_button, static_button;
     [SerializeField] private GameObject btnOption;
     [SerializeField] private GameObject set_modal;
+    [SerializeField] private GameObject if_modal;
 
-    // Start is called before the first frame update
+    private void UpdateInfoLabels()
+    {
+        lv.SetText($"LV {lvl} - {step}");
+        runs.SetText(MarkText($"RUNS [{lives}]", energy_colors[lives > 2 ? 0 : lives == 2 ? 1 : 2]));
+        ene.SetText(MarkText($"ENERGY [{energy}]", energy_colors[energy >= 10 ? 0 : energy >= 5 ? 1 : 2]));
+    }
+
+    private string MarkText(string text, string color)
+    {
+        return $"<color={color}>{text}</color>";
+    }
+
     void Start()
     {
+        runs = GameObject.Find("RUNS").GetComponent<TextMeshProUGUI>();
+        ene = GameObject.Find("ENERGY").GetComponent<TextMeshProUGUI>();
+        lv = GameObject.Find("LV").GetComponent<TextMeshProUGUI>();
+        levelMaster = new LevelMaster();
+        var l = levelMaster.GetLevel(lvl, step);
+        text = l.Code;
+        goals = l.Goals;
+        energy = l.Energy;
+        UpdateInfoLabels();
         std = GameObject.Find("Text_STD").GetComponent<TextMeshProUGUI>();
         std.SetText(text);
         vars = GameObject.Find("vars").GetComponent<TextMeshProUGUI>();
         wk = GameObject.Find("Text_Work").GetComponent<TextMeshProUGUI>();
-        GameObject.Find("Text_Goals").GetComponent<TextMeshProUGUI>().SetText(goals);
+        gs = GameObject.Find("Text_Goals").GetComponent<TextMeshProUGUI>();
+        gs.SetText(goals);
 
         set_modal.SetActive(true);
         GameObject.Find("set_back").GetComponent<Button>()
             .onClick.AddListener(() => set_modal.SetActive(false));
+        GameObject.Find("CONTINUE").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                lives = 3;
+                if (++step == 5) { lvl++; step = 0; }
+                HandleButtonInLevel();
+                work = string.Empty;
+                var ll = levelMaster.GetLevel(lvl, step);
+                text = ll.Code;
+                goals = ll.Goals;
+                energy = step == 0 ? ll.Energy : energy + ll.Energy;
+                std.SetText(text);
+                gs.SetText(goals);
+                vars.SetText("");
+                wk.SetText("");
+                UpdateInfoLabels();
+            });
         GameObject.Find("CANC").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (running) return;
-                work = work.Split("\n").Length < 3 ? string.Empty :
-                string.Join("", work.Split("\n")[..^2].Select(x => x + "\n"));
+                if (running || string.IsNullOrWhiteSpace(work)) return;
+                var lines = work.Split("\n");
+                energy += Enum.Parse<CMD>(lines[lines.Length - 2].Split(" ")[0], true).DaiCosto();
+                UpdateInfoLabels();
+                work = lines.Length < 3 ? string.Empty :
+                string.Join("", lines[..^2].Select(x => x + "\n"));
                 wk.SetText(work);
             });
         GameObject.Find("WAIT").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (running) return;
+                if (running || energy < CMD.Wait.DaiCosto()) return;
                 AddOnCodeWork("WAIT");
+                energy-= CMD.Wait.DaiCosto();
+                UpdateInfoLabels();
 
             });
-        GameObject.Find("set_show_btn").GetComponent<Button>()
+        GameObject.Find("SKIP").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (!running) 
+                if (running || energy < CMD.Skip.DaiCosto()) return;
+                AddOnCodeWork("SKIP");
+                energy-= CMD.Skip.DaiCosto();
+                UpdateInfoLabels();
+
+            });
+        GameObject.Find("STOP").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                if (running || energy < CMD.Stop.DaiCosto()) return;
+                AddOnCodeWork("STOP");
+                energy-= CMD.Stop.DaiCosto();
+                UpdateInfoLabels();
+
+            });
+        GameObject.Find("LIST").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                if (running || energy < CMD.List.DaiCosto()) return;
+                int num = (text + "\n" + wk).Split("\n")
+                    .Where(x => x.StartsWith("LIST L"))
+                    .Select(x => x.Replace("LIST L", ""))
+                    .Select(n => int.TryParse(n, out num) ? num : -1)
+                    .DefaultIfEmpty(-1).Max() + 1;
+                AddOnCodeWork("LIST L" + num);
+                energy-= CMD.List.DaiCosto();
+                UpdateInfoLabels();
+
+            });
+        GameObject.Find("SET").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                if (!(running || energy < CMD.Set.DaiCosto())) 
                     ShowSetModal();
+            });
+        GameObject.Find("LET").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                if (!(running || energy < CMD.Let.DaiCosto())) 
+                    ShowLetModal();
+            });
+        GameObject.Find("PUSH").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                if (!(running || energy < CMD.Push.DaiCosto())) 
+                    ShowPushModal();
+            });
+        GameObject.Find("INJECT").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                if (!(running || energy < CMD.Inject.DaiCosto())) 
+                    ShowInjectModal();
             });
         GameObject.Find("PLAY").GetComponent<Button>()
             .onClick.AddListener(() =>
@@ -88,16 +200,57 @@ public class GameMaster : MonoBehaviour
             {
                 var value = GetAllVariables()[GameObject.Find("Set_Dropdown").GetComponent<TMP_Dropdown>().value].Trim();
                 var input = GameObject.Find("set_input").GetComponent<TextMeshProUGUI>().text.Trim();
-                AddOnCodeWork($"SET {value} = {input}");
+                AddOnCodeWork($"{cmd.ToString().ToUpper()} {value} = {input}");
                 set_modal.SetActive(false);
+                energy -= CMD.Set.DaiCosto();
+                UpdateInfoLabels();
             });
+
+        static_button = new List<GameObject>
+        {
+            GameObject.Find("SET"),
+            GameObject.Find("WAIT"),
+            GameObject.Find("CANC"),
+            GameObject.Find("PLAY"),
+        };
+        change_button = new List<GameObject>
+        {
+            GameObject.Find("LET"),
+            GameObject.Find("IF"),
+            GameObject.Find("<--"),
+            GameObject.Find("ELSE"),
+            GameObject.Find("ELIF"),
+            GameObject.Find("LOOP"),
+            GameObject.Find("STOP"),
+            GameObject.Find("SKIP"),
+            GameObject.Find("LIST"),
+            GameObject.Find("PUSH"),
+            GameObject.Find("INJECT"),
+            GameObject.Find("CONTINUE"),
+        };
+        HandleButtonInLevel();
         set_modal.SetActive(false);
     }
 
+    private void HandleButtonInLevel()
+    {
+        static_button.ForEach(x => x.SetActive(true));
+        change_button.ForEach(x => x.SetActive(true));
+        if (lvl < 1) change_button.ForEach(x => x.SetActive(false));
+        else if(lvl < 3) change_button.Skip(1).ToList().ForEach(x => x.SetActive(false));
+        else if(lvl < 5) change_button.Skip(3).ToList().ForEach(x => x.SetActive(false));
+        else if(lvl < 7) change_button.Skip(4).ToList().ForEach(x => x.SetActive(false));
+        else if(lvl < 8) change_button.Skip(5).ToList().ForEach(x => x.SetActive(false));
+        else if(lvl < 11) change_button.Skip(7).ToList().ForEach(x => x.SetActive(false));
+        else if(lvl < 14) change_button.Skip(9).ToList().ForEach(x => x.SetActive(false));
+        else if(lvl < 17) change_button.Skip(10).ToList().ForEach(x => x.SetActive(false));
+        else change_button.Skip(11).ToList().ForEach(x => x.SetActive(false));
+
+    }
     private void AddOnCodeWork(string line)
     {
         var lastLine = work.Split("\n").Last();
-        var spaces = lastLine.Lenght - lastLine.TrimStart();
+        var spaces = lastLine.Length - lastLine.TrimStart().Length;
         work += line + "\n";
         for(int i = 0; i < spaces; i++) 
         {
@@ -106,30 +259,60 @@ public class GameMaster : MonoBehaviour
         wk.SetText(work);
     }
 
-    private GameExecuter exec;
-
     private void StartRun()
     {
         exec = new GameExecuter(text, goals, work);
-        InvokeRepeating(nameof(ExecuteRun), 0f, 1.5f);
+        run_time = 1.0f;
+        Invoke(nameof(ExecuteRun), run_time);
     }
 
     private void ExecuteRun()
     {
         var data = exec.GetData();
+        if (data.StepCount >= 100)
+        {
+            data.Memory.InError = true;
+            data.Memory.ErrorMessage = "Loop detected";
+        }
+
+        vars.text = data.Memory.InError ? data.Memory.ErrorMessage : data.Memory.Memory;
+        var g = string.Join("\n", data.Goals.Select(x => x.Label));
+        for(int i = 0; i < data.Goals.Length; i++)
+        {
+            g = MarkText(g, i, data.Goals[i].Result);
+        }
+        gs.SetText(g);
         if (data.IsEnded || data.Memory.InError)
         {
-            CancelInvoke(nameof(ExecuteRun));
             std.SetText(text);
             wk.SetText(work);
-            vars.text = data.Memory.ErrorMessage;
             running = false;
+            if(data.IsEnded && !data.Memory.InError && data.Goals.All(x => x.Result))
+            {
+                static_button.ForEach(x => x.SetActive(false));
+                change_button.ForEach(x => x.SetActive(false));
+                change_button.Last().SetActive(true);
+            }
+            else
+            {
+                if(--lives == 0)
+                {
+#if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+#else
+                    Application.Quit();
+#endif
+                }
+                UpdateInfoLabels();
+            }
             return;
         }
         std.SetText(MarkText(text, data.StdRow, false));
         wk.SetText(MarkText(work, data.PlayerRow, true));
-        vars.text = data.Memory.Memory;
         exec.MakeOneStep();
+        if(run_time > 0.3f)
+        run_time -= 0.03f;
+        Invoke(nameof(ExecuteRun), run_time);
     }
 
     private string MarkText(string text, int line, bool patch)
@@ -143,8 +326,45 @@ public class GameMaster : MonoBehaviour
 
     public void ShowSetModal()
     {
+        cmd = CMD.Set;
+        InitSetLetModal();
+        var dd = GameObject.Find("Set_Dropdown").GetComponent<TMP_Dropdown>();
+        dd.ClearOptions();
+        dd.AddOptions(GetAllVariables());
+    }
+
+    public void ShowLetModal()
+    {
+        cmd = CMD.Let;
+        InitSetLetModal();
+        var dd = GameObject.Find("Set_Dropdown").GetComponent<TMP_Dropdown>();
+        dd.ClearOptions();
+        dd.AddOptions(GetNewVariables());
+    }
+
+    public void ShowPushModal()
+    {
+        cmd = CMD.Push;
+        InitSetLetModal();
+        var dd = GameObject.Find("Set_Dropdown").GetComponent<TMP_Dropdown>();
+        dd.ClearOptions();
+        dd.AddOptions(GetListVariables());
+    }
+
+    public void ShowInjectModal()
+    {
+        cmd = CMD.Inject;
+        InitSetLetModal();
+        var dd = GameObject.Find("Set_Dropdown").GetComponent<TMP_Dropdown>();
+        dd.ClearOptions();
+        dd.AddOptions(GetListVariables());
+    }
+
+    private void InitSetLetModal()
+    {
         set_modal.SetActive(true);
         var input = GameObject.Find("set_input").GetComponent<TextMeshProUGUI>();
+        GameObject.Find("CMD").GetComponent<TextMeshProUGUI>().SetText(cmd.ToString().ToUpper());
         input.text = "0";
         var content = GameObject.Find("set_content");
         content.Childrens().ForEach(e => Destroy(e));
@@ -194,10 +414,6 @@ public class GameMaster : MonoBehaviour
                 else input.text = last;
             });
         }
-
-        var dd = GameObject.Find("Set_Dropdown").GetComponent<TMP_Dropdown>();
-        dd.ClearOptions();
-        dd.AddOptions(vars);
     }
 
     private List<string> GetOperators()
@@ -209,22 +425,78 @@ public class GameMaster : MonoBehaviour
     }
 
     private List<string> GetAllVariables(){
-        return (text + "\n" + work)
-            .Split("\n")
-            .Select(x => x.Split(" "))
-            .Where(x => x[0].ToUpper() == "LET")
-            .Select (x => x[1].ToUpper())
+        return GetBasicVariables()
             .Concat(
-                (text + "\n" + work)
-                .Split("\n")
-                .Select(x => x.Split(" "))
-                .Where(x => x[0].ToUpper() == "LIST")
-                .Select(x => x[1].ToUpper())
+                GetListVariables()
                 .SelectMany(x => new string[]
                 { "LENGTH", "FIRST", "LAST", "POP", "SHIFT" }
                 .Select(y => y + ":" + x))
             )
             .ToList();
+    }
+
+    private List<string> GetBasicVariables(){
+        return (text + "\n" + work)
+            .Split("\n")
+            .Select(x => x.Split(" "))
+            .Where(x => x[0].ToUpper() == "LET")
+            .Select (x => x[1].ToUpper()).ToList();
+    }
+
+    public List<string> GetNewVariables()
+    {
+        var vars = GetBasicVariables()
+            .Concat(GetListVariables())
+            .ToList();
+        return new string[]
+        {
+            "main", 
+            "base",
+            "core",
+            "hold",
+            "slot",
+            "unit",
+            "seed",
+            "mark",
+            "ctxs",
+            "refs",
+            "args",
+            "parm",
+            "pack",
+            "cell",
+            "part",
+            "step",
+            "task",
+            "objx",
+            "misc",
+            "data",
+            "item",
+            "node",
+            "temp",
+            "curr"
+        }
+        .Concat(GetGoalVariables())
+        .Distinct()
+        .Select (x => x.ToUpper())
+        .Where(x => !vars.Contains(x))
+        .OrderBy (x => x).ToList();
+    }
+
+    private List<string> GetGoalVariables()
+    {
+        return goals.Split("\n")
+            .SelectMany(x => x.Split(" "))
+            .Where(x => x.All(c => char.IsLetter(c)))
+            .Distinct().ToList();
+    }
+
+    public List<string> GetListVariables()
+    {
+        return (text + "\n" + work)
+                .Split("\n")
+                .Select(x => x.Split(" "))
+                .Where(x => x[0].ToUpper() == "LIST")
+                .Select(x => x[1].ToUpper()).Distinct().ToList();
     }
 
     private bool IsCMD(string word)

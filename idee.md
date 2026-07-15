@@ -64,7 +64,7 @@ comandi pseudo js?
 
 * wait
 
-&#x09;<2>
+&#x09;<1>
 
 &#x09;{wait}
 
@@ -117,6 +117,4 @@ FIRST LAST
 SHIFT POP
 
 LENGTH
-
-
 

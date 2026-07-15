@@ -48,10 +48,10 @@ public class Memory
     private List<int> GetListFromString(string s)
     {
         var nums = s.Replace("[", "").Replace("]", "").Split(",");
-        int result = new List<int>();
+        var result = new List<int>();
         foreach (var num in nums)
         {
-            result.Add(int.Parse(num))
+            result.Add(int.Parse(num));
         }
         return result;
     }

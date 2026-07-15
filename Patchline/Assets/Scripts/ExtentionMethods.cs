@@ -20,5 +20,25 @@ namespace Assets.Scripts
             }
             return list;
         }
+
+        public static int DaiCosto(this CMD cmd)
+        {
+            return cmd switch
+            {
+                CMD.Let => 2,
+                CMD.Set => 1,
+                CMD.Wait => 1,
+                CMD.If => 2,
+                CMD.Elif => 1,
+                CMD.Else => 1,
+                CMD.Loop => 3,
+                CMD.Stop => 1,
+                CMD.Skip => 1,
+                CMD.List => 3,
+                CMD.Push => 1,
+                CMD.Inject => 1,
+                _ => 0,
+            };
+        }
     }
 }
