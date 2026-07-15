@@ -47,6 +47,16 @@ public class Compiler : ConditionReader
             memory.Set(line.Args[0], HandleExpression(line.Args));
             this.row++;
         }
+        else if(line.Command == CMD.Push)
+        {
+            memory.Push(line.Args[0], HandleExpression(line.Args));
+            this.row++;
+        }
+        else if(line.Command == CMD.Inject)
+        {
+            memory.Inject(line.Args[0], HandleExpression(line.Args));
+            this.row++;
+        }
         else if (line.Command == CMD.If)
         {
             if (HandleCondition(line.Args))
@@ -121,6 +131,11 @@ public class Compiler : ConditionReader
         }
         else if (line.Command == CMD.Wait)
         {
+            this.row++;
+        }
+        else if (line.Command == CMD.List)
+        {
+            memory.List(line.Args[0]);
             this.row++;
         }
         if(LoopGates.ContainsKey(this.row))

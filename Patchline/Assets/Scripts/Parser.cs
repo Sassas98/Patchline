@@ -42,8 +42,8 @@ public class Parser : ConditionReader
     {
         return cmd switch
         {
-            CMD.Let => length % 2 == 0,
-            CMD.Set => length % 2 == 0,
+            CMD.Let => length < 3 || length % 2 == 0,
+            CMD.Set => length < 3 || length % 2 == 0,
             CMD.If => (length + 1) % 4 != 0,
             CMD.Elif => (length + 1) % 4 != 0,
             CMD.Else => length != 0,
@@ -51,6 +51,9 @@ public class Parser : ConditionReader
             CMD.Stop => length != 0,
             CMD.Skip => length != 0,
             CMD.Wait => length != 0,
+            CMD.List => length != 1,
+            CMD.Push => length < 3 || length % 2 == 0,
+            CMD.Inject => length < 3 || length % 2 == 0,
             _ => true
         };
     }

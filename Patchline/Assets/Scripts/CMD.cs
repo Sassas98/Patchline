@@ -2,11 +2,14 @@
 {
     Let,
     Set,
+    Wait,
     If,
     Elif,
     Else,
     Loop,
     Stop,
     Skip,
-    Wait
+    List,
+    Push,
+    Inject
 }
