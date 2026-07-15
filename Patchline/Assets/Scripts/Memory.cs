@@ -87,7 +87,7 @@ public class Memory
             result = listMemory[name].Last();
             listMemory[name].RemoveAt(listMemory[name].Count() - 1);
         }
-        else if (method == "LENGHT")
+        else if (method == "LENGTH")
         {
             result = listMemory[name].Count();
         }
