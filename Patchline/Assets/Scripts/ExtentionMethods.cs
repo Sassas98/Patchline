@@ -25,18 +25,18 @@ namespace Assets.Scripts
         {
             return cmd switch
             {
-                CMD.Let => 2,
-                CMD.Set => 1,
+                CMD.Let => 3,
+                CMD.Set => 2,
                 CMD.Wait => 1,
-                CMD.If => 2,
-                CMD.Elif => 1,
-                CMD.Else => 1,
-                CMD.Loop => 3,
-                CMD.Stop => 1,
-                CMD.Skip => 1,
-                CMD.List => 3,
-                CMD.Push => 1,
-                CMD.Inject => 1,
+                CMD.If => 3,
+                CMD.Elif => 2,
+                CMD.Else => 2,
+                CMD.Loop => 4,
+                CMD.Stop => 2,
+                CMD.Skip => 2,
+                CMD.List => 4,
+                CMD.Push => 2,
+                CMD.Inject => 2,
                 _ => 0,
             };
         }

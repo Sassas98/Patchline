@@ -125,6 +125,15 @@ public class GameMaster : MonoBehaviour
                 UpdateInfoLabels();
 
             });
+        GameObject.Find("ELSE").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                if (running || energy < CMD.Else.DaiCosto()) return;
+                AddOnCodeWork("ELSE", true);
+                energy-= CMD.Else.DaiCosto();
+                UpdateInfoLabels();
+
+            });
         GameObject.Find("LIST").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
@@ -247,10 +256,11 @@ public class GameMaster : MonoBehaviour
         else change_button.Skip(11).ToList().ForEach(x => x.SetActive(false));
 
     }
-    private void AddOnCodeWork(string line)
+    private void AddOnCodeWork(string line, bool space = false)
     {
         var lastLine = work.Split("\n").Last();
         var spaces = lastLine.Length - lastLine.TrimStart().Length;
+        if (space) spaces += 3;
         work += line + "\n";
         for(int i = 0; i < spaces; i++) 
         {
