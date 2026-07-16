@@ -20,7 +20,7 @@ public class GameMaster : MonoBehaviour
     private int step = 0;
     private int lives = 3;
     private int energy = 0;
-
+    private int line_counter = 0;
 
     private readonly string[] energy_colors = { "#3BC55C", "#c5ac3b", "#c53963" };
     private TextMeshProUGUI std, wk, gs, vars, runs, ene, lv;
@@ -86,11 +86,12 @@ public class GameMaster : MonoBehaviour
                 text = ll.Code;
                 goals = ll.Goals;
                 energy = step == 0 ? ll.Energy : energy + ll.Energy;
-                std.SetText(text);
                 gs.SetText(goals);
                 vars.SetText("");
                 wk.SetText("");
                 UpdateInfoLabels();
+                line_counter = 0;
+                UpdateLegacyLine();
             });
         GameObject.Find("CANC").GetComponent<Button>()
             .onClick.AddListener(() =>
@@ -102,6 +103,8 @@ public class GameMaster : MonoBehaviour
                 work = lines.Length < 3 ? string.Empty :
                 string.Join("", lines[..^2].Select(x => x + "\n"));
                 wk.SetText(work);
+                line_counter--;
+                UpdateLegacyLine();
             });
         GameObject.Find("WAIT").GetComponent<Button>()
             .onClick.AddListener(() =>
@@ -327,6 +330,14 @@ public class GameMaster : MonoBehaviour
             work += " ";
         }
         wk.SetText(work);
+        line_counter++;
+        UpdateLegacyLine();
+    }
+    private void UpdateLegacyLine()
+    {
+        if (line_counter == 0 || line_counter > text.Split("\n").Length)
+            std.SetText(text);
+        else std.SetText(MarkText(text, line_counter - 1, false));
     }
 
     private void StartRun()
