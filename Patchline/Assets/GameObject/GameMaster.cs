@@ -24,15 +24,17 @@ public class GameMaster : MonoBehaviour
 
     private readonly string[] energy_colors = { "#3BC55C", "#c5ac3b", "#c53963" };
     private TextMeshProUGUI std, wk, gs, vars, runs, ene, lv;
+    private Button if_button;
     private string text = "LET TEMP = 10\nIF TEMP > 5\n   SET TEMP = -9";
     private string work = "";
     private string goals = "TEMP >= 100";
     private bool running = false;
+    private bool if_submit = false;
     private GameExecuter exec;
     private float run_time = 1.6f;
     private LevelMaster levelMaster;
     private CMD cmd = CMD.Set;
-    private List<GameObject> change_button, static_button;
+    private List<GameObject> change_button, static_button, to_delete;
     [SerializeField] private GameObject btnOption;
     [SerializeField] private GameObject set_modal;
     [SerializeField] private GameObject if_modal;
@@ -68,8 +70,11 @@ public class GameMaster : MonoBehaviour
         gs.SetText(goals);
 
         set_modal.SetActive(true);
+        if_modal.SetActive(true);
         GameObject.Find("set_back").GetComponent<Button>()
             .onClick.AddListener(() => set_modal.SetActive(false));
+        GameObject.Find("if_back").GetComponent<Button>()
+            .onClick.AddListener(() => if_modal.SetActive(false));
         GameObject.Find("CONTINUE").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
@@ -172,6 +177,24 @@ public class GameMaster : MonoBehaviour
                 if (!(running || energy < CMD.Inject.DaiCosto())) 
                     ShowInjectModal();
             });
+        GameObject.Find("IF").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                if (!(running || energy < CMD.If.DaiCosto()))
+                    ShowIfModal();
+            });
+        GameObject.Find("ELIF").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                if (!(running || energy < CMD.Elif.DaiCosto()))
+                    ShowElifModal();
+            });
+        GameObject.Find("LOOP").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                if (!(running || energy < CMD.Loop.DaiCosto()))
+                    ShowLoopModal();
+            });
         GameObject.Find("PLAY").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
@@ -204,6 +227,33 @@ public class GameMaster : MonoBehaviour
                     else input.text = last;
                 }
             });
+        GameObject.Find("if_canc").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                var input = GameObject.Find("if_input").GetComponent<TextMeshProUGUI>();
+                var parts = input.text.Split(" ");
+                var last = parts.Last();
+                if(last == "0")
+                {
+                    if(parts.Length > 1)
+                    {
+                        input.text = string.Join(" ", parts[..^2]);
+                        if (GetLogicOperator().Contains(parts[parts.Length-2]) || GetLogicSeparator().Contains(parts[parts.Length - 2]))
+                        {
+                            ChangeIfSubmit();
+                        }
+                    }
+                }
+                else
+                {
+                    last = last[..^1];
+                    if (string.IsNullOrEmpty(last) || !int.TryParse(last, out _))
+                        last = "0";
+                    if (parts.Length > 0)
+                        input.text = string.Join(" ", parts[..^1]) + " " + last;
+                    else input.text = last;
+                }
+            });
         GameObject.Find("ADD_SET").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
@@ -211,7 +261,16 @@ public class GameMaster : MonoBehaviour
                 var input = GameObject.Find("set_input").GetComponent<TextMeshProUGUI>().text.Trim();
                 AddOnCodeWork($"{cmd.ToString().ToUpper()} {value} = {input}");
                 set_modal.SetActive(false);
-                energy -= CMD.Set.DaiCosto();
+                energy -= cmd.DaiCosto();
+                UpdateInfoLabels();
+            });
+        if_button = GameObject.Find("ADD_IF").GetComponent<Button>();
+        if_button.onClick.AddListener(() =>
+            {
+                var input = GameObject.Find("if_input").GetComponent<TextMeshProUGUI>().text.Trim();
+                AddOnCodeWork($"{cmd.ToString().ToUpper()} {input}", true);
+                if_modal.SetActive(false);
+                energy -= cmd.DaiCosto();
                 UpdateInfoLabels();
             });
 
@@ -239,6 +298,7 @@ public class GameMaster : MonoBehaviour
         };
         HandleButtonInLevel();
         set_modal.SetActive(false);
+        if_modal.SetActive(false);
     }
 
     private void HandleButtonInLevel()
@@ -370,6 +430,24 @@ public class GameMaster : MonoBehaviour
         dd.AddOptions(GetListVariables());
     }
 
+    public void ShowIfModal()
+    {
+        cmd = CMD.If;
+        InitIfModal();
+    }
+
+    public void ShowElifModal()
+    {
+        cmd = CMD.Elif;
+        InitIfModal();
+    }
+
+    public void ShowLoopModal()
+    {
+        cmd = CMD.Loop;
+        InitIfModal();
+    }
+
     private void InitSetLetModal()
     {
         set_modal.SetActive(true);
@@ -426,11 +504,116 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    private void ChangeIfSubmit()
+    {
+        if_submit = !if_submit;
+        if_button.SetActive(if_submit);
+        var content = GameObject.Find("if_content");
+        to_delete.ForEach(e => Destroy(e));
+        to_delete = new List<GameObject>();
+        var list = if_submit ? GetLogicSeparator() : GetLogicOperator();
+        foreach (var v in list)
+        {
+            GameObject btn = Instantiate(btnOption, content.transform);
+            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
+            btn.GetComponent<Button>().onClick.AddListener(() => {
+                input.text += " " + v + " 0";
+                ChangeIfSubmit();
+            });
+            to_delete.Add(btn);
+        }
+    }
+
+    private void ShowIfModal()
+    {
+        if_modal.SetActive(true);
+        var input = GameObject.Find("if_input").GetComponent<TextMeshProUGUI>();
+        GameObject.Find("CMD2").GetComponent<TextMeshProUGUI>().SetText(cmd.ToString().ToUpper());
+        input.text = "0";
+        var content = GameObject.Find("if_content");
+        content.Childrens().ForEach(e => Destroy(e));
+        if_submit = false;
+        if_button.SetActive(if_submit);
+        to_delete = new List<GameObject>();
+
+        var vars = GetAllVariables();
+        foreach (var v in vars)
+        {
+            GameObject btn = Instantiate(btnOption, content.transform);
+            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
+            btn.GetComponent<Button>().onClick.AddListener(() => input.text = string.Join(" ", input.text.Split(" ")[..^1]) + " " + v);
+        }
+        foreach (var v in GetOperators())
+        {
+            GameObject btn = Instantiate(btnOption, content.transform);
+            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
+            btn.GetComponent<Button>().onClick.AddListener(() => input.text += " " + v + " 0");
+        }
+
+        foreach (var n in Enumerable.Range(0, 10))
+        {
+            GameObject btn = Instantiate(btnOption, content.transform);
+            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = n.ToString();
+            btn.GetComponent<Button>().onClick.AddListener(() => {
+                var parts = input.text.Split(" ");
+                var last = parts[parts.Length - 1];
+                parts = parts[..^1];
+                last += n;
+                if (int.TryParse(last, out int value))
+                    last = value.ToString();
+                else last = n.ToString();
+                if (parts.Length > 0)
+                    input.text = string.Join(" ", parts) + " " + last;
+                else input.text = last;
+            });
+        }
+
+        {
+            GameObject btn = Instantiate(btnOption, content.transform);
+            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = "-VAR";
+            btn.GetComponent<Button>().onClick.AddListener(() => {
+                var parts = input.text.Split(" ");
+                var last = parts[parts.Length - 1];
+                parts = parts[..^1];
+                last = last[0] == '-' ? last.Substring(1) : "-" + last;
+                if (parts.Length > 0)
+                    input.text = string.Join(" ", parts) + " " + last;
+                else input.text = last;
+            });
+        }
+        foreach (var v in GetLogicOperator())
+        {
+            GameObject btn = Instantiate(btnOption, content.transform);
+            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
+            btn.GetComponent<Button>().onClick.AddListener(() => {
+                input.text += " " + v + " 0";
+                ChangeIfSubmit();
+            });
+            to_delete.Add(btn);
+        }
+    }
+
     private List<string> GetOperators()
     {
         return new List<string>
         {
             "+", "-", "*", "/", "%"
+        };
+    }
+
+    private List<string> GetLogicOperator()
+    {
+        return new List<string>
+        {
+            "==", "!=", "<", ">", "<=", ">="
+        };
+    }
+
+    private List<string> GetLogicSeparator()
+    {
+        return new List<string>
+        {
+            "AND", "OR"
         };
     }
 
