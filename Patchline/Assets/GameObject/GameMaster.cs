@@ -98,13 +98,26 @@ public class GameMaster : MonoBehaviour
             {
                 if (running || string.IsNullOrWhiteSpace(work)) return;
                 var lines = work.Split("\n");
-                energy += Enum.Parse<CMD>(lines[lines.Length - 2].Split(" ")[0], true).DaiCosto();
+                energy += Enum.Parse<CMD>(lines[lines.Length - 2].Trim().Split(" ")[0], true).DaiCosto();
                 UpdateInfoLabels();
                 work = lines.Length < 3 ? string.Empty :
                 string.Join("", lines[..^2].Select(x => x + "\n"));
+                var spaces = lines.Last().Length - lines.Last().TrimStart().Length;
+                for (int i = 0; i < spaces; i++) work += " ";
                 wk.SetText(work);
                 line_counter--;
                 UpdateLegacyLine();
+            });
+        GameObject.Find("<--").GetComponent<Button>()
+            .onClick.AddListener(() =>
+            {
+                if (running || string.IsNullOrWhiteSpace(work)) return;
+                var lines = work.Split("\n");
+                var spaces = lines.Last().Length - lines.Last().TrimStart().Length;
+                if (spaces < 3) return;
+                work = string.Join("", lines[..^1].Select(x => x + "\n")) 
+                    + string.Join("", Enumerable.Range(0, spaces - 3).Select(_ => " "));
+                wk.SetText(work);
             });
         GameObject.Find("WAIT").GetComponent<Button>()
             .onClick.AddListener(() =>
@@ -137,6 +150,10 @@ public class GameMaster : MonoBehaviour
             .onClick.AddListener(() =>
             {
                 if (running || energy < CMD.Else.DaiCosto()) return;
+                var lines = work.Split("\n");
+                var spaces = lines.Last().Length - lines.Last().TrimStart().Length;
+                if (spaces >= 3)  work = string.Join("", lines[..^1].Select(x => x + "\n"))
+                                       + string.Join("", Enumerable.Range(0, spaces - 3).Select(_ => " "));
                 AddOnCodeWork("ELSE", true);
                 energy-= CMD.Else.DaiCosto();
                 UpdateInfoLabels();
@@ -260,7 +277,8 @@ public class GameMaster : MonoBehaviour
         GameObject.Find("ADD_SET").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                var value = GetAllVariables()[GameObject.Find("Set_Dropdown").GetComponent<TMP_Dropdown>().value].Trim();
+                var value = GameObject.Find("Set_Dropdown").Childrens()[0]
+                    .GetComponent<TextMeshProUGUI>().text.Trim();
                 var input = GameObject.Find("set_input").GetComponent<TextMeshProUGUI>().text.Trim();
                 AddOnCodeWork($"{cmd.ToString().ToUpper()} {value} = {input}");
                 set_modal.SetActive(false);
@@ -270,6 +288,13 @@ public class GameMaster : MonoBehaviour
         if_button = GameObject.Find("ADD_IF").GetComponent<Button>();
         if_button.onClick.AddListener(() =>
             {
+                if(cmd == CMD.Elif)
+                {
+                    var lines = work.Split("\n");
+                    var spaces = lines.Last().Length - lines.Last().TrimStart().Length;
+                    if (spaces >= 3) work = string.Join("", lines[..^1].Select(x => x + "\n"))
+                                           + string.Join("", Enumerable.Range(0, spaces - 3).Select(_ => " "));
+                }
                 var input = GameObject.Find("if_input").GetComponent<TextMeshProUGUI>().text.Trim();
                 AddOnCodeWork($"{cmd.ToString().ToUpper()} {input}", true);
                 if_modal.SetActive(false);
@@ -521,11 +546,12 @@ public class GameMaster : MonoBehaviour
     private void ChangeIfSubmit()
     {
         if_submit = !if_submit;
-        if_button.SetActive(if_submit);
+        if_button.gameObject.SetActive(if_submit);
         var content = GameObject.Find("if_content");
         to_delete.ForEach(e => Destroy(e));
         to_delete = new List<GameObject>();
         var list = if_submit ? GetLogicSeparator() : GetLogicOperator();
+        var input = GameObject.Find("if_input").GetComponent<TextMeshProUGUI>();
         foreach (var v in list)
         {
             GameObject btn = Instantiate(btnOption, content.transform);
@@ -538,7 +564,7 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    private void ShowIfModal()
+    private void InitIfModal()
     {
         if_modal.SetActive(true);
         var input = GameObject.Find("if_input").GetComponent<TextMeshProUGUI>();
@@ -547,7 +573,7 @@ public class GameMaster : MonoBehaviour
         var content = GameObject.Find("if_content");
         content.Childrens().ForEach(e => Destroy(e));
         if_submit = false;
-        if_button.SetActive(if_submit);
+        if_button.gameObject.SetActive(if_submit);
         to_delete = new List<GameObject>();
 
         var vars = GetAllVariables();

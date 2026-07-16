@@ -147,6 +147,10 @@ public class Memory
         ErrorMessage = error;
         InError = true;
     }
+    public void ResetError(){
+        ErrorMessage = string.Empty;
+        InError = false;
+    }
     public MemoryState GetState()
     {
         return new MemoryState
@@ -160,15 +164,8 @@ public class Memory
     }
     public bool CheckCondition(string arg1, string arg2, Condition condition)
     {
-        var err = InError;
         int val1 = Get(arg1);
         int val2 = Get(arg2);
-        if(!err && InError)
-        {
-            InError = false;
-            ErrorMessage = string.Empty;
-            return false;
-        }
         return condition switch
         {
             Condition.Equal => val1 == val2,
