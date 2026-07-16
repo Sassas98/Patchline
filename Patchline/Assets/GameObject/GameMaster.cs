@@ -457,12 +457,15 @@ public class GameMaster : MonoBehaviour
         var content = GameObject.Find("set_content");
         content.Childrens().ForEach(e => Destroy(e));
 
-        var vars = GetAllVariables();
-        foreach (var v in vars)
+        if(lvl > 0)
         {
-            GameObject btn = Instantiate(btnOption, content.transform);
-            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
-            btn.GetComponent<Button>().onClick.AddListener(() => input.text = string.Join(" ", input.text.Split(" ")[..^1]) + " " + v);
+            var vars = GetAllVariables();
+            foreach (var v in vars)
+            {
+                GameObject btn = Instantiate(btnOption, content.transform);
+                btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
+                btn.GetComponent<Button>().onClick.AddListener(() => input.text = string.Join(" ", input.text.Split(" ")[..^1]) + " " + v);
+            }
         }
         foreach (var v in GetOperators())
         {
@@ -621,8 +624,9 @@ public class GameMaster : MonoBehaviour
         return GetBasicVariables()
             .Concat(
                 GetListVariables()
-                .SelectMany(x => new string[]
-                { "LENGTH", "FIRST", "LAST", "POP", "SHIFT" }
+                .SelectMany(x =>( lvl < 17 ? 
+                    new string[] { "LENGTH", "LAST", "POP" } : 
+                    new string[] { "LENGTH", "FIRST", "LAST", "POP", "SHIFT" } )
                 .Select(y => y + ":" + x))
             )
             .ToList();
