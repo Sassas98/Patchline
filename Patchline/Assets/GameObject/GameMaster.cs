@@ -23,6 +23,14 @@ public class GameMaster : MonoBehaviour
     private int line_counter = 0;
 
     private readonly string[] energy_colors = { "#3BC55C", "#c5ac3b", "#c53963" };
+    private readonly (string Keyword, string Simboli, string Variabili, string Numeri)[] palette
+        = new (string, string, string, string)[]
+        {
+            ("#FF4FD8", "#46F0FF", "#A8FF60", "#FFD84A"),
+            ("#A56F94", "#6F8E93", "#849674", "#A99969"),
+            ("#FF2B45", "#FF6B35", "#FF9F1C", "#FFE45E")
+        };
+    private readonly string select_color = "#E8E8E8";
     private TextMeshProUGUI std, wk, gs, vars, runs, ene, lv;
     private Button if_button;
     private string text = "LET TEMP = 10\nIF TEMP > 5\n   SET TEMP = -9";
@@ -79,7 +87,7 @@ public class GameMaster : MonoBehaviour
             .onClick.AddListener(() =>
             {
                 lives = 3;
-                if (++step == 5) { lvl++; step = 0; }
+                if (++step > 2) { lvl++; step = 0; }
                 HandleButtonInLevel();
                 work = string.Empty;
                 var ll = levelMaster.GetLevel(lvl, step);
