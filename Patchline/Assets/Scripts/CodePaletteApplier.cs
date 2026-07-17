@@ -17,7 +17,7 @@ public class CodePaletteApplier
 
 	public string MarkText(string text, int selectLine, string selectColor)
 	{
-		var lines = text.Split('\n');
+		var lines = text.Replace("\r", "").Split('\n');
 		var list = new List<string>();
 		int counter = 0;
 		foreach (var line in lines)

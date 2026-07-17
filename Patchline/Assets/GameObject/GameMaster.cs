@@ -43,6 +43,7 @@ public class GameMaster : MonoBehaviour
     private LevelMaster levelMaster;
     private CMD cmd = CMD.Set;
     private List<GameObject> change_button, static_button, to_delete;
+    private CodePaletteApplier palette_applier;
     [SerializeField] private GameObject btnOption;
     [SerializeField] private GameObject set_modal;
     [SerializeField] private GameObject if_modal;
@@ -59,8 +60,28 @@ public class GameMaster : MonoBehaviour
         return $"<color={color}>{text}</color>";
     }
 
+    public void UpdatePalette()
+    {
+        (string Keyword, string Simboli, string Variabili, string Numeri)
+            = palette[lives == 3 ? 0 : lives == 2 ? 1 : 2]
+        palette_applier.SetPalette(Keyword, Simboli, Variabili, Numeri);
+    }
+
+    private void UpdateLegacyLine()
+    {
+        UpdatePalette();
+        std.SetText(palette_applier.MarkText(text, line_counter - 1, select_color));
+    }
+
+    private void UpdateWorkCode()
+    {
+        UpdatePalette();
+        wk.SetText(palette_applier.MarkText(work, -1, select_color));
+    }
+
     void Start()
     {
+        palette_applier = new CodePaletteApplier();
         runs = GameObject.Find("RUNS").GetComponent<TextMeshProUGUI>();
         ene = GameObject.Find("ENERGY").GetComponent<TextMeshProUGUI>();
         lv = GameObject.Find("LV").GetComponent<TextMeshProUGUI>();
@@ -71,7 +92,7 @@ public class GameMaster : MonoBehaviour
         energy = l.Energy;
         UpdateInfoLabels();
         std = GameObject.Find("Text_STD").GetComponent<TextMeshProUGUI>();
-        std.SetText(text);
+        UpdateLegacyLine()
         vars = GameObject.Find("vars").GetComponent<TextMeshProUGUI>();
         wk = GameObject.Find("Text_Work").GetComponent<TextMeshProUGUI>();
         gs = GameObject.Find("Text_Goals").GetComponent<TextMeshProUGUI>();
@@ -112,7 +133,7 @@ public class GameMaster : MonoBehaviour
                 string.Join("", lines[..^2].Select(x => x + "\n"));
                 var spaces = lines.Last().Length - lines.Last().TrimStart().Length;
                 for (int i = 0; i < spaces; i++) work += " ";
-                wk.SetText(work);
+                UpdateWorkCode();
                 line_counter--;
                 UpdateLegacyLine();
             });
@@ -125,7 +146,7 @@ public class GameMaster : MonoBehaviour
                 if (spaces < 3) return;
                 work = string.Join("", lines[..^1].Select(x => x + "\n")) 
                     + string.Join("", Enumerable.Range(0, spaces - 3).Select(_ => " "));
-                wk.SetText(work);
+                UpdateWorkCode();
             });
         GameObject.Find("WAIT").GetComponent<Button>()
             .onClick.AddListener(() =>
@@ -362,15 +383,9 @@ public class GameMaster : MonoBehaviour
         {
             work += " ";
         }
-        wk.SetText(work);
+        UpdateWorkCode();
         line_counter++;
         UpdateLegacyLine();
-    }
-    private void UpdateLegacyLine()
-    {
-        if (line_counter == 0 || line_counter > text.Split("\n").Length)
-            std.SetText(text);
-        else std.SetText(MarkText(text, line_counter - 1, false));
     }
 
     private void StartRun()
@@ -421,21 +436,12 @@ public class GameMaster : MonoBehaviour
             }
             return;
         }
-        std.SetText(MarkText(text, data.StdRow, false));
-        wk.SetText(MarkText(work, data.PlayerRow, true));
+        std.SetText(palette_applier.MarkText(text, data.StdRow, "#FB3640"));
+        wk.SetText(palette_applier.MarkText(work, data.PlayerRow, "#1EFC1E"));
         exec.MakeOneStep();
         if(run_time > 0.3f)
         run_time -= 0.03f;
         Invoke(nameof(ExecuteRun), run_time);
-    }
-
-    private string MarkText(string text, int line, bool patch)
-    {
-        string color = patch ? "#1EFC1E" : "#FB3640";
-        string[] parts = text.Split("\n");
-        if (parts.Length <= line) return text;
-        parts[line] = $"<color={color}>{parts[line]}</color>";
-        return string.Join("\n", parts);
     }
 
     public void ShowSetModal()
