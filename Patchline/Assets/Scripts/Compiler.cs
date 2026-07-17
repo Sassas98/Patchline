@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-public class Compiler : ConditionReader
+public class Compiler : ExpressionHandler
 {
-    private Memory memory;
     private List<Line> lines;
     private int row = 0;
     private bool ended = false;
@@ -12,8 +11,8 @@ public class Compiler : ConditionReader
     private Dictionary<int, int> LoopGates = new Dictionary<int, int>();
 
     public Compiler(Memory memory, List<Line> lines)
+        : base(memory)
     {
-        this.memory = memory;
         this.lines = lines;
     }
 
@@ -39,22 +38,22 @@ public class Compiler : ConditionReader
         var line = lines[this.row];
         if(line.Command == CMD.Let)
         {
-            memory.Let(line.Args[0], HandleExpression(line.Args));
+            memory.Let(line.Args[0], HandleExpression(line.Args.Skip(2).ToArray()));
             this.row++;
         }
         else if(line.Command == CMD.Set)
         {
-            memory.Set(line.Args[0], HandleExpression(line.Args));
+            memory.Set(line.Args[0], HandleExpression(line.Args.Skip(2).ToArray()));
             this.row++;
         }
         else if(line.Command == CMD.Push)
         {
-            memory.Push(line.Args[0], HandleExpression(line.Args));
+            memory.Push(line.Args[0], HandleExpression(line.Args.Skip(2).ToArray()));
             this.row++;
         }
         else if(line.Command == CMD.Inject)
         {
-            memory.Inject(line.Args[0], HandleExpression(line.Args));
+            memory.Inject(line.Args[0], HandleExpression(line.Args.Skip(2).ToArray()));
             this.row++;
         }
         else if (line.Command == CMD.If)
@@ -79,6 +78,7 @@ public class Compiler : ConditionReader
             if(OptionHandled[line.LeftSpace])
             {
                 SkipToNextRelevantLine();
+                MakesOneStep();
                 return;
             }
             if (HandleCondition(line.Args))
@@ -100,6 +100,7 @@ public class Compiler : ConditionReader
             if (OptionHandled[line.LeftSpace])
             {
                 SkipToNextRelevantLine();
+                MakesOneStep();
                 return;
             }
             this.row++;
@@ -143,54 +144,6 @@ public class Compiler : ConditionReader
             var end = this.row;
             this.row = LoopGates[end];
             LoopGates.Remove(end);
-        }
-    }
-
-    private bool HandleCondition(string[] args){
-        if((args.Length+1)%4!=0) 
-        {
-            memory.SetOnError("Condizione non corretta a riga " + this.row);
-            return false;
-        }
-        bool result = true;
-        for(int i = 0; i+2 < args.Length && !memory.InError; i+=3){
-            var condition = GetCondition(args[1+i]);
-            result = memory.CheckCondition(args[0+i], args[2+i], condition);
-            if(i+3 == args.Length) break;
-            if(args[i+3].ToLower() == "and" && !result) return false;
-            if(args[i+3].ToLower() == "or" && result) return true;
-        }
-        return result;
-    }
-
-    private int HandleExpression(string[] args){
-        if((args.Length+1)%2!=0 || args[1] != "=") 
-        {
-            memory.SetOnError("Espressione non corretta a riga " + this.row);
-            return -1;
-        }
-        int result = memory.Get(args[2]);
-        for(int i = 3; i+1 < args.Length && !memory.InError; i+=2){
-            var v2 = memory.Get(args[1 + i]);
-            result = ApplyOperator(args[i], result, v2);
-        }
-        return result;
-    }
-
-    private int ApplyOperator(string op, int v1, int v2){
-        if(op == "+")
-            return v1 + v2;
-        else if(op == "-")
-            return v1 - v2;
-        else if(op == "*")
-            return v1 * v2;
-        else if(op == "/")
-            return v1 / v2;
-        else if(op == "%")
-            return v1 % v2;
-        else {
-            memory.SetOnError("Operatore non riconosciuto a riga " + this.row);
-            return -1;
         }
     }
 

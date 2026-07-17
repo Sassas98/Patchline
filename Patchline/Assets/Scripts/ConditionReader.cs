@@ -16,4 +16,17 @@ abstract public class ConditionReader
             _ => throw new Exception($"Invalid condition: {condition}")
         };
     }
+
+    protected bool IsCondition(string condition)
+    {
+        try
+        {
+            GetCondition(condition); 
+            return true;
+        }
+        catch 
+        { 
+            return false; 
+        }
+    }
 }
