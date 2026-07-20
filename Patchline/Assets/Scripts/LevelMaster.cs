@@ -35,9 +35,11 @@ namespace Assets.Scripts
         private readonly List<LevelData> datas = new()
         {
             // Level 0 - SET / WAIT
-            L(@"LET A = 2
-SET A = A + 1
-WAIT", @"A == 9", 3),
+            L(@"LET A = 10
+LET B = 15", @"A == 20", 7),
+            L(@"WAIT
+LET A = 2
+SET A = A + 1", @"A == 9", 3),
             L(@"LET B = 3
 LET C = 6
 WAIT
@@ -52,17 +54,6 @@ WAIT
 SET C = C + 1
 WAIT", @"C == 11
 D < C", 7),
-            L(@"LET TEMP = 5
-LET AUX = 8
-WAIT
-SET TEMP = TEMP + 1
-WAIT
-SET TEMP = TEMP + 1
-WAIT
-SET TEMP = TEMP + 1
-WAIT
-SET TEMP = TEMP + 1", @"TEMP == 12
-AUX < TEMP", 10),
             L(@"LET CORE = 6
 LET SIDE = 9
 WAIT
