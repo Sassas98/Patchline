@@ -17,7 +17,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class GameMaster : MonoBehaviour
 {
     private int lvl = 5;
-    private int step = 0;
+    private int step = 1;
     private int lives = 3;
     private int energy = 0;
     private int line_counter = 0;
@@ -63,7 +63,7 @@ public class GameMaster : MonoBehaviour
     public void UpdatePalette()
     {
         (string Keyword, string Simboli, string Variabili, string Numeri)
-            = palette[lives == 3 ? 0 : lives == 2 ? 1 : 2]
+            = palette[lives == 3 ? 0 : lives == 2 ? 1 : 2];
         palette_applier.SetPalette(Keyword, Simboli, Variabili, Numeri);
     }
 
@@ -92,7 +92,7 @@ public class GameMaster : MonoBehaviour
         energy = l.Energy;
         UpdateInfoLabels();
         std = GameObject.Find("Text_STD").GetComponent<TextMeshProUGUI>();
-        UpdateLegacyLine()
+        UpdateLegacyLine();
         vars = GameObject.Find("vars").GetComponent<TextMeshProUGUI>();
         wk = GameObject.Find("Text_Work").GetComponent<TextMeshProUGUI>();
         gs = GameObject.Find("Text_Goals").GetComponent<TextMeshProUGUI>();
@@ -413,8 +413,8 @@ public class GameMaster : MonoBehaviour
         gs.SetText(g);
         if (data.IsEnded || data.Memory.InError)
         {
-            std.SetText(text);
-            wk.SetText(work);
+            UpdateLegacyLine();
+            UpdateWorkCode();
             running = false;
             if(data.IsEnded && !data.Memory.InError && data.Goals.All(x => x.Result))
             {
@@ -442,6 +442,14 @@ public class GameMaster : MonoBehaviour
         if(run_time > 0.3f)
         run_time -= 0.03f;
         Invoke(nameof(ExecuteRun), run_time);
+    }
+    private string MarkText(string text, int line, bool patch)
+    {
+        string color = patch ? "#1EFC1E" : "#FB3640";
+        string[] parts = text.Split("\n");
+        if (parts.Length <= line) return text;
+        parts[line] = $"<color={color}>{parts[line]}</color>";
+        return string.Join("\n", parts);
     }
 
     public void ShowSetModal()

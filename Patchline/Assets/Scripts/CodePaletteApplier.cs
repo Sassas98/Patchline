@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 public class CodePaletteApplier
 {
-	private string Keyword, string Simboli, string Variabili, string Numeri;
-	private List<string> kw = 
+	private string Keyword, Simboli, Variabili, Numeri;
 
 	public void SetPalette(string Keyword, string Simboli, string Variabili, string Numeri)
 	{
@@ -33,7 +32,7 @@ public class CodePaletteApplier
 				{
 					if (string.IsNullOrEmpty(word))
 						list2.Add(word);
-					else if(word.All(c => char.IsNumeric(c)))
+					else if(word.All(c => char.IsNumber(c)))
 						list2.Add(MarkText(word, Numeri));
 					else if(IsCMD(word))
 						list2.Add(MarkText(word, Keyword));
@@ -45,7 +44,7 @@ public class CodePaletteApplier
 			}
 			counter++;
 		}
-		return string.Join("\n", lines);
+		return string.Join("\n", list);
 	}
 
 	private bool IsSymbol(string word)
