@@ -341,13 +341,13 @@ public class GameMaster : MonoBehaviour
         change_button = new List<GameObject>
         {
             GameObject.Find("LET"),
-            GameObject.Find("IF"),
-            GameObject.Find("<--"),
-            GameObject.Find("ELSE"),
-            GameObject.Find("ELIF"),
             GameObject.Find("LOOP"),
+            GameObject.Find("<--"),
             GameObject.Find("STOP"),
             GameObject.Find("SKIP"),
+            GameObject.Find("IF"),
+            GameObject.Find("ELSE"),
+            GameObject.Find("ELIF"),
             GameObject.Find("LIST"),
             GameObject.Find("PUSH"),
             GameObject.Find("INJECT"),

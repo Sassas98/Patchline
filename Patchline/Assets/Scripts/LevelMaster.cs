@@ -12,7 +12,7 @@ namespace Assets.Scripts
 
     public class LevelMaster
     {
-        public const int LevelCount = 21;
+        public const int LevelCount = 31;
         public const int StepsPerLevel = 5;
 
         public LevelData GetLevel(int level, int step)
@@ -33,2157 +33,3360 @@ namespace Assets.Scripts
         };
 
         private readonly List<LevelData> datas = new()
-    {
-        // Level 0 - SET / WAIT X
-        L(@"LET TEMP = 4
-LET NUMB = 6", @"TEMP == 7
-TEMP < NUMB", 8),
-        L(@"LET LEFT = 2
-LET RIGHT = 8
-LET STATE = 0
+        {
+            // Level 0 - SET / WAIT
+            L(@"LET A = 2
+SET A = A + 1
+WAIT", @"A == 9", 3),
+            L(@"LET B = 3
+LET C = 6
 WAIT
-SET LEFT = 3
-SET RIGHT = 7
-SET STATE = 1", @"LEFT == 8
-STATE == 2
-LEFT > RIGHT", 12),
-        L(@"LET A = 1
-LET B = 2
-LET C = 3
+SET B = B + 1
+WAIT", @"B == 10
+C != 7", 5),
+            L(@"LET C = 4
+LET D = 7
 WAIT
-SET A = 7
+SET C = C + 1
 WAIT
-SET B = A
-SET C = 6
-WAIT", @"A == 5
-C < 90
-A <= B
-B < C", 8),
-        L(@"LET CORE = 1
-LET AUX = 2
-LET FLAG = 0
-LET CLOCK = 0
+SET C = C + 1
+WAIT", @"C == 11
+D < C", 7),
+            L(@"LET TEMP = 5
+LET AUX = 8
 WAIT
-SET CLOCK = 1
-SET CORE = 3
-WAIT", @"CORE == 6
-AUX >= 7
-FLAG <= 2
-CORE < AUX
-FLAG < CLOCK", 10),
-        L(@"LET NORTH = 1
-LET SOUTH = 2
-LET EAST = 3
-LET WEST = 4
-LET READY = 0
+SET TEMP = TEMP + 1
 WAIT
-SET NORTH = 5
-SET SOUTH = 6
+SET TEMP = TEMP + 1
 WAIT
-SET EAST = 7
-SET WEST = 8
-SET READY = 1
+SET TEMP = TEMP + 1
 WAIT
-SET NORTH = 0
-SET SOUTH = 0", @"NORTH == 9
-EAST == 11
-WEST != 12
-READY < 0
-NORTH == SOUTH
-SOUTH < EAST
-EAST < WEST", 13),
+SET TEMP = TEMP + 1", @"TEMP == 12
+AUX < TEMP", 10),
+            L(@"LET CORE = 6
+LET SIDE = 9
+WAIT
+SET CORE = CORE + 1
+WAIT
+SET CORE = CORE + 1
+WAIT
+SET CORE = CORE + 1
+WAIT
+SET CORE = CORE + 1
+WAIT
+SET CORE = CORE + 1", @"CORE == 13
+SIDE <= 10", 12),
 
-        // Level 1 - LET X
-        L(@"LET BASE = 4
+            // Level 1 - LET snapshots
+            L(@"LET BASE = 5
+SET BASE = BASE + 1
+WAIT", @"COPY == 5
+BASE >= 5", 2),
+            L(@"LET SEED = 6
+SET SEED = SEED + 1
 WAIT
-SET BASE = 5
+LET D0 = 0", @"SNAP == 6
+SEED != 8
+D0 < SEED", 2),
+            L(@"LET RATE = 7
+SET RATE = RATE + 1
 WAIT
-SET BASE = 6", @"BASE <= 8
-COPY > 8
-READY != 1", 9),
-        L(@"LET SOURCE = 3
-LET OFFSET = 2
+LET D0 = 1
+SET D0 = D0 + 1
+LET D1 = 2
+LET D2 = 3", @"GAIN == 7
+RATE > D0
+D0 <= 3
+D1 >= 1
+D2 != 4", 2),
+            L(@"LET LIM = 8
+SET LIM = LIM + 1
 WAIT
-SET SOURCE = 3
+LET D0 = 2
+LET D1 = 3
+SET D1 = D1 + 1
+LET D2 = 4
+LET D3 = 5
+SET D3 = D3 + 1
+LET D4 = 6", @"SAVE == 8
+LIM > SAVE
+D0 >= 1
+D1 != 5
+D2 < D3
+D3 == D4", 2),
+            L(@"LET MODE = 9
+SET MODE = MODE + 1
 WAIT
-SET OFFSET = 4
-WAIT", @"SOURCE == 6
-OFFSET == 4
-TOTAL != 10
-DELTA == 2", 12),
-        L(@"LET A = 2
+LET D0 = 3
+SET D0 = D0 + 1
+LET D1 = 4
+LET D2 = 5
+SET D2 = D2 + 1
+LET D3 = 6
+LET D4 = 7
+SET D4 = D4 + 1
+SET D0 = D0 + 2", @"MARK == 9
+MODE >= 9
+D0 != 7
+D1 < D2
+D2 == D3
+D3 <= 7
+D4 >= 7", 2),
+
+            // Level 2 - LET expressions
+            L(@"LET A = 6
 LET B = 8
-LET ACTIVE = 0
-WAIT
-SET ACTIVE = 1
-WAIT
-SET A = LOW
-SET B = ACTIVE * 2
-WAIT", @"A == B
-ACTIVE == 2
-LOW == 4", 15),
-        L(@"LET UNIT = 6
-LET MULTIPLIER = 2
-LET RESULT = 0
-WAIT
-SET RESULT = UNIT
-WAIT
-SET STATUS = 1
-SET UNIT = 7
-WAIT
-SET MULTIPLIER = 3
-WAIT", @"UNIT <= 8
-MULTIPLIER == 44
-RESULT == 0
-STATUS == 1", 14),
-        L(@"LET SOURCE = 9
-LET COUNT = 0
-LET STATUS = 0
-WAIT
-SET COUNT = 1
-SET RESULT = SOURCE
-WAIT
-SET SOURCE = 10
-SET STATUS = 1
-WAIT
-SET COUNT = 2
-SET RESULT = SOURCE - 43
-WAIT", @"SOURCE >= 12
-COUNT == 3
-RESULT > 24
-STATUS > RESULT / 10", 25),
-
-        // Level 2 - LET / expressions
-        L(@"LET A = 8
-LET B = 5
-LET SUM = A + B
-WAIT
-SET A = A + 1", @"A == 10
-B == 5
-SUM == 15
-DELTA == 5", 7),
-        L(@"LET A = 14
-LET B = 9
-LET DIFFERENCE = A - B
-WAIT
-SET A = A + B
-WAIT
-SET B = B - 1", @"A == 24
-B == 8
-DIFFERENCE == 16
-TOTAL == 32
-A > B", 9),
-        L(@"LET WIDTH = 6
-LET HEIGHT = 7
-LET AREA = WIDTH * HEIGHT
-LET DOUBLE = AREA * 2
-WAIT
-SET WIDTH = WIDTH + 1
-WAIT
-SET HEIGHT = HEIGHT - 1
-SET AREA = WIDTH * HEIGHT", @"WIDTH == 8
-HEIGHT == 5
-AREA == 40
-DOUBLE == 80
-PERIMETER == 26
-WIDTH > HEIGHT", 11),
-        L(@"LET TOTAL = 23
-LET PARTS = 5
-LET SIZE = TOTAL / PARTS
-LET REMAINDER = TOTAL % PARTS
-LET USED = SIZE * PARTS
-WAIT
-SET TOTAL = TOTAL + 2
-WAIT
-SET SIZE = TOTAL / PARTS
-SET REMAINDER = TOTAL % PARTS
-WAIT
-SET USED = SIZE * PARTS", @"TOTAL == 30
-PARTS == 5
-SIZE == 6
-REMAINDER == 0
-USED == 30
-FREE == 0
-TOTAL == USED", 14),
-        L(@"LET A = 4
-LET B = 6
-LET C = 3
-LET SUM = A + B
-LET PRODUCT = SUM * C
-LET QUOTIENT = PRODUCT / B
-LET REMAINDER = PRODUCT % B
-WAIT
-SET A = A + 2
-SET B = B - 1
-WAIT
-SET SUM = A + B
-SET PRODUCT = SUM * C
-SET QUOTIENT = PRODUCT / B
-SET REMAINDER = PRODUCT % B", @"A == 7
-B == 4
-C == 3
-SUM == 11
-PRODUCT == 33
-QUOTIENT == 8
-REMAINDER == 1
-CHECK == 32
-PRODUCT > SUM", 18),
-
-        // Level 3 - IF
-        L(@"LET SENSOR = 8
-LET STATUS = 0
-IF SENSOR > 5
-   SET STATUS = 1
-WAIT", @"SENSOR == 8
-STATUS == 2
-STATUS > 0", 7),
-        L(@"LET TEMPERATURE = -2
-LET HEATER = 0
-IF TEMPERATURE <= 0
-   SET HEATER = 1
-WAIT
-SET TEMPERATURE = 4
-WAIT", @"TEMPERATURE == 4
-HEATER == 2
-SAFE == 1
-HEATER < TEMPERATURE", 9),
-        L(@"LET CODE = 7
-LET VALID = 0
-LET ATTEMPTS = 0
-IF CODE == 7
-   SET VALID = 1
-WAIT
-SET ATTEMPTS = ATTEMPTS + 1
-IF CODE != 0
-   SET ATTEMPTS = ATTEMPTS + 1", @"CODE == 7
-VALID == 2
-ATTEMPTS == 3
-TOKEN == 14
-VALID < ATTEMPTS", 12),
-        L(@"LET A = 3
-LET B = 9
-LET SMALL = 0
-LET LARGE = 0
-IF A < B
-   SET SMALL = A
-WAIT
-IF B >= 9
-   SET LARGE = B
 SET A = A + 1
+WAIT", @"SUM == 14
+A != 8
+B < SUM", 3),
+            L(@"LET X = 7
+LET Y = 9
+SET X = X + 1
 WAIT
-SET B = B - 1", @"A == 5
-B == 7
-SMALL == 5
-LARGE == 7
-DISTANCE == 2
-SMALL < LARGE
-A == SMALL", 15),
-        L(@"LET A = 3
-LET B = 9
-LET C = 4
-LET LOW = 0
-LET HIGH = 0
-LET CHECK = 0
-IF A < B
-   SET LOW = A
-IF B > C
-   SET HIGH = B
-SET CHECK = LOW + HIGH
+LET D0 = 7", @"DIFF == -2
+X < Y
+Y > D0
+D0 <= 8", 3),
+            L(@"LET BASE = 8
+LET RATE = 10
+SET BASE = BASE + 1
 WAIT
-SET A = A + 1
-IF CHECK > 10
-   SET CHECK = CHECK - 1", @"A == 5
-B == 9
-C == 4
-LOW == 5
-HIGH == 9
-CHECK == 13
-SPAN == 4
-LOW < HIGH
-CHECK > HIGH", 18),
+LET D0 = 8
+LET D1 = 0
+SET D1 = D1 + 1
+LET D2 = 1", @"PROD == 80
+BASE < PROD
+RATE >= 9
+D0 != 9
+D1 == D2", 3),
+            L(@"LET WIDE = 9
+LET TALL = 11
+SET WIDE = WIDE + 1
+WAIT
+LET D0 = 0
+SET D0 = D0 + 1
+LET D1 = 1
+LET D2 = 2
+SET D2 = D2 + 1
+LET D3 = 3
+LET D4 = 4", @"AREA == 99
+TALL >= 10
+WIDE != 11
+D0 == D1
+D1 < D2
+D2 <= 4", 3),
+            L(@"LET LEFT = 10
+LET RITE = 12
+SET LEFT = LEFT + 1
+WAIT
+LET D0 = 1
+LET D1 = 2
+SET D1 = D1 + 1
+LET D2 = 3
+LET D3 = 4
+SET D3 = D3 + 1
+LET D4 = 5
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"SPAN == -2
+LEFT >= 10
+RITE != 13
+D0 < D1
+D1 <= 6
+D2 >= 2
+D3 != 6", 3),
 
-        // Level 4 - IF / compound conditions
-        L(@"LET VALUE = 12
-LET RESULT = 0
-IF VALUE >= 10 AND VALUE <= 20
-   SET RESULT = 1
-WAIT", @"VALUE == 12
-RESULT == 2
-IN_RANGE == 1", 8),
-        L(@"LET PRIMARY = 0
-LET BACKUP = 1
-LET ONLINE = 0
-IF PRIMARY == 1 OR BACKUP == 1
-   SET ONLINE = 1
+            // Level 3 - LOOP basics
+            L(@"LET LIM = 3
+LET STEP = 1
 WAIT
-SET PRIMARY = 1", @"PRIMARY == 1
-BACKUP == 1
-ONLINE == 2
-ROUTE == 2", 10),
-        L(@"LET A = 4
-LET B = 9
-LET C = 2
-LET RESULT = 0
-IF A < B AND B != 0
-   SET RESULT = A + B
+LET D0 = 4", @"I == 3
+SUM == 3
+LIM > STEP", 9),
+            L(@"LET LIM = 4
+LET STEP = 2
 WAIT
-IF C == 2 OR A > B
-   SET C = C + 1", @"A == 5
-B == 9
-C == 4
-RESULT == 14
-VALID == 1
-A < B", 13),
-        L(@"LET MODE = 0
-LET SIGNAL = 3
-LET BACKUP = 1
-LET OUTPUT = 0
+LET D0 = 5
+LET D1 = 6
+SET D1 = D1 + 1", @"I == 4
+SUM == 8
+LIM <= 5
+STEP >= 1", 9),
+            L(@"LET LIM = 5
+LET STEP = 1
 WAIT
-SET MODE = 2
-IF MODE == 2 AND SIGNAL >= 3
-   SET OUTPUT = 20
+LET D0 = 6
+SET D0 = D0 + 1
+LET D1 = 7
+LET D2 = 8
+SET D2 = D2 + 1
+LET D3 = 0", @"I == 5
+SUM == 5
+LIM >= 4
+STEP != 2
+D0 == D1", 9),
+            L(@"LET LIM = 3
+LET STEP = 2
 WAIT
-IF BACKUP == 1 OR OUTPUT == 0
-   SET SIGNAL = SIGNAL + 1
-WAIT", @"MODE == 2
-SIGNAL == 5
-BACKUP == 1
-OUTPUT == 30
-READY == 1
-MODE < SIGNAL
-OUTPUT > SIGNAL", 16),
-        L(@"LET A = 2
-LET B = 8
-LET C = 5
-LET D = 0
-LET RESULT = 0
-LET STATUS = 0
-IF A < C AND C < B
-   SET RESULT = A + B
-IF RESULT >= 10 OR D == 1
-   SET STATUS = 1
-SET A = A + 1
-SET B = B - 1
+LET D0 = 7
+LET D1 = 8
+SET D1 = D1 + 1
+LET D2 = 0
+LET D3 = 1
+SET D3 = D3 + 1
+LET D4 = 2
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"I == 3
+SUM == 6
+LIM != 4
+STEP < SUM
+D0 <= 9
+D1 >= 10", 9),
+            L(@"LET LIM = 4
+LET STEP = 1
 WAIT
-IF A < B AND STATUS == 1
-   SET C = C + 1", @"A == 4
-B == 6
-C == 7
-D == 0
-RESULT == 12
-STATUS == 2
-A < B
-C > A
-RESULT > C", 20),
+LET D0 = 8
+SET D0 = D0 + 1
+LET D1 = 0
+LET D2 = 1
+SET D2 = D2 + 1
+LET D3 = 2
+LET D4 = 3
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2", @"I == 4
+SUM == 4
+LIM > STEP
+STEP < SUM
+D0 >= 10
+D1 != 2
+D2 > D3", 9),
 
-        // Level 5 - ELSE
-        L(@"LET MODE = 0
-LET RESULT = 0
-IF MODE == 1
-   SET RESULT = 1
-ELSE
-   SET RESULT = 2", @"MODE == 0
-RESULT == 3
-RESULT > MODE", 9),
-        L(@"LET TEMPERATURE = 30
-LET ACTION = 0
-IF TEMPERATURE >= 20
-   SET ACTION = 2
-ELSE
-   SET ACTION = 1
+            // Level 4 - LOOP accumulators
+            L(@"LET LIM = 2
+LET BASE = 2
+LET RATE = 1
 WAIT
-SET TEMPERATURE = 18", @"TEMPERATURE == 18
-ACTION == 1
-SAFE == 1
-ACTION < TEMPERATURE", 11),
-        L(@"LET SCORE = 55
-LET RESULT = 0
-LET CHECKED = 0
-IF SCORE >= 60
-   SET RESULT = 1
-ELSE
-   SET RESULT = -1
-SET CHECKED = 1
+LET D0 = 2", @"I == 2
+SUM == 4
+BASE == I", 9),
+            L(@"LET LIM = 3
+LET BASE = 3
+LET RATE = 2
 WAIT
-SET SCORE = 65", @"SCORE == 65
-RESULT == 1
-CHECKED == 2
-PASSED == 1
-RESULT < SCORE", 14),
-        L(@"LET A = 6
-LET B = 6
-LET RELATION = -1
-LET DELTA = 0
-IF A > B
-   SET RELATION = 1
-ELSE
-   SET RELATION = 0
-SET DELTA = A - B
+LET D0 = 3
+SET D0 = D0 + 1
+LET D1 = 4", @"I == 3
+SUM == 9
+BASE <= 4
+LIM != 4", 9),
+            L(@"LET LIM = 4
+LET BASE = 4
+LET RATE = 1
 WAIT
-SET A = A + 1
-WAIT", @"A == 8
-B == 6
-RELATION == 1
-DELTA == 2
-EQUAL == 0
-A > B
-DELTA < A", 17),
-        L(@"LET NUMBER = 8
-LET REMAINDER = NUMBER % 2
-LET PARITY = -1
-LET LABEL = 0
-LET CHECK = 0
-IF REMAINDER == 0
-   SET PARITY = 0
-   SET LABEL = 2
-ELSE
-   SET PARITY = 1
-   SET LABEL = 3
-SET CHECK = NUMBER + LABEL
+LET D0 = 4
+LET D1 = 5
+SET D1 = D1 + 1
+LET D2 = 6
+LET D3 = 7
+SET D3 = D3 + 1", @"I == 4
+SUM == 8
+BASE >= 3
+LIM > RATE
+RATE < SUM", 9),
+            L(@"LET LIM = 2
+LET BASE = 5
+LET RATE = 2
 WAIT
-SET NUMBER = NUMBER + 1
-WAIT", @"NUMBER == 9
-REMAINDER == 1
-PARITY == 1
-LABEL == 3
-CHECK == 12
-ODD == 1
-NUMBER > LABEL
-CHECK > NUMBER
-PARITY < LABEL", 20),
-
-        // Level 6 - IF / ELSE reinforcement
-        L(@"LET STOCK = 0
-LET TOTAL = 0
-IF STOCK > 0
-   SET TOTAL = 5
-ELSE
-   SET TOTAL = -1", @"STOCK == 0
-TOTAL == 4
-AVAILABLE == 1", 9),
-        L(@"LET AUTHORIZED = 1
-LET LOCKED = 0
-LET ACCESS = -1
-IF AUTHORIZED == 1 AND LOCKED == 0
-   SET ACCESS = 1
-ELSE
-   SET ACCESS = 0
+LET D0 = 5
+SET D0 = D0 + 1
+LET D1 = 6
+LET D2 = 7
+SET D2 = D2 + 1
+LET D3 = 8
+LET D4 = 0
+SET D4 = D4 + 1
+SET D0 = D0 + 2", @"I == 2
+SUM == 20
+BASE != 6
+J == LIM
+LIM <= 3
+RATE >= 1", 16),
+            L(@"LET LIM = 3
+LET BASE = 6
+LET RATE = 1
 WAIT
-SET LOCKED = 1", @"AUTHORIZED == 1
-LOCKED == 1
-ACCESS == 0
-DENIED == 1", 12),
-        L(@"LET ACTIVE = 1
-LET SCORE = 75
-LET RESULT = 0
-IF ACTIVE == 1
-   IF SCORE >= 70
-      SET RESULT = 2
-   ELSE
-      SET RESULT = 1
-ELSE
-   SET RESULT = -1", @"ACTIVE == 1
-SCORE == 80
-RESULT == 3
-BONUS == 5
-VALID == 1
-RESULT < SCORE", 16),
-        L(@"LET MODE = 0
-LET SIGNAL = 4
-LET OUTPUT = 0
-LET STATUS = 0
-WAIT
-SET MODE = 3
-IF MODE == 3
-   SET OUTPUT = SIGNAL * 3
-ELSE
-   SET OUTPUT = 0
-IF OUTPUT > 10
-   SET STATUS = 1
-WAIT", @"MODE == 3
-SIGNAL == 5
-OUTPUT == 15
-STATUS == 2
-READY == 1
-OUTPUT > SIGNAL
-MODE < SIGNAL", 18),
-        L(@"LET A = 4
-LET B = 9
-LET LOW = 0
-LET HIGH = 0
-LET RESULT = 0
-IF A < B
-   SET LOW = A
-   SET HIGH = B
-ELSE
-   SET LOW = B
-   SET HIGH = A
-IF HIGH > LOW
-   SET RESULT = HIGH - LOW
-ELSE
-   SET RESULT = 0", @"A == 5
-B == 10
-LOW == 5
-HIGH == 10
-RESULT == 5
-SPAN == 5
-LOW < HIGH
-A == LOW
-B == HIGH", 21),
-
-        // Level 7 - ELIF
-        L(@"LET SIGNAL = -4
-LET STATE = 0
-IF SIGNAL > 0
-   SET STATE = 1
-ELIF SIGNAL == 0
-   SET STATE = 0
-ELSE
-   SET STATE = -1", @"SIGNAL == -4
-STATE == 2
-CLASS == -1", 11),
-        L(@"LET SCORE = 72
-LET GRADE = 0
-IF SCORE >= 90
-   SET GRADE = 3
-ELIF SCORE >= 60
-   SET GRADE = 2
-ELSE
-   SET GRADE = 1
-WAIT", @"SCORE == 75
-GRADE == 2
-BONUS == 3
-PASSED == 1", 13),
-        L(@"LET MODE = 2
-LET CHANNEL = 0
-LET STATUS = 0
-IF MODE == 1
-   SET CHANNEL = 10
-ELIF MODE == 2
-   SET CHANNEL = 20
-ELSE
-   SET CHANNEL = 30
-SET STATUS = 1
-WAIT", @"MODE == 3
-CHANNEL == 30
-STATUS == 2
-ROUTE == 3
-CHANNEL > MODE", 16),
-        L(@"LET VALUE = 15
-LET BAND = 0
-LET COST = 0
-IF VALUE < 0
-   SET BAND = -1
-ELIF VALUE <= 10
-   SET BAND = 1
-ELIF VALUE <= 20
-   SET BAND = 2
-ELSE
-   SET BAND = 3
-SET COST = BAND * 5
-WAIT", @"VALUE == 25
-BAND == 3
-COST == 15
-LIMIT == 20
-OVERFLOW == 5
-BAND < COST
-VALUE > COST", 19),
-        L(@"LET TEMPERATURE = 26
-LET PRESSURE = 8
-LET LEVEL = 0
-LET ALARM = 0
-LET ACTION = 0
-IF TEMPERATURE >= 30 OR PRESSURE >= 10
-   SET LEVEL = 3
-ELIF TEMPERATURE >= 20 AND PRESSURE >= 5
-   SET LEVEL = 2
-ELIF TEMPERATURE >= 10
-   SET LEVEL = 1
-ELSE
-   SET LEVEL = 0
-SET ALARM = LEVEL
-SET ACTION = LEVEL * 10", @"TEMPERATURE == 32
-PRESSURE == 11
-LEVEL == 3
-ALARM == 3
-ACTION == 30
-CRITICAL == 1
-TEMPERATURE > PRESSURE
-ACTION < TEMPERATURE
-LEVEL == ALARM", 22),
-
-        // Level 8 - LOOP
-        L(@"LET COUNT = 0
-LOOP COUNT < 3
-   SET COUNT = COUNT + 1
-WAIT
-SET COUNT = 0", @"COUNT == 5
-DONE == 1
-COUNT > 0", 10),
-        L(@"LET COUNT = 5
-LET STEPS = 0
-LOOP COUNT > 0
-   SET COUNT = COUNT - 1
-   SET STEPS = STEPS + 1
-WAIT
-SET STEPS = 0", @"COUNT == 0
-STEPS == 5
-DONE == 1
-COUNT < STEPS", 12),
-        L(@"LET VALUE = 1
-LET STEPS = 0
-LET LIMIT = 16
-LOOP VALUE < LIMIT
-   SET VALUE = VALUE * 2
-   SET STEPS = STEPS + 1
-IF VALUE == LIMIT
-   SET STEPS = 0
-WAIT", @"VALUE == 32
-STEPS == 5
-LIMIT == 32
-DONE == 1
-VALUE == LIMIT", 16),
-        L(@"LET COUNT = 0
-LET TOTAL = 0
-LET LIMIT = 5
-LOOP COUNT < LIMIT
-   SET COUNT = COUNT + 1
-   SET TOTAL = TOTAL + COUNT
-IF TOTAL > 10
-   SET LIMIT = LIMIT + 1
-ELSE
-   SET LIMIT = LIMIT
-WAIT
-SET TOTAL = 0", @"COUNT == 6
-TOTAL == 21
-LIMIT == 6
-AVERAGE == 3
-DONE == 1
-TOTAL > COUNT
-COUNT == LIMIT", 20),
-        L(@"LET A = 0
-LET B = 10
-LET TOTAL = 0
-LET LIMIT = 4
-LET STATUS = 0
-LOOP A < LIMIT
-   SET A = A + 1
-   SET B = B - 1
-   SET TOTAL = TOTAL + A
-IF A == LIMIT
-   SET STATUS = 1
-ELSE
-   SET STATUS = 0
-SET TOTAL = 0
-WAIT", @"A == 5
-B == 5
-TOTAL == 15
-LIMIT == 5
-STATUS == 2
-BALANCED == 1
-A == B
-TOTAL > A
-DONE == 1", 24),
-
-        // Level 9 - LOOP / accumulators
-        L(@"LET N = 1
-LET SUM = 0
-LOOP N <= 3
-   SET SUM = SUM + N
-   SET N = N + 1", @"N == 6
-SUM == 15
-DONE == 1", 11),
-        L(@"LET N = 1
-LET PRODUCT = 1
-LET LIMIT = 5
-LOOP N <= LIMIT
-   SET PRODUCT = PRODUCT * N
-   SET N = N + 1
-WAIT", @"N == 6
-PRODUCT == 120
-LIMIT == 5
-DONE == 1", 13),
-        L(@"LET BASE = 2
-LET EXPONENT = 0
-LET RESULT = 1
-LET LIMIT = 5
-LOOP EXPONENT < LIMIT
-   SET RESULT = RESULT * BASE
-   SET EXPONENT = EXPONENT + 1
-IF RESULT > 20
-   SET LIMIT = LIMIT + 1", @"BASE == 2
-EXPONENT == 6
-RESULT == 64
-LIMIT == 6
-DONE == 1
-RESULT > EXPONENT", 17),
-        L(@"LET N = 1
-LET ODD_SUM = 0
-LET EVEN_SUM = 0
-LET REMAINDER = 0
-LOOP N <= 6
-   SET REMAINDER = N % 2
-   IF REMAINDER == 0
-      SET EVEN_SUM = EVEN_SUM + N
-   ELSE
-      SET ODD_SUM = ODD_SUM + N
-   SET N = N + 1", @"N == 8
-ODD_SUM == 16
-EVEN_SUM == 12
-REMAINDER == 1
-TOTAL == 28
-DONE == 1
-ODD_SUM > EVEN_SUM", 21),
-        L(@"LET N = 1
-LET SUM = 0
-LET PRODUCT = 1
-LET MIN = 1
-LET MAX = 5
-LET STATUS = 0
-LOOP N <= MAX
-   SET SUM = SUM + N
-   SET PRODUCT = PRODUCT * N
-   IF N >= MIN
-      SET STATUS = STATUS + 1
-   SET N = N + 1
-IF STATUS == MAX
-   SET STATUS = 1
-WAIT", @"N == 7
-SUM == 21
-PRODUCT == 720
-MIN == 1
-MAX == 6
-STATUS == 1
-AVERAGE == 3
-DONE == 1
-PRODUCT > SUM", 25),
-
-        // Level 10 - advanced LOOP
-        L(@"LET X = 0
-LET Y = 0
-LOOP X < 3 AND Y < 6
-   SET X = X + 1
-   SET Y = Y + 2", @"X == 4
-Y == 8
-DONE == 1", 12),
-        L(@"LET FUEL = 10
-LET DISTANCE = 0
-LET RATE = 3
-LOOP FUEL >= 2
-   SET FUEL = FUEL - 2
-   SET DISTANCE = DISTANCE + RATE
-WAIT", @"FUEL == 0
-DISTANCE == 18
-RATE == 3
-TRIPS == 6", 15),
-        L(@"LET N = 0
-LET EVEN_SUM = 0
-LET REMAINDER = 0
-LET LIMIT = 6
-LOOP N < LIMIT
-   SET N = N + 1
-   SET REMAINDER = N % 2
-   IF REMAINDER == 0
-      SET EVEN_SUM = EVEN_SUM + N", @"N == 8
-EVEN_SUM == 20
-REMAINDER == 0
-LIMIT == 8
-COUNT == 4
-DONE == 1", 19),
-        L(@"LET X = 0
-LET Y = 0
-LET CELLS = 0
-LET WIDTH = 3
-LET HEIGHT = 2
-LOOP X < WIDTH
-   SET Y = 0
-   LOOP Y < HEIGHT
-      SET CELLS = CELLS + 1
-      SET Y = Y + 1
-   SET X = X + 1
-WAIT", @"X == 4
-Y == 3
-CELLS == 12
-WIDTH == 4
-HEIGHT == 3
-AREA == 12
-DONE == 1", 23),
-        L(@"LET A = 0
-LET B = 0
-LET TOTAL = 0
-LET MODE = 1
-LET LIMIT = 4
-LOOP A < LIMIT OR B < LIMIT
-   SET A = A + 1
-   IF MODE == 1
-      SET B = B + 2
-   ELIF MODE == 2
-      SET B = B + 1
-   ELSE
-      SET B = B
-   SET TOTAL = A + B
-WAIT", @"A == 5
-B == 5
-TOTAL == 10
-MODE == 2
-LIMIT == 5
-BALANCED == 1
-A == B
-TOTAL > LIMIT
-DONE == 1", 27),
-
-        // Level 11 - STOP / SKIP
-        L(@"LET N = 0
-LOOP N < 5
-   SET N = N + 1
-   IF N == 3
-      STOP
-WAIT", @"N == 4
-STOPPED == 1
-N > 0", 13),
-        L(@"LET N = 0
-LET SUM = 0
-LOOP N < 5
-   SET N = N + 1
-   IF N == 3
-      SKIP
-   SET SUM = SUM + N", @"N == 6
+LET D0 = 6
+LET D1 = 7
+SET D1 = D1 + 1
+LET D2 = 8
+LET D3 = 0
+SET D3 = D3 + 1
+LET D4 = 1
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2", @"I == 3
 SUM == 18
-SKIPPED == 1
-DONE == 1", 16),
-        L(@"LET N = 0
-LET SUM = 0
-LET REMAINDER = 0
-LOOP N < 8
-   SET N = N + 1
-   SET REMAINDER = N % 2
-   IF REMAINDER != 0
-      SKIP
-   SET SUM = SUM + N", @"N == 10
-SUM == 30
-REMAINDER == 0
-EVENS == 5
-SKIPPED == 5
-DONE == 1", 20),
-        L(@"LET N = 0
-LET SUM = 0
-LET LIMIT = 20
-LET STATUS = 0
-LOOP N < LIMIT
-   SET N = N + 1
-   SET SUM = SUM + N
-   IF SUM >= 15
-      SET STATUS = 1
-      STOP
-   ELSE
-      SET STATUS = 0
-WAIT", @"N == 6
-SUM == 21
-LIMIT == 20
-STATUS == 2
-STOPPED == 1
-DONE == 1
-SUM > N", 24),
-        L(@"LET N = 0
-LET SUM = 0
-LET REMAINDER = 0
-LET LIMIT = 20
-LET STATUS = 0
-LOOP N < LIMIT
-   SET N = N + 1
-   SET REMAINDER = N % 2
-   IF REMAINDER == 0
-      SKIP
-   SET SUM = SUM + N
-   IF SUM >= 25
-      SET STATUS = 1
-      STOP
-WAIT", @"N == 11
-SUM == 36
-REMAINDER == 1
-LIMIT == 20
-STATUS == 2
-ODDS == 6
-SKIPPED == 5
-STOPPED == 1
-DONE == 1", 28),
+BASE > I
+J <= 2
+LIM >= 2
+RATE != 2
+D0 < D1", 16),
 
-        // Level 12 - loop control reinforcement
-        L(@"LET N = 0
-LET REMAINDER = 0
-LOOP N < 10
-   SET N = N + 1
-   SET REMAINDER = N % 7
-   IF REMAINDER == 0
-      STOP", @"N == 7
-REMAINDER == 0
-FOUND == 1", 14),
-        L(@"LET N = 1
-LET PRODUCT = 1
-LET LIMIT = 100
-LOOP N < 10
-   SET N = N + 1
-   SET PRODUCT = PRODUCT * N
-   IF PRODUCT >= LIMIT
-      STOP", @"N == 5
-PRODUCT == 120
-LIMIT == 100
-STOPPED == 1", 17),
-        L(@"LET N = 0
-LET SUM = 0
-LET REMAINDER = 0
-LET LIMIT = 9
-LOOP N < LIMIT
-   SET N = N + 1
-   SET REMAINDER = N % 2
-   IF REMAINDER == 0
-      SKIP
-   SET SUM = SUM + N", @"N == 11
-SUM == 36
-REMAINDER == 1
-LIMIT == 11
-ODDS == 6
-DONE == 1", 21),
-        L(@"LET N = 0
-LET SUM = 0
-LET SKIPPED = 0
-LET LIMIT = 10
-LOOP N < LIMIT
-   SET N = N + 1
-   IF N == 3 OR N == 6
-      SET SKIPPED = SKIPPED + 1
-      SKIP
-   SET SUM = SUM + N
-IF SKIPPED == 2
-   SET LIMIT = LIMIT + 1", @"N == 11
-SUM == 57
-SKIPPED == 2
-LIMIT == 11
-USED == 9
-DONE == 1
-SUM > LIMIT", 25),
-        L(@"LET N = 0
-LET SUM = 0
-LET REMAINDER = 0
-LET LIMIT = 20
-LET SKIPPED = 0
-LET STATUS = 0
-LOOP N < LIMIT
-   SET N = N + 1
-   SET REMAINDER = N % 2
-   IF REMAINDER == 0
-      SET SKIPPED = SKIPPED + 1
-      SKIP
-   SET SUM = SUM + N
-   IF SUM >= 36
-      STOP", @"N == 11
-SUM == 36
-REMAINDER == 1
-LIMIT == 20
-SKIPPED == 5
-STATUS == 2
-ODDS == 6
-STOPPED == 1
-DONE == 1", 29),
-
-        // Level 13 - scalar capstone
-        L(@"LET A = 48
-LET B = 18
-LOOP A != B
-   IF A > B
-      SET A = A - B
-   ELSE
-      SET B = B - A", @"A == 6
-B == 6
-GCD == 6", 15),
-        L(@"LET N = 1
-LET PRODUCT = 1
-LET LIMIT = 6
-LOOP N < LIMIT
-   SET N = N + 1
-   SET PRODUCT = PRODUCT * N
-IF PRODUCT >= 720
-   SET LIMIT = N", @"N == 6
-PRODUCT == 720
-LIMIT == 6
-DONE == 1", 18),
-        L(@"LET VALUE = 27
-LET RANGE = 0
-LET LIMIT = 20
-IF VALUE < 0
-   SET RANGE = -1
-ELIF VALUE <= 10
-   SET RANGE = 1
-ELIF VALUE <= LIMIT
-   SET RANGE = 2
-ELSE
-   SET RANGE = 3", @"VALUE == 32
-RANGE == 3
-LIMIT == 20
-OVERFLOW == 12
-CLASSIFIED == 1", 21),
-        L(@"LET A = 0
-LET B = 1
-LET INDEX = 0
-LET TEMP = 0
-LET LIMIT = 6
-LOOP INDEX < LIMIT
-   SET TEMP = A + B
-   SET A = B
-   SET B = TEMP
-   SET INDEX = INDEX + 1
-IF B > 10
-   SET LIMIT = INDEX
-WAIT", @"A == 13
-B == 21
-INDEX == 7
-TEMP == 21
-LIMIT == 7
-DONE == 1
-B > A", 25),
-        L(@"LET N = 0
-LET SUM = 0
-LET PRODUCT = 1
-LET REMAINDER = 0
-LET LIMIT = 12
-LET SKIPPED = 0
-LOOP N < LIMIT
-   SET N = N + 1
-   SET REMAINDER = N % 3
-   IF REMAINDER == 0
-      SET SKIPPED = SKIPPED + 1
-      SKIP
-   SET SUM = SUM + N
-   SET PRODUCT = PRODUCT * N
-   STOP", @"N == 8
-SUM == 33
-PRODUCT == 8960
-REMAINDER == 2
-LIMIT == 12
-SKIPPED == 2
-USED == 6
-STOPPED == 1
-DONE == 1", 30),
-
-        // Level 14 - LIST / PUSH
-        L(@"LIST DATA
-PUSH DATA = 1
+            // Level 5 - STOP basics
+            L(@"LET BASE = 2
+LET STEP = 2
 WAIT
-PUSH DATA = 2
-PUSH DATA = 3", @"DATA == [1,2,3,4]
-LENGTH:DATA == 4
-READY == 1", 12),
-        L(@"LET A = 4
-LET B = 6
-LIST DATA
-PUSH DATA = A
+LET D0 = 0
+SET D0 = D0 + 1
+LET D1 = 1", @"SUM == 4
+BASE <= 3
+STEP >= 1", 7),
+            L(@"LET BASE = 3
+LET STEP = 3
 WAIT
-PUSH DATA = B
-SET A = A + 1", @"A == 5
-B == 7
-DATA == [4,6,5,7]
-LENGTH:DATA == 4", 15),
-        L(@"LET INDEX = 1
-LET LIMIT = 4
-LIST DATA
-LOOP INDEX <= LIMIT
-   PUSH DATA = INDEX
-   SET INDEX = INDEX + 1
-IF LENGTH:DATA == LIMIT
-   SET LIMIT = LIMIT + 1
-WAIT", @"INDEX == 6
-LIMIT == 5
-DATA == [1,2,3,4,5]
-LENGTH:DATA == 5
-FILLED == 1
-DONE == 1", 20),
-        L(@"LET N = 1
-LET REMAINDER = 0
-LET ODD_SUM = 0
-LIST ODD
-LOOP N <= 6
-   SET REMAINDER = N % 2
-   IF REMAINDER != 0
-      PUSH ODD = N
-      SET ODD_SUM = ODD_SUM + N
-   SET N = N + 1
-WAIT", @"N == 8
-REMAINDER == 1
-ODD_SUM == 16
-ODD == [1,3,5,7]
-LENGTH:ODD == 4
-LAST_ODD == 7
-DONE == 1", 24),
-        L(@"LET N = 1
-LET REMAINDER = 0
-LET ODD_SUM = 0
-LET EVEN_SUM = 0
-LIST ODD
-LIST EVEN
-LOOP N <= 6
-   SET REMAINDER = N % 2
-   IF REMAINDER == 0
-      PUSH EVEN = N
-      SET EVEN_SUM = EVEN_SUM + N
-   ELSE
-      PUSH ODD = N
-      SET ODD_SUM = ODD_SUM + N
-   SET N = N + 1", @"N == 8
-REMAINDER == 1
-LIMIT == 7
-ODD_SUM == 16
-EVEN_SUM == 12
-ODD == [1,3,5,7]
-EVEN == [2,4,6]
-LENGTH:ODD == 4
-LENGTH:EVEN == 3
-TOTAL == 28", 30),
+LET D0 = 1
+LET D1 = 2
+SET D1 = D1 + 1
+LET D2 = 3
+LET D3 = 4", @"SUM == 6
+BASE >= 2
+STEP != 4
+D0 < D1", 7),
+            L(@"LET BASE = 4
+LET STEP = 2
+WAIT
+LET D0 = 2
+SET D0 = D0 + 1
+LET D1 = 3
+LET D2 = 4
+SET D2 = D2 + 1
+LET D3 = 5
+LET D4 = 6
+SET D4 = D4 + 1", @"SUM == 6
+BASE != 5
+STEP < SUM
+D0 <= 4
+D1 >= 2", 7),
+            L(@"LET BASE = 5
+LET STEP = 3
+WAIT
+LET D0 = 3
+LET D1 = 4
+SET D1 = D1 + 1
+LET D2 = 5
+LET D3 = 6
+SET D3 = D3 + 1
+LET D4 = 7
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2", @"SUM == 8
+BASE > STEP
+STEP < SUM
+D0 >= 3
+D1 != 8
+D2 < D3", 7),
+            L(@"LET BASE = 6
+LET STEP = 2
+WAIT
+LET D0 = 4
+SET D0 = D0 + 1
+LET D1 = 5
+LET D2 = 6
+SET D2 = D2 + 1
+LET D3 = 7
+LET D4 = 8
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT", @"SUM == 8
+BASE > STEP
+STEP <= 3
+D0 != 8
+D1 < D2
+D2 > D3
+D3 <= 9", 7),
 
-        // Level 15 - lists / LENGTH
-        L(@"LIST DATA
+            // Level 6 - STOP reinforcement
+            L(@"LET RATE = 1
+LET BIAS = 0
+LET LIM = 3
+WAIT
+LET D0 = 7
+LET D1 = 8
+SET D1 = D1 + 1", @"CNT == 1
+SUM == 1
+BIAS >= -1", 11),
+            L(@"LET RATE = 2
+LET BIAS = 1
+LET LIM = 4
+WAIT
+LET D0 = 8
+SET D0 = D0 + 1
+LET D1 = 0
+LET D2 = 1
+SET D2 = D2 + 1", @"CNT == 1
+SUM == 3
+BIAS != 2
+LIM > RATE", 11),
+            L(@"LET RATE = 3
+LET BIAS = 2
+LET LIM = 3
+WAIT
+LET D0 = 0
+LET D1 = 1
+SET D1 = D1 + 1
+LET D2 = 2
+LET D3 = 3
+SET D3 = D3 + 1
+LET D4 = 4
+SET D0 = D0 + 1", @"CNT == 1
+SUM == 5
+BIAS > CNT
+LIM <= 4
+RATE >= 2", 11),
+            L(@"LET RATE = 1
+LET BIAS = 3
+LET LIM = 4
+WAIT
+LET D0 = 1
+SET D0 = D0 + 1
+LET D1 = 2
+LET D2 = 3
+SET D2 = D2 + 1
+LET D3 = 4
+LET D4 = 5
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2", @"CNT == 1
+SUM == 4
+BIAS > CNT
+LIM >= 3
+RATE != 2
+D0 > D1", 11),
+            L(@"LET RATE = 2
+LET BIAS = 4
+LET LIM = 3
+WAIT
+LET D0 = 2
+LET D1 = 3
+SET D1 = D1 + 1
+LET D2 = 4
+LET D3 = 5
+SET D3 = D3 + 1
+LET D4 = 6
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"CNT == 1
+SUM == 6
+BIAS <= 5
+LIM != 4
+RATE < SUM
+D0 <= 6
+D1 >= 5", 11),
+
+            // Level 7 - SKIP reading
+            L(@"LET LIM = 3
+LET CNT = 0
+LET SUM = 0
+LOOP CNT < LIM
+   SET CNT = CNT + 1
+   SET SUM = SUM + CNT
+   SKIP
+   SET SUM = 99
+WAIT", @"SAVE == 3
+CNT != 4
+LIM == SAVE
+SUM <= 7", 9),
+            L(@"LET LIM = 4
+LET CNT = 0
+LET SUM = 0
+LOOP CNT < LIM
+   SET CNT = CNT + 1
+   SET SUM = SUM + CNT
+   SKIP
+   SET SUM = 99
+WAIT
+LET D0 = 6", @"SAVE == 4
+CNT == LIM
+LIM == SAVE
+SUM >= 9
+D0 != 7", 9),
+            L(@"LET LIM = 5
+LET CNT = 0
+LET SUM = 0
+LOOP CNT < LIM
+   SET CNT = CNT + 1
+   SET SUM = SUM + CNT
+   SKIP
+   SET SUM = 99
+WAIT
+LET D0 = 7
+SET D0 = D0 + 1
+LET D1 = 8
+LET D2 = 0", @"SAVE == 5
+CNT == LIM
+LIM <= 6
+SUM != 16
+D0 == D1
+D1 > D2", 9),
+            L(@"LET LIM = 3
+LET CNT = 0
+LET SUM = 0
+LOOP CNT < LIM
+   SET CNT = CNT + 1
+   SET SUM = SUM + CNT
+   SKIP
+   SET SUM = 99
+WAIT
+LET D0 = 8
+LET D1 = 0
+SET D1 = D1 + 1
+LET D2 = 1
+LET D3 = 2
+SET D3 = D3 + 1
+LET D4 = 3", @"SAVE == 3
+CNT <= 4
+LIM >= 2
+SUM < D0
+D0 > D1
+D1 <= 2
+D2 >= 0", 9),
+            L(@"LET LIM = 4
+LET CNT = 0
+LET SUM = 0
+LOOP CNT < LIM
+   SET CNT = CNT + 1
+   SET SUM = SUM + CNT
+   SKIP
+   SET SUM = 99
+WAIT
+LET D0 = 0
+SET D0 = D0 + 1
+LET D1 = 1
+LET D2 = 2
+SET D2 = D2 + 1
+LET D3 = 3
+LET D4 = 4
+SET D4 = D4 + 1
+SET D0 = D0 + 2", @"SAVE == 4
+CNT >= 3
+LIM != 5
+SUM > D0
+D0 <= 4
+D1 >= 0
+D2 != 4
+D3 < D4", 9),
+
+            // Level 8 - IF / ELSE
+            L(@"LET TEMP = -2
+LET FLAG = 0
+SET TEMP = TEMP + 1
+WAIT
+LET D0 = 3
+LET D1 = 4
+SET D1 = D1 + 1
+LET D2 = 5
+LET D3 = 6", @"FLAG == 1
+TEMP < D0
+D0 <= 4
+D1 >= 4", 5),
+            L(@"LET SCORE = 55
+LET FLAG = 0
+SET SCORE = SCORE + 2
+WAIT
+LET D0 = 4
+SET D0 = D0 + 1
+LET D1 = 5
+LET D2 = 6
+SET D2 = D2 + 1
+LET D3 = 7
+LET D4 = 8", @"FLAG == -1
+SCORE <= 58
+D0 >= 4
+D1 != 6
+D2 == D3", 5),
+            L(@"LET MODE = 2
+LET FLAG = 0
+SET MODE = MODE + 1
+WAIT
+LET D0 = 5
+LET D1 = 6
+SET D1 = D1 + 1
+LET D2 = 7
+LET D3 = 8
+SET D3 = D3 + 1
+LET D4 = 0
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1", @"FLAG == 1
+MODE >= 2
+D0 != 7
+D1 > D2
+D2 < D3
+D3 <= 10", 5),
+            L(@"LET LOAD = 8
+LET FLAG = 0
+SET LOAD = LOAD + 2
+WAIT
+LET D0 = 6
+SET D0 = D0 + 1
+LET D1 = 7
+LET D2 = 8
+SET D2 = D2 + 1
+LET D3 = 0
+LET D4 = 1
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT", @"FLAG == 1
+LOAD != 11
+D0 > D1
+D1 < D2
+D2 <= 12
+D3 >= 0
+D4 != 3", 5),
+            L(@"LET VALUE = 13
+LET FLAG = 0
+SET VALUE = VALUE + 1
+WAIT
+LET D0 = 7
+LET D1 = 8
+SET D1 = D1 + 1
+LET D2 = 0
+LET D3 = 1
+SET D3 = D3 + 1
+LET D4 = 2
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2", @"FLAG == 1
+VALUE > D0
+D0 < D1
+D1 <= 13
+D2 >= 2
+D3 != 5
+D4 > FLAG", 5),
+
+            // Level 9 - conditions in LOOP
+            L(@"LET LIM = 3
+LET I = 0
+LET SUM = 0
+LET CUT = 1
+WAIT
+LET D0 = 1
+SET D0 = D0 + 1
+LET D1 = 2
+LET D2 = 3
+SET D2 = D2 + 1", @"I == 3
+SUM == 6
+CUT < I
+LIM >= 2", 10),
+            L(@"LET LIM = 4
+LET I = 0
+LET SUM = 0
+LET CUT = 2
+WAIT
+LET D0 = 2
+LET D1 = 3
+SET D1 = D1 + 1
+LET D2 = 4
+LET D3 = 5
+SET D3 = D3 + 1
+LET D4 = 6", @"I == 4
+SUM == 11
+CUT <= 3
+LIM != 5
+D0 < D1", 10),
+            L(@"LET LIM = 5
+LET I = 0
+LET SUM = 0
+LET CUT = 1
+WAIT
+LET D0 = 3
+SET D0 = D0 + 1
+LET D1 = 4
+LET D2 = 5
+SET D2 = D2 + 1
+LET D3 = 6
+LET D4 = 7
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1", @"I == 5
+SUM == 15
+CUT >= 0
+LIM < SUM
+D0 <= 7
+D1 >= 4", 10),
+            L(@"LET LIM = 3
+LET I = 0
+LET SUM = 0
+LET CUT = 2
+WAIT
+LET D0 = 4
+LET D1 = 5
+SET D1 = D1 + 1
+LET D2 = 6
+LET D3 = 7
+SET D3 = D3 + 1
+LET D4 = 8
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"I == 3
+SUM == 7
+CUT != 3
+LIM < SUM
+D0 >= 6
+D1 != 9
+D2 < D3", 10),
+            L(@"LET LIM = 4
+LET I = 0
+LET SUM = 0
+LET CUT = 1
+WAIT
+LET D0 = 5
+SET D0 = D0 + 1
+LET D1 = 6
+LET D2 = 7
+SET D2 = D2 + 1
+LET D3 = 8
+LET D4 = 0
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"I == 4
+SUM == 10
+CUT < I
+LIM <= 5
+D0 != 10
+D1 < D2
+D2 > D3
+D3 <= 10", 10),
+
+            // Level 10 - compound conditions
+            L(@"LET LIM = 4
+LET I = 0
+LET HIT = 0
+LET SUM = 0
+LET MOD = 2
+WAIT
+LET D0 = 8
+LET D1 = 0
+SET D1 = D1 + 1
+LET D2 = 1
+LET D3 = 2", @"HIT == 2
+SUM == 9
+I >= 3
+LIM != 5", 12),
+            L(@"LET LIM = 5
+LET I = 0
+LET HIT = 0
+LET SUM = 0
+LET MOD = 3
+WAIT
+LET D0 = 0
+SET D0 = D0 + 1
+LET D1 = 1
+LET D2 = 2
+SET D2 = D2 + 1
+LET D3 = 3
+LET D4 = 4", @"HIT == 2
+SUM == 16
+I != 6
+LIM > MOD
+MOD < SUM", 12),
+            L(@"LET LIM = 4
+LET I = 0
+LET HIT = 0
+LET SUM = 0
+LET MOD = 2
+WAIT
+LET D0 = 1
+LET D1 = 2
+SET D1 = D1 + 1
+LET D2 = 3
+LET D3 = 4
+SET D3 = D3 + 1
+LET D4 = 5
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1", @"HIT == 2
+SUM == 9
+I == LIM
+LIM > MOD
+MOD <= 3
+D0 != 3", 12),
+            L(@"LET LIM = 5
+LET I = 0
+LET HIT = 0
+LET SUM = 0
+LET MOD = 3
+WAIT
+LET D0 = 2
+SET D0 = D0 + 1
+LET D1 = 3
+LET D2 = 4
+SET D2 = D2 + 1
+LET D3 = 5
+LET D4 = 6
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT", @"HIT == 2
+SUM == 16
+I == LIM
+LIM <= 6
+MOD >= 2
+D0 > D1
+D1 < D2", 12),
+            L(@"LET LIM = 4
+LET I = 0
+LET HIT = 0
+LET SUM = 0
+LET MOD = 2
+WAIT
+LET D0 = 3
+LET D1 = 4
+SET D1 = D1 + 1
+LET D2 = 5
+LET D3 = 6
+SET D3 = D3 + 1
+LET D4 = 7
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2", @"HIT == 2
+SUM == 9
+I <= 5
+LIM >= 3
+MOD != 3
+D0 < D1
+D1 <= 9
+D2 >= 7", 12),
+
+            // Level 11 - ELIF / LIST
+            L(@"LET LIM = 3
+LET I = 0
+LET LOW = 0
+LET MID = 0
+LET HIGH = 0
+WAIT
+LET D0 = 6
+SET D0 = D0 + 1
+LET D1 = 7
+LET D2 = 8
+SET D2 = D2 + 1
+LET D3 = 0", @"LOW == 1
+MID == 1
+HIGH == 1
+LENGTH:BUF == 0", 13),
+            L(@"LET LIM = 4
+LET I = 0
+LET LOW = 0
+LET MID = 0
+LET HIGH = 0
+WAIT
+LET D0 = 7
+LET D1 = 8
+SET D1 = D1 + 1
+LET D2 = 0
+LET D3 = 1
+SET D3 = D3 + 1
+LET D4 = 2
+SET D0 = D0 + 1", @"LOW == 1
+MID == 2
+HIGH == 1
+LENGTH:BUF == 0
+I == LIM", 13),
+            L(@"LET LIM = 5
+LET I = 0
+LET LOW = 0
+LET MID = 0
+LET HIGH = 0
+WAIT
+LET D0 = 8
+SET D0 = D0 + 1
+LET D1 = 0
+LET D2 = 1
+SET D2 = D2 + 1
+LET D3 = 2
+LET D4 = 3
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2", @"LOW == 1
+MID == 3
+HIGH == 1
+LENGTH:BUF == 0
+I == LIM
+LIM <= 6", 13),
+            L(@"LET LIM = 3
+LET I = 0
+LET LOW = 0
+LET MID = 0
+LET HIGH = 0
+WAIT
+LET D0 = 0
+LET D1 = 1
+SET D1 = D1 + 1
+LET D2 = 2
+LET D3 = 3
+SET D3 = D3 + 1
+LET D4 = 4
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1", @"LOW == 1
+MID == 1
+HIGH == 1
+LENGTH:BUF == 0
+I <= 4
+LIM >= 2
+D0 < D1", 13),
+            L(@"LET LIM = 4
+LET I = 0
+LET LOW = 0
+LET MID = 0
+LET HIGH = 0
+WAIT
+LET D0 = 1
+SET D0 = D0 + 1
+LET D1 = 2
+LET D2 = 3
+SET D2 = D2 + 1
+LET D3 = 4
+LET D4 = 5
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1", @"LOW == 1
+MID == 2
+HIGH == 1
+LENGTH:BUF == 0
+I >= 3
+LIM != 5
+D0 <= 6
+D1 >= 4", 13),
+
+            // Level 12 - FIRST / LAST
+            L(@"LIST DATA
 PUSH DATA = 1
+PUSH DATA = 3
+PUSH DATA = 5
+LET LIM = 2
+LET I = 0
+LET SUM = 0
+WAIT
+LET D0 = 4
+LET D1 = 5
+SET D1 = D1 + 1
+LET D2 = 6
+LET D3 = 7", @"HEAD == 1
+TAIL == 5
+SUM == 2
+DATA == [1,3,5]
+LENGTH:DATA == 3", 12),
+            L(@"LIST DATA
 PUSH DATA = 2
-IF LENGTH:DATA == 2
-   PUSH DATA = 3", @"DATA == [1,2,3,4]
-LENGTH:DATA == 4
-READY == 1", 13),
-        L(@"LET EXPECTED = 4
-LIST DATA
 PUSH DATA = 4
 PUSH DATA = 6
-IF LENGTH:DATA < EXPECTED
-   PUSH DATA = 8
-WAIT", @"EXPECTED == 4
-DATA == [4,6,8,10]
-LENGTH:DATA == 4
-FULL == 1", 16),
-        L(@"LET INDEX = 1
-LET LIMIT = 5
-LIST DATA
-LOOP LENGTH:DATA < LIMIT
-   PUSH DATA = INDEX
-   SET INDEX = INDEX + 1
-IF LENGTH:DATA == LIMIT
-   SET LIMIT = LIMIT + 1
-WAIT", @"INDEX == 7
-LIMIT == 6
-DATA == [1,2,3,4,5,6]
-LENGTH:DATA == 6
-FULL == 1
-DONE == 1", 21),
-        L(@"LET N = 1
-LET REMAINDER = 0
-LET LIMIT = 6
-LIST ODD
-LIST EVEN
-LOOP N <= LIMIT
-   SET REMAINDER = N % 2
-   IF REMAINDER == 0
-      PUSH EVEN = N
-   ELSE
-      PUSH ODD = N
-   SET N = N + 1", @"N == 8
-REMAINDER == 1
-LIMIT == 7
-ODD == [1,3,5,7]
-EVEN == [2,4,6]
-LENGTH:ODD == 4
-LENGTH:EVEN == 3
-TOTAL_LENGTH == 7", 25),
-        L(@"LET N = 1
-LET REMAINDER = 0
-LET ACCEPTED = 0
-LET REJECTED = 0
-LIST LOW
-LIST HIGH
-LOOP N <= 9
-   SET REMAINDER = N % 3
-   IF REMAINDER == 0
-      PUSH HIGH = N
-      SET ACCEPTED = ACCEPTED + 1
-   ELSE
-      PUSH LOW = N
-      SET REJECTED = REJECTED + 1
-   SET N = N + 1", @"N == 10
-REMAINDER == 0
-LIMIT == 9
-ACCEPTED == 3
-REJECTED == 6
-LOW == [1,2,4,5,7,8]
-HIGH == [3,6,9]
-LENGTH:LOW == 6
-LENGTH:HIGH == 3
-TOTAL_LENGTH == 9", 31),
-
-        // Level 16 - LAST / POP
-        L(@"LIST STACK
-PUSH STACK = 4
-PUSH STACK = 7
-LET OUT = 0
-SET OUT = POP:STACK", @"OUT == 7
-STACK == [4]
-LENGTH:STACK == 1", 13),
-        L(@"LIST STACK
-PUSH STACK = 2
-PUSH STACK = 5
-PUSH STACK = 8
-LET OUT = 0
-SET OUT = LAST:STACK
-WAIT", @"OUT == 8
-STACK == [2,5]
-LENGTH:STACK == 2
-TOP == 5", 16),
-        L(@"LIST STACK
-PUSH STACK = 2
-PUSH STACK = 3
-PUSH STACK = 5
+LET LIM = 2
+LET I = 0
 LET SUM = 0
-LOOP LENGTH:STACK > 0
-   SET SUM = SUM + POP:STACK
-IF SUM >= 10
-   SET SUM = SUM + 1", @"LENGTH:STACK == 0
-SUM == 11
-COUNT == 3
-EMPTY == 1
-TOTAL == 10", 21),
-        L(@"LIST SOURCE
-PUSH SOURCE = 1
-PUSH SOURCE = 2
-PUSH SOURCE = 3
-LIST TARGET
-LET TEMP = 0
-LOOP LENGTH:SOURCE > 0
-   SET TEMP = POP:SOURCE
-   PUSH TARGET = TEMP
-IF LENGTH:SOURCE == 0
-   SET TEMP = 0
-WAIT", @"LENGTH:SOURCE == 0
-TARGET == [3,2,1,0]
-LENGTH:TARGET == 4
-TEMP == 0
-MOVED == 4
-REVERSED == 1
-DONE == 1", 26),
-        L(@"LIST A
-PUSH A = 2
-PUSH A = 9
-LIST B
-PUSH B = 4
-PUSH B = 7
-LET OUT_A = 0
-LET OUT_B = 0
-LET TOTAL = 0
-SET OUT_A = POP:A
-SET OUT_B = LAST:B
-SET TOTAL = OUT_A + OUT_B
-IF TOTAL > 10
-   SET TOTAL = TOTAL + 1
-WAIT", @"A == [2]
-B == [4]
-LENGTH:A == 1
-LENGTH:B == 1
-OUT_A == 9
-OUT_B == 7
-TOTAL == 17
-DIFFERENCE == 2
-VALID == 1", 30),
-
-        // Level 17 - INJECT / FIRST / SHIFT
-        L(@"LIST QUEUE
-PUSH QUEUE = 2
-PUSH QUEUE = 3
-INJECT QUEUE = 1
-LET HEAD = FIRST:QUEUE", @"HEAD == 1
-QUEUE == [2,3]
-LENGTH:QUEUE == 2", 14),
-        L(@"LIST QUEUE
-PUSH QUEUE = 4
-INJECT QUEUE = 3
-INJECT QUEUE = 2
-INJECT QUEUE = 1
-LET HEAD = SHIFT:QUEUE
-WAIT", @"HEAD == 1
-QUEUE == [2,3,4]
-LENGTH:QUEUE == 3
-NEXT == 2", 18),
-        L(@"LIST QUEUE
-PUSH QUEUE = 2
-PUSH QUEUE = 4
-PUSH QUEUE = 6
-LET A = 0
-LET B = 0
-SET A = SHIFT:QUEUE
-INJECT QUEUE = 1
-SET B = FIRST:QUEUE
-WAIT", @"A == 2
-B == 1
-QUEUE == [4,6,8]
-LENGTH:QUEUE == 3
-HEAD_SUM == 3
-DONE == 1", 23),
-        L(@"LIST SOURCE
-PUSH SOURCE = 1
-PUSH SOURCE = 2
-PUSH SOURCE = 3
-LIST TARGET
-LET TEMP = 0
-LOOP LENGTH:SOURCE > 0
-   SET TEMP = SHIFT:SOURCE
-   INJECT TARGET = TEMP
-IF LENGTH:SOURCE == 0
-   SET TEMP = 0
-WAIT", @"LENGTH:SOURCE == 0
-TARGET == [4,3,2,1]
-LENGTH:TARGET == 4
-TEMP == 0
-MOVED == 4
-REVERSED == 1
-DONE == 1", 27),
-        L(@"LIST QUEUE
-PUSH QUEUE = 3
-PUSH QUEUE = 8
-PUSH QUEUE = 1
-LET CURRENT = 0
+WAIT
+LET D0 = 5
+SET D0 = D0 + 1
+LET D1 = 6
+LET D2 = 7
+SET D2 = D2 + 1
+LET D3 = 8
+LET D4 = 0", @"HEAD == 2
+TAIL == 6
+SUM == 4
+DATA == [2,4,6]
+LENGTH:DATA == 3", 12),
+            L(@"LIST DATA
+PUSH DATA = 3
+PUSH DATA = 5
+PUSH DATA = 7
+LET LIM = 2
+LET I = 0
 LET SUM = 0
-LOOP LENGTH:QUEUE > 0
-   SET CURRENT = SHIFT:QUEUE
-   SET SUM = SUM + CURRENT
-   IF CURRENT < 5
-      INJECT QUEUE = CURRENT + 5
-      SKIP
-   IF SUM >= 20
-      STOP
-WAIT", @"QUEUE == [6]
-LENGTH:QUEUE == 1
-CURRENT == 6
-SUM == 26
-PROCESSED == 5
-REQUEUED == 2
-STOPPED == 1
-DONE == 1
-SUM > PROCESSED", 32),
-
-        // Level 18 - deque operations
-        L(@"LIST SOURCE
-PUSH SOURCE = 1
-PUSH SOURCE = 2
-LIST TARGET
-INJECT TARGET = SHIFT:SOURCE", @"SOURCE == [2]
-TARGET == [1,3]
-LENGTH:SOURCE == 1
-LENGTH:TARGET == 2", 15),
-        L(@"LIST STACK
-PUSH STACK = 1
-PUSH STACK = 2
-PUSH STACK = 3
-LIST QUEUE
-INJECT QUEUE = POP:STACK
-WAIT", @"STACK == [1,2]
-QUEUE == [4,3]
-LENGTH:STACK == 2
-LENGTH:QUEUE == 2
-MOVED == 2", 18),
-        L(@"LIST QUEUE
-PUSH QUEUE = 1
-PUSH QUEUE = 2
-PUSH QUEUE = 3
-PUSH QUEUE = 4
-LET TEMP = 0
-SET TEMP = SHIFT:QUEUE
-PUSH QUEUE = TEMP
-IF LENGTH:QUEUE == 4
-   SET TEMP = 0", @"QUEUE == [2,3,4,1,5]
-LENGTH:QUEUE == 5
-TEMP == 0
-ROTATIONS == 1
-READY == 1
-DONE == 1", 23),
-        L(@"LIST SOURCE
-PUSH SOURCE = 2
-PUSH SOURCE = 5
-PUSH SOURCE = 1
-PUSH SOURCE = 8
-LIST LOW
-LIST HIGH
-LET TEMP = 0
-LOOP LENGTH:SOURCE > 0
-   SET TEMP = SHIFT:SOURCE
-   IF TEMP >= 5
-      PUSH HIGH = TEMP
-   ELSE
-      INJECT LOW = TEMP", @"LENGTH:SOURCE == 0
-LOW == [3,1,2]
-HIGH == [5,8,9]
-LENGTH:LOW == 3
-LENGTH:HIGH == 3
-TEMP == 9
-MOVED == 6
-DONE == 1", 28),
-        L(@"LIST INPUT
-PUSH INPUT = 3
-PUSH INPUT = 8
-PUSH INPUT = 1
-PUSH INPUT = 6
-LET CURRENT = 0
-LIST FRONT
-LIST BACK
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT >= 5
-      PUSH BACK = CURRENT
-   ELSE
-      INJECT FRONT = CURRENT
-WAIT", @"LENGTH:INPUT == 0
-FRONT == [5,1,3]
-BACK == [8,6,10]
-LENGTH:FRONT == 3
-LENGTH:BACK == 3
-CURRENT == 10
-SUM == 33
-PROCESSED == 6
-DONE == 1", 33),
-
-        // Level 19 - list algorithms
-        L(@"LIST SOURCE
-PUSH SOURCE = 3
-PUSH SOURCE = 4
+WAIT
+LET D0 = 6
+LET D1 = 7
+SET D1 = D1 + 1
+LET D2 = 8
+LET D3 = 0
+SET D3 = D3 + 1
+LET D4 = 1
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1", @"HEAD == 3
+TAIL == 7
+SUM == 6
+DATA == [3,5,7]
+LENGTH:DATA == 3
+I <= 3", 12),
+            L(@"LIST DATA
+PUSH DATA = 4
+PUSH DATA = 6
+PUSH DATA = 8
+LET LIM = 2
+LET I = 0
 LET SUM = 0
-SET SUM = SHIFT:SOURCE + POP:SOURCE", @"LENGTH:SOURCE == 0
-SUM == 12
-COUNT == 3
-DONE == 1", 16),
-        L(@"LIST SOURCE
-PUSH SOURCE = 4
-PUSH SOURCE = 9
-PUSH SOURCE = 2
-LET MAX = 0
-LET TEMP = 0
-SET TEMP = SHIFT:SOURCE
-IF TEMP > MAX
-   SET MAX = TEMP", @"SOURCE == [2]
-MAX == 9
-TEMP == 9
-LENGTH:SOURCE == 1
-FOUND == 1", 19),
-        L(@"LIST SOURCE
-PUSH SOURCE = 2
-PUSH SOURCE = 8
-PUSH SOURCE = 5
-PUSH SOURCE = 9
-LIST RESULT
-LET TEMP = 0
-LOOP LENGTH:SOURCE > 0
-   SET TEMP = SHIFT:SOURCE
-   IF TEMP > 5
-      PUSH RESULT = TEMP", @"LENGTH:SOURCE == 0
-RESULT == [8,9,10]
-LENGTH:RESULT == 3
-TEMP == 10
-MATCHES == 3
-THRESHOLD == 5", 24),
-        L(@"LIST SOURCE
-PUSH SOURCE = 1
-PUSH SOURCE = 3
-PUSH SOURCE = 4
-LIST RESULT
-LET TEMP = 0
+WAIT
+LET D0 = 7
+SET D0 = D0 + 1
+LET D1 = 8
+LET D2 = 0
+SET D2 = D2 + 1
+LET D3 = 1
+LET D4 = 2
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT", @"HEAD == 4
+TAIL == 8
+SUM == 8
+DATA == [4,6,8]
+LENGTH:DATA == 3
+I >= 1
+LIM != 3", 12),
+            L(@"LIST DATA
+PUSH DATA = 5
+PUSH DATA = 7
+PUSH DATA = 9
+LET LIM = 2
+LET I = 0
 LET SUM = 0
-LOOP LENGTH:SOURCE > 0
-   SET TEMP = SHIFT:SOURCE
-   SET TEMP = TEMP * 2
-   PUSH RESULT = TEMP
-   SET SUM = SUM + TEMP
-WAIT", @"LENGTH:SOURCE == 0
-RESULT == [2,6,8,10]
-LENGTH:RESULT == 4
-TEMP == 10
-SUM == 26
-COUNT == 4
-DONE == 1
-SUM > TEMP", 28),
-        L(@"LIST A
-PUSH A = 1
-PUSH A = 3
-PUSH A = 5
-LIST B
-PUSH B = 2
-PUSH B = 4
-PUSH B = 6
-LIST MERGED
-LOOP LENGTH:A > 0 OR LENGTH:B > 0
-   IF LENGTH:A > 0
-      PUSH MERGED = SHIFT:A
-   IF LENGTH:B > 0
-      PUSH MERGED = SHIFT:B
-WAIT", @"LENGTH:A == 0
-LENGTH:B == 0
-MERGED == [1,2,3,4,5,6,7,8]
-LENGTH:MERGED == 8
-MOVED == 8
-ROUNDS == 4
-SORTED == 1
-DONE == 1
-MOVED == LENGTH:MERGED", 34),
+WAIT
+LET D0 = 8
+LET D1 = 0
+SET D1 = D1 + 1
+LET D2 = 1
+LET D3 = 2
+SET D3 = D3 + 1
+LET D4 = 3
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2", @"HEAD == 5
+TAIL == 9
+SUM == 10
+DATA == [5,7,9]
+LENGTH:DATA == 3
+I != 3
+LIM < SUM
+D0 >= 10", 12),
 
-        // Level 20 - final challenges
-        L(@"LIST INPUT
-PUSH INPUT = 2
-PUSH INPUT = 5
-LIST OUTPUT
-PUSH OUTPUT = SHIFT:INPUT", @"INPUT == [5]
-OUTPUT == [2,10]
-LENGTH:INPUT == 1
-LENGTH:OUTPUT == 2", 17),
-        L(@"LIST SOURCE
-PUSH SOURCE = 1
-PUSH SOURCE = 2
-PUSH SOURCE = 3
-LIST TARGET
-LET CURRENT = 0
-SET CURRENT = POP:SOURCE
-INJECT TARGET = CURRENT", @"SOURCE == [1,2]
-TARGET == [4,3]
-CURRENT == 4
-LENGTH:SOURCE == 2
-LENGTH:TARGET == 2", 20),
-        L(@"LIST INPUT
-PUSH INPUT = -2
-PUSH INPUT = 0
-LIST NEGATIVE
-LIST ZERO
-LET CURRENT = SHIFT:INPUT
-IF CURRENT < 0
-   PUSH NEGATIVE = CURRENT
-ELSE
-   PUSH ZERO = CURRENT
-WAIT", @"LENGTH:INPUT == 0
-NEGATIVE == [-2,-1]
-ZERO == [0]
-LENGTH:NEGATIVE == 2
-LENGTH:ZERO == 1
-CURRENT == -1
-CLASSIFIED == 2", 25),
-        L(@"LIST INPUT
-PUSH INPUT = 4
-PUSH INPUT = 3
-PUSH INPUT = 0
-PUSH INPUT = 9
-LET CURRENT = 0
+            // Level 13 - list reading
+            L(@"LIST DATA
+PUSH DATA = 2
+PUSH DATA = 4
+PUSH DATA = 7
+LET I = 0
+LET LIM = 3
+LET BAND = 0
 LET SUM = 0
-LET PROCESSED = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT == 0
-      STOP
-   SET SUM = SUM + CURRENT
-   SET PROCESSED = PROCESSED + 1", @"INPUT == [9]
-LENGTH:INPUT == 1
-CURRENT == 0
-SUM == 7
-PROCESSED == 2
-STOPPED == 1
-SENTINEL == 0
-DONE == 1", 29),
-        L(@"LIST INPUT
-PUSH INPUT = 3
-PUSH INPUT = 8
-PUSH INPUT = 0
-LIST READY
-LIST REJECTED
-LET CURRENT = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT == 0
-      STOP
-   ELIF CURRENT >= 5
-      PUSH READY = CURRENT
-   ELSE
-      INJECT REJECTED = CURRENT", @"LENGTH:INPUT == 0
-READY == [8,9]
-REJECTED == [1,3]
-LENGTH:READY == 2
-LENGTH:REJECTED == 2
-CURRENT == 0
-SUM == 20
-PROCESSED == 4
-STOPPED == 1
-ACCEPTED == 2
-REJECTED_COUNT == 2
-DONE == 1", 36),
-        // Level 21 - queue filtering
-        L(@"LIST INPUT
-PUSH INPUT = 4
-PUSH INPUT = 7
-LIST OUTPUT
-PUSH OUTPUT = SHIFT:INPUT", @"INPUT == [7]
-OUTPUT == [4,8]
-LENGTH:INPUT == 1
-LENGTH:OUTPUT == 2", 18),
-        L(@"LIST INPUT
-PUSH INPUT = 2
-PUSH INPUT = 6
-PUSH INPUT = 9
-LIST OUTPUT
-LET CURRENT = 0
-SET CURRENT = SHIFT:INPUT
-PUSH OUTPUT = CURRENT", @"INPUT == [6,9]
-OUTPUT == [2,5]
-CURRENT == 2
-LENGTH:INPUT == 2
-LENGTH:OUTPUT == 2", 21),
-        L(@"LIST INPUT
-PUSH INPUT = 2
-PUSH INPUT = 6
-PUSH INPUT = 9
-LIST OUTPUT
-LET CURRENT = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT >= 5
-      PUSH OUTPUT = CURRENT
-WAIT", @"LENGTH:INPUT == 0
-OUTPUT == [6,9,10]
-LENGTH:OUTPUT == 3
-CURRENT == 10
-ACCEPTED == 3
-REJECTED == 1
-DONE == 1", 26),
-        L(@"LIST INPUT
-PUSH INPUT = 1
-PUSH INPUT = 4
-PUSH INPUT = 7
-PUSH INPUT = 10
-LIST ACCEPTED
-LIST REJECTED
-LET CURRENT = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT >= 5
-      PUSH ACCEPTED = CURRENT
-   ELSE
-      PUSH REJECTED = CURRENT", @"LENGTH:INPUT == 0
-ACCEPTED == [7,10,12]
-REJECTED == [1,4,3]
-LENGTH:ACCEPTED == 3
-LENGTH:REJECTED == 3
-CURRENT == 12
-PROCESSED == 6
-THRESHOLD == 5
-DONE == 1", 31),
-        L(@"LIST INPUT
-PUSH INPUT = 2
-PUSH INPUT = 7
-PUSH INPUT = 3
-LIST OUTPUT
-LET CURRENT = 0
-LET TOTAL = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT < 5
-      INJECT INPUT = CURRENT + 5
-      SKIP
-   PUSH OUTPUT = CURRENT
-   SET TOTAL = TOTAL + CURRENT
-WAIT", @"LENGTH:INPUT == 0
-OUTPUT == [7,7,8,10]
-LENGTH:OUTPUT == 4
-CURRENT == 10
-TOTAL == 32
-REQUEUED == 3
-PROCESSED == 4
-MINIMUM == 5
-DONE == 1
-TOTAL > CURRENT", 36),
+WAIT
+LET D0 = 2
+SET D0 = D0 + 1
+LET D1 = 3
+LET D2 = 4
+SET D2 = D2 + 1", @"BAND == 1
+SUM == 3
+DATA == [2,4,7]
+LENGTH:DATA == 3
+LENGTH:KEEP == 0", 19),
+            L(@"LIST DATA
+PUSH DATA = 3
+PUSH DATA = 5
+PUSH DATA = 8
+LET I = 0
+LET LIM = 3
+LET BAND = 0
+LET SUM = 0
+WAIT
+LET D0 = 3
+LET D1 = 4
+SET D1 = D1 + 1
+LET D2 = 5
+LET D3 = 6
+SET D3 = D3 + 1
+LET D4 = 7", @"BAND == 1
+SUM == 3
+DATA == [3,5,8]
+LENGTH:DATA == 3
+LENGTH:KEEP == 0", 19),
+            L(@"LIST DATA
+PUSH DATA = 4
+PUSH DATA = 6
+PUSH DATA = 9
+LET I = 0
+LET LIM = 3
+LET BAND = 0
+LET SUM = 0
+WAIT
+LET D0 = 4
+SET D0 = D0 + 1
+LET D1 = 5
+LET D2 = 6
+SET D2 = D2 + 1
+LET D3 = 7
+LET D4 = 8
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1", @"BAND == 2
+SUM == 6
+DATA == [4,6,9]
+LENGTH:DATA == 3
+LENGTH:KEEP == 0
+I >= 2", 19),
+            L(@"LIST DATA
+PUSH DATA = 5
+PUSH DATA = 7
+PUSH DATA = 10
+LET I = 0
+LET LIM = 3
+LET BAND = 0
+LET SUM = 0
+WAIT
+LET D0 = 5
+LET D1 = 6
+SET D1 = D1 + 1
+LET D2 = 7
+LET D3 = 8
+SET D3 = D3 + 1
+LET D4 = 0
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"BAND == 2
+SUM == 6
+DATA == [5,7,10]
+LENGTH:DATA == 3
+LENGTH:KEEP == 0
+I != 4
+LIM < SUM", 19),
+            L(@"LIST DATA
+PUSH DATA = 6
+PUSH DATA = 8
+PUSH DATA = 11
+LET I = 0
+LET LIM = 3
+LET BAND = 0
+LET SUM = 0
+WAIT
+LET D0 = 6
+SET D0 = D0 + 1
+LET D1 = 7
+LET D2 = 8
+SET D2 = D2 + 1
+LET D3 = 0
+LET D4 = 1
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"BAND == 2
+SUM == 6
+DATA == [6,8,11]
+LENGTH:DATA == 3
+LENGTH:KEEP == 0
+I == LIM
+LIM < SUM
+VAL >= 5", 19),
 
-        // Level 22 - stack transformations
-        L(@"LIST STACK
-PUSH STACK = 2
-PUSH STACK = 5
-LET TOP = 0
-SET TOP = POP:STACK", @"STACK == [2]
-TOP == 5
-LENGTH:STACK == 1
-EMPTY == 0", 18),
-        L(@"LIST STACK
-PUSH STACK = 1
-PUSH STACK = 2
-PUSH STACK = 3
-LIST TARGET
-LET CURRENT = 0
-SET CURRENT = POP:STACK
-INJECT TARGET = CURRENT", @"STACK == [1,2]
-TARGET == [4,3]
-CURRENT == 4
-LENGTH:STACK == 2
-LENGTH:TARGET == 2", 22),
-        L(@"LIST SOURCE
-PUSH SOURCE = 1
-PUSH SOURCE = 2
-PUSH SOURCE = 3
-LIST TARGET
-LET CURRENT = 0
-LOOP LENGTH:SOURCE > 0
-   SET CURRENT = POP:SOURCE
-   PUSH TARGET = CURRENT
-IF LENGTH:SOURCE == 0
-   SET CURRENT = 0", @"LENGTH:SOURCE == 0
-TARGET == [3,2,1,0]
-LENGTH:TARGET == 4
-CURRENT == 0
-MOVED == 4
-REVERSED == 1
-DONE == 1", 27),
-        L(@"LIST A
-PUSH A = 1
-PUSH A = 3
-PUSH A = 5
-LIST B
-PUSH B = 2
-PUSH B = 4
-PUSH B = 6
-LIST MERGED
-LET CURRENT = 0
-SET CURRENT = POP:A
-PUSH MERGED = CURRENT
-SET CURRENT = POP:B
-PUSH MERGED = CURRENT", @"A == [1,3]
-B == [2,4]
-MERGED == [5,6,7,8]
-CURRENT == 8
-LENGTH:A == 2
-LENGTH:B == 2
-LENGTH:MERGED == 4
-MOVED == 4
-DONE == 1", 32),
-        L(@"LIST STACK
-PUSH STACK = 1
-PUSH STACK = 2
-PUSH STACK = 3
-LIST EVEN
-LIST ODD
-LET CURRENT = 0
-LET REMAINDER = 0
-LOOP LENGTH:STACK > 0
-   SET CURRENT = POP:STACK
-   SET REMAINDER = CURRENT % 2
-   IF REMAINDER == 0
-      PUSH EVEN = CURRENT
-   ELSE
-      INJECT ODD = CURRENT", @"LENGTH:STACK == 0
-EVEN == [2,4]
-ODD == [1,3,5]
-LENGTH:EVEN == 2
-LENGTH:ODD == 3
-CURRENT == 5
-REMAINDER == 1
-PROCESSED == 5
-EVEN_COUNT == 2
-ODD_COUNT == 3
-DONE == 1", 37),
+            // Level 14 - PUSH basics
+            L(@"LET LIM = 3
+LET I = 0
+LET BASE = 1
+WAIT
+LET D0 = 0
+LET D1 = 1
+SET D1 = D1 + 1
+LET D2 = 2
+LET D3 = 3
+SET D3 = D3 + 1
+LET D4 = 4
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2", @"I == 3
+OUT == [1,2,3]
+LENGTH:OUT == 3
+BASE < I
+LIM >= 2", 7),
+            L(@"LET LIM = 4
+LET I = 0
+LET BASE = 1
+WAIT
+LET D0 = 1
+SET D0 = D0 + 1
+LET D1 = 2
+LET D2 = 3
+SET D2 = D2 + 1
+LET D3 = 4
+LET D4 = 5
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT", @"I == 4
+OUT == [1,2,3,4]
+LENGTH:OUT == 4
+BASE <= 2
+LIM != 5
+D0 > D1", 7),
+            L(@"LET LIM = 5
+LET I = 0
+LET BASE = 1
+WAIT
+LET D0 = 2
+LET D1 = 3
+SET D1 = D1 + 1
+LET D2 = 4
+LET D3 = 5
+SET D3 = D3 + 1
+LET D4 = 6
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1", @"I == 5
+OUT == [1,2,3,4,5]
+LENGTH:OUT == 5
+BASE >= 0
+LIM == D0
+D0 < D1
+D1 <= 8", 7),
+            L(@"LET LIM = 3
+LET I = 0
+LET BASE = 1
+WAIT
+LET D0 = 3
+SET D0 = D0 + 1
+LET D1 = 4
+LET D2 = 5
+SET D2 = D2 + 1
+LET D3 = 6
+LET D4 = 7
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"I == 3
+OUT == [1,2,3]
+LENGTH:OUT == 3
+BASE != 2
+LIM < D0
+D0 <= 10
+D1 >= 6
+D2 != 10", 7),
+            L(@"LET LIM = 4
+LET I = 0
+LET BASE = 1
+WAIT
+LET D0 = 4
+LET D1 = 5
+SET D1 = D1 + 1
+LET D2 = 6
+LET D3 = 7
+SET D3 = D3 + 1
+LET D4 = 8
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2", @"I == 4
+OUT == [1,2,3,4]
+LENGTH:OUT == 4
+BASE < I
+LIM <= 5
+D0 >= 7
+D1 != 12
+D2 < D3
+D3 > D4", 7),
 
-        // Level 23 - dual buffers
-        L(@"LIST A
-PUSH A = 3
-LIST B
-PUSH B = SHIFT:A
-PUSH A = 5", @"A == [5,7]
-B == [3]
-LENGTH:A == 2
-LENGTH:B == 1", 18),
-        L(@"LIST A
-PUSH A = 2
-PUSH A = 4
-LIST B
-PUSH B = 6
-LET CURRENT = 0
-SET CURRENT = SHIFT:A
-PUSH B = CURRENT", @"A == [4]
-B == [6,2,8]
-CURRENT == 2
-LENGTH:A == 1
-LENGTH:B == 3", 22),
-        L(@"LIST A
-PUSH A = 1
-PUSH A = 3
-PUSH A = 5
-LIST B
-LET CURRENT = 0
-LOOP LENGTH:A > 0
-   SET CURRENT = SHIFT:A
-   PUSH B = CURRENT
-WAIT", @"LENGTH:A == 0
-B == [1,3,5,7]
-LENGTH:B == 4
-CURRENT == 7
-MOVED == 4
-DONE == 1
-CURRENT > 0", 27),
-        L(@"LIST A
+            // Level 15 - PUSH filtering
+            L(@"LET LIM = 5
+LET I = 0
+LET MOD = 2
+LET SUM = 0
+WAIT
+LET D0 = 7
+SET D0 = D0 + 1
+LET D1 = 8
+LET D2 = 0
+SET D2 = D2 + 1
+LET D3 = 1
+LET D4 = 2
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2", @"SUM == 6
+OUT == [2,4]
+LENGTH:OUT == 2
+I <= 6
+LIM >= 4", 15),
+            L(@"LET LIM = 6
+LET I = 0
+LET MOD = 3
+LET SUM = 0
+WAIT
+LET D0 = 8
+LET D1 = 0
+SET D1 = D1 + 1
+LET D2 = 1
+LET D3 = 2
+SET D3 = D3 + 1
+LET D4 = 3
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"SUM == 9
+OUT == [3,6]
+LENGTH:OUT == 2
+I >= 5
+LIM != 7
+MOD > REM", 15),
+            L(@"LET LIM = 5
+LET I = 0
+LET MOD = 2
+LET SUM = 0
+WAIT
+LET D0 = 0
+SET D0 = D0 + 1
+LET D1 = 1
+LET D2 = 2
+SET D2 = D2 + 1
+LET D3 = 3
+LET D4 = 4
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1", @"SUM == 6
+OUT == [2,4]
+LENGTH:OUT == 2
+I != 6
+LIM > MOD
+MOD > REM
+REM <= 2", 15),
+            L(@"LET LIM = 6
+LET I = 0
+LET MOD = 3
+LET SUM = 0
+WAIT
+LET D0 = 1
+LET D1 = 2
+SET D1 = D1 + 1
+LET D2 = 3
+LET D3 = 4
+SET D3 = D3 + 1
+LET D4 = 5
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"SUM == 9
+OUT == [3,6]
+LENGTH:OUT == 2
+I == LIM
+LIM > MOD
+MOD <= 4
+REM >= -1
+D0 < D1", 15),
+            L(@"LET LIM = 5
+LET I = 0
+LET MOD = 2
+LET SUM = 0
+WAIT
+LET D0 = 2
+SET D0 = D0 + 1
+LET D1 = 3
+LET D2 = 4
+SET D2 = D2 + 1
+LET D3 = 5
+LET D4 = 6
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2", @"SUM == 6
+OUT == [2,4]
+LENGTH:OUT == 2
+I == LIM
+LIM <= 6
+MOD >= 1
+REM != 2
+D0 > D1
+D1 <= 8", 15),
+
+            // Level 16 - PUSH transforms
+            L(@"LET LIM = 3
+LET I = 0
+LET BASE = 2
+LET SUM = 0
+WAIT
+LET D0 = 5
+LET D1 = 6
+SET D1 = D1 + 1
+LET D2 = 7
+LET D3 = 8
+SET D3 = D3 + 1
+LET D4 = 0
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT", @"SUM == 12
+VAL == 5
+OUT == [3,4,5]
+LENGTH:OUT == 3
+BASE >= 1", 11),
+            L(@"LET LIM = 4
+LET I = 0
+LET BASE = 3
+LET SUM = 0
+WAIT
+LET D0 = 6
+SET D0 = D0 + 1
+LET D1 = 7
+LET D2 = 8
+SET D2 = D2 + 1
+LET D3 = 0
+LET D4 = 1
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1", @"SUM == 22
+VAL == 7
+OUT == [4,5,6,7]
+LENGTH:OUT == 4
+BASE != 4
+I == LIM", 11),
+            L(@"LET LIM = 5
+LET I = 0
+LET BASE = 4
+LET SUM = 0
+WAIT
+LET D0 = 7
+LET D1 = 8
+SET D1 = D1 + 1
+LET D2 = 0
+LET D3 = 1
+SET D3 = D3 + 1
+LET D4 = 2
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT", @"SUM == 35
+VAL == 9
+OUT == [5,6,7,8,9]
+LENGTH:OUT == 5
+BASE < I
+I == LIM
+LIM <= 6", 11),
+            L(@"LET LIM = 3
+LET I = 0
+LET BASE = 5
+LET SUM = 0
+WAIT
+LET D0 = 8
+SET D0 = D0 + 1
+LET D1 = 0
+LET D2 = 1
+SET D2 = D2 + 1
+LET D3 = 2
+LET D4 = 3
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1", @"SUM == 21
+VAL == 8
+OUT == [6,7,8]
+LENGTH:OUT == 3
+BASE > I
+I <= 4
+LIM >= 2
+D0 > D1", 11),
+            L(@"LET LIM = 4
+LET I = 0
+LET BASE = 6
+LET SUM = 0
+WAIT
+LET D0 = 0
+LET D1 = 1
+SET D1 = D1 + 1
+LET D2 = 2
+LET D3 = 3
+SET D3 = D3 + 1
+LET D4 = 4
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT", @"SUM == 34
+VAL == 10
+OUT == [7,8,9,10]
+LENGTH:OUT == 4
+BASE <= 7
+I >= 3
+LIM != 5
+D0 <= 5
+D1 >= 6", 11),
+
+            // Level 17 - INJECT basics
+            L(@"LET LIM = 3
+LET I = 0
+WAIT
+LET D0 = 3
+SET D0 = D0 + 1
+LET D1 = 4
+LET D2 = 5
+SET D2 = D2 + 1
+LET D3 = 6
+LET D4 = 7
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"I == 3
+OUT == [3,2,1]
+LENGTH:OUT == 3
+LIM < D0
+D0 == D1", 7),
+            L(@"LET LIM = 4
+LET I = 0
+WAIT
+LET D0 = 4
+LET D1 = 5
+SET D1 = D1 + 1
+LET D2 = 6
+LET D3 = 7
+SET D3 = D3 + 1
+LET D4 = 8
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT", @"I == 4
+OUT == [4,3,2,1]
+LENGTH:OUT == 4
+LIM < D0
+D0 <= 8
+D1 >= 8", 7),
+            L(@"LET LIM = 5
+LET I = 0
+WAIT
+LET D0 = 5
+SET D0 = D0 + 1
+LET D1 = 6
+LET D2 = 7
+SET D2 = D2 + 1
+LET D3 = 8
+LET D4 = 0
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1", @"I == 5
+OUT == [5,4,3,2,1]
+LENGTH:OUT == 5
+LIM <= 6
+D0 >= 10
+D1 != 11
+D2 == D3", 7),
+            L(@"LET LIM = 3
+LET I = 0
+WAIT
+LET D0 = 6
+LET D1 = 7
+SET D1 = D1 + 1
+LET D2 = 8
+LET D3 = 0
+SET D3 = D3 + 1
+LET D4 = 1
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"I == 3
+OUT == [3,2,1]
+LENGTH:OUT == 3
+LIM >= 2
+D0 != 13
+D1 > D2
+D2 > D3
+D3 <= 7", 7),
+            L(@"LET LIM = 4
+LET I = 0
+WAIT
+LET D0 = 7
+SET D0 = D0 + 1
+LET D1 = 8
+LET D2 = 0
+SET D2 = D2 + 1
+LET D3 = 1
+LET D4 = 2
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"I == 4
+OUT == [4,3,2,1]
+LENGTH:OUT == 4
+LIM != 5
+D0 == D1
+D1 > D2
+D2 <= 7
+D3 >= 4
+D4 != 4", 7),
+
+            // Level 18 - deque operations
+            L(@"LIST SRC
+PUSH SRC = 1
+PUSH SRC = 3
+PUSH SRC = 5
+LET LIM = 3
+LET I = 0
+LET VAL = 0
+WAIT
+LET D0 = 1
+LET D1 = 2
+SET D1 = D1 + 1
+LET D2 = 3
+LET D3 = 4
+SET D3 = D3 + 1
+LET D4 = 5
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2", @"I == 3
+VAL == 5
+LENGTH:SRC == 0
+OUT == [5,3,1]
+LENGTH:OUT == 3", 12),
+            L(@"LIST SRC
+PUSH SRC = 2
+PUSH SRC = 4
+PUSH SRC = 6
+LET LIM = 3
+LET I = 0
+LET VAL = 0
+WAIT
+LET D0 = 2
+SET D0 = D0 + 1
+LET D1 = 3
+LET D2 = 4
+SET D2 = D2 + 1
+LET D3 = 5
+LET D4 = 6
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT", @"I == 3
+VAL == 6
+LENGTH:SRC == 0
+OUT == [6,4,2]
+LENGTH:OUT == 3
+LIM <= 4", 12),
+            L(@"LIST SRC
+PUSH SRC = 3
+PUSH SRC = 5
+PUSH SRC = 7
+LET LIM = 3
+LET I = 0
+LET VAL = 0
+WAIT
+LET D0 = 3
+LET D1 = 4
+SET D1 = D1 + 1
+LET D2 = 5
+LET D3 = 6
+SET D3 = D3 + 1
+LET D4 = 7
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1", @"I == 3
+VAL == 7
+LENGTH:SRC == 0
+OUT == [7,5,3]
+LENGTH:OUT == 3
+LIM >= 2
+D0 < D1", 12),
+            L(@"LIST SRC
+PUSH SRC = 4
+PUSH SRC = 6
+PUSH SRC = 8
+LET LIM = 3
+LET I = 0
+LET VAL = 0
+WAIT
+LET D0 = 4
+SET D0 = D0 + 1
+LET D1 = 5
+LET D2 = 6
+SET D2 = D2 + 1
+LET D3 = 7
+LET D4 = 8
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"I == 3
+VAL == 8
+LENGTH:SRC == 0
+OUT == [8,6,4]
+LENGTH:OUT == 3
+LIM != 4
+D0 > D1
+D1 <= 9", 12),
+            L(@"LIST SRC
+PUSH SRC = 5
+PUSH SRC = 7
+PUSH SRC = 9
+LET LIM = 3
+LET I = 0
+LET VAL = 0
+WAIT
+LET D0 = 5
+LET D1 = 6
+SET D1 = D1 + 1
+LET D2 = 7
+LET D3 = 8
+SET D3 = D3 + 1
+LET D4 = 0
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2", @"I == 3
+VAL == 9
+LENGTH:SRC == 0
+OUT == [9,7,5]
+LENGTH:OUT == 3
+LIM < VAL
+D0 <= 10
+D1 >= 11
+D2 != 12", 12),
+
+            // Level 19 - list filtering
+            L(@"LIST SRC
+PUSH SRC = 1
+PUSH SRC = 4
+PUSH SRC = 7
+PUSH SRC = 2
+LET CUT = 4
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+WAIT
+LET D0 = 8
+SET D0 = D0 + 1
+LET D1 = 0
+LET D2 = 1
+SET D2 = D2 + 1
+LET D3 = 2
+LET D4 = 3
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1", @"SUM == 11
+CNT == 2
+VAL == 2
+LENGTH:SRC == 0
+OUT == [4,7]
+LENGTH:OUT == 2", 16),
+            L(@"LIST SRC
+PUSH SRC = 2
+PUSH SRC = 5
+PUSH SRC = 8
+PUSH SRC = 3
+LET CUT = 5
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+WAIT
+LET D0 = 0
+LET D1 = 1
+SET D1 = D1 + 1
+LET D2 = 2
+LET D3 = 3
+SET D3 = D3 + 1
+LET D4 = 4
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT", @"SUM == 13
+CNT == 2
+VAL == 3
+LENGTH:SRC == 0
+OUT == [5,8]
+LENGTH:OUT == 2", 16),
+            L(@"LIST SRC
+PUSH SRC = 1
+PUSH SRC = 4
+PUSH SRC = 9
+PUSH SRC = 2
+LET CUT = 4
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+WAIT
+LET D0 = 1
+SET D0 = D0 + 1
+LET D1 = 2
+LET D2 = 3
+SET D2 = D2 + 1
+LET D3 = 4
+LET D4 = 5
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"SUM == 13
+CNT == 2
+VAL == 2
+LENGTH:SRC == 0
+OUT == [4,9]
+LENGTH:OUT == 2
+CUT != 5", 16),
+            L(@"LIST SRC
+PUSH SRC = 2
+PUSH SRC = 5
+PUSH SRC = 10
+PUSH SRC = 3
+LET CUT = 5
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+WAIT
+LET D0 = 2
+LET D1 = 3
+SET D1 = D1 + 1
+LET D2 = 4
+LET D3 = 5
+SET D3 = D3 + 1
+LET D4 = 6
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1", @"SUM == 15
+CNT == 2
+VAL == 3
+LENGTH:SRC == 0
+OUT == [5,10]
+LENGTH:OUT == 2
+CUT < SUM
+D0 >= 5", 16),
+            L(@"LIST SRC
+PUSH SRC = 1
+PUSH SRC = 4
+PUSH SRC = 11
+PUSH SRC = 2
+LET CUT = 4
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+WAIT
+LET D0 = 3
+SET D0 = D0 + 1
+LET D1 = 4
+LET D2 = 5
+SET D2 = D2 + 1
+LET D3 = 6
+LET D4 = 7
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1", @"SUM == 15
+CNT == 2
+VAL == 2
+LENGTH:SRC == 0
+OUT == [4,11]
+LENGTH:OUT == 2
+CUT < SUM
+D0 != 10
+D1 < D2", 16),
+
+            // Level 20 - map / reduce
+            L(@"LIST SRC
+PUSH SRC = 1
+PUSH SRC = 2
+PUSH SRC = 3
+LET RATE = 2
+LET VAL = 0
+LET SUM = 0
+WAIT
+LET D0 = 6
+LET D1 = 7
+SET D1 = D1 + 1
+LET D2 = 8
+LET D3 = 0
+SET D3 = D3 + 1
+LET D4 = 1
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"SUM == 12
+VAL == 6
+LENGTH:SRC == 0
+OUT == [2,4,6]
+LENGTH:OUT == 3", 12),
+            L(@"LIST SRC
+PUSH SRC = 2
+PUSH SRC = 3
+PUSH SRC = 4
+LET RATE = 3
+LET VAL = 0
+LET SUM = 0
+WAIT
+LET D0 = 7
+SET D0 = D0 + 1
+LET D1 = 8
+LET D2 = 0
+SET D2 = D2 + 1
+LET D3 = 1
+LET D4 = 2
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"SUM == 27
+VAL == 12
+LENGTH:SRC == 0
+OUT == [6,9,12]
+LENGTH:OUT == 3
+RATE >= 2", 12),
+            L(@"LIST SRC
+PUSH SRC = 3
+PUSH SRC = 4
+PUSH SRC = 5
+LET RATE = 2
+LET VAL = 0
+LET SUM = 0
+WAIT
+LET D0 = 8
+LET D1 = 0
+SET D1 = D1 + 1
+LET D2 = 1
+LET D3 = 2
+SET D3 = D3 + 1
+LET D4 = 3
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1", @"SUM == 24
+VAL == 10
+LENGTH:SRC == 0
+OUT == [6,8,10]
+LENGTH:OUT == 3
+RATE != 3
+D0 <= 13", 12),
+            L(@"LIST SRC
+PUSH SRC = 4
+PUSH SRC = 5
+PUSH SRC = 6
+LET RATE = 3
+LET VAL = 0
+LET SUM = 0
+WAIT
+LET D0 = 0
+SET D0 = D0 + 1
+LET D1 = 1
+LET D2 = 2
+SET D2 = D2 + 1
+LET D3 = 3
+LET D4 = 4
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2", @"SUM == 45
+VAL == 18
+LENGTH:SRC == 0
+OUT == [12,15,18]
+LENGTH:OUT == 3
+RATE < SUM
+D0 >= 5
+D1 != 6", 12),
+            L(@"LIST SRC
+PUSH SRC = 5
+PUSH SRC = 6
+PUSH SRC = 7
+LET RATE = 2
+LET VAL = 0
+LET SUM = 0
+WAIT
+LET D0 = 1
+LET D1 = 2
+SET D1 = D1 + 1
+LET D2 = 3
+LET D3 = 4
+SET D3 = D3 + 1
+LET D4 = 5
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"SUM == 36
+VAL == 14
+LENGTH:SRC == 0
+OUT == [10,12,14]
+LENGTH:OUT == 3
+RATE < SUM
+D0 != 8
+D1 > D2
+D2 < D3", 12),
+
+            // Level 21 - retry queues
+            L(@"LIST QUE
+PUSH QUE = 1
+PUSH QUE = 6
+PUSH QUE = 2
+LET CUT = 5
+LET VAL = 0
+LET RET = 0
+WAIT
+LET D0 = 4
+SET D0 = D0 + 1
+LET D1 = 5
+LET D2 = 6
+SET D2 = D2 + 1
+LET D3 = 7
+LET D4 = 8
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1", @"RET == 2
+VAL == 7
+LENGTH:QUE == 0
+DONE == [6,6,7]
+LENGTH:DONE == 3
+CUT >= 4", 15),
+            L(@"LIST QUE
+PUSH QUE = 2
+PUSH QUE = 7
+PUSH QUE = 3
+LET CUT = 6
+LET VAL = 0
+LET RET = 0
+WAIT
+LET D0 = 5
+LET D1 = 6
+SET D1 = D1 + 1
+LET D2 = 7
+LET D3 = 8
+SET D3 = D3 + 1
+LET D4 = 0
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1", @"RET == 2
+VAL == 9
+LENGTH:QUE == 0
+DONE == [8,7,9]
+LENGTH:DONE == 3
+CUT != 7
+D0 <= 9", 15),
+            L(@"LIST QUE
+PUSH QUE = 1
+PUSH QUE = 8
+PUSH QUE = 2
+LET CUT = 5
+LET VAL = 0
+LET RET = 0
+WAIT
+LET D0 = 6
+SET D0 = D0 + 1
+LET D1 = 7
+LET D2 = 8
+SET D2 = D2 + 1
+LET D3 = 0
+LET D4 = 1
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"RET == 2
+VAL == 7
+LENGTH:QUE == 0
+DONE == [6,8,7]
+LENGTH:DONE == 3
+CUT > RET
+D0 >= 11
+D1 != 11", 15),
+            L(@"LIST QUE
+PUSH QUE = 2
+PUSH QUE = 9
+PUSH QUE = 3
+LET CUT = 6
+LET VAL = 0
+LET RET = 0
+WAIT
+LET D0 = 7
+LET D1 = 8
+SET D1 = D1 + 1
+LET D2 = 0
+LET D3 = 1
+SET D3 = D3 + 1
+LET D4 = 2
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT", @"RET == 2
+VAL == 9
+LENGTH:QUE == 0
+DONE == [8,9,9]
+LENGTH:DONE == 3
+CUT > RET
+D0 != 12
+D1 > D2
+D2 < D3", 15),
+            L(@"LIST QUE
+PUSH QUE = 1
+PUSH QUE = 10
+PUSH QUE = 2
+LET CUT = 5
+LET VAL = 0
+LET RET = 0
+WAIT
+LET D0 = 8
+SET D0 = D0 + 1
+LET D1 = 0
+LET D2 = 1
+SET D2 = D2 + 1
+LET D3 = 2
+LET D4 = 3
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1", @"RET == 2
+VAL == 7
+LENGTH:QUE == 0
+DONE == [6,10,7]
+LENGTH:DONE == 3
+CUT <= 6
+D0 > D1
+D1 < D2
+D2 <= 8
+D3 >= 5", 15),
+
+            // Level 22 - stack transforms
+            L(@"LIST STK
+PUSH STK = 1
+PUSH STK = 3
+PUSH STK = 5
+LET VAL = 0
+LET SUM = 0
+WAIT
+LET D0 = 2
+LET D1 = 3
+SET D1 = D1 + 1
+LET D2 = 4
+LET D3 = 5
+SET D3 = D3 + 1
+LET D4 = 6
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1", @"SUM == 9
+VAL == 1
+LENGTH:STK == 0
+OUT == [5,3,1]
+LENGTH:OUT == 3
+D0 < D1", 10),
+            L(@"LIST STK
+PUSH STK = 2
+PUSH STK = 4
+PUSH STK = 6
+LET VAL = 0
+LET SUM = 0
+WAIT
+LET D0 = 3
+SET D0 = D0 + 1
+LET D1 = 4
+LET D2 = 5
+SET D2 = D2 + 1
+LET D3 = 6
+LET D4 = 7
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT", @"SUM == 12
+VAL == 2
+LENGTH:STK == 0
+OUT == [6,4,2]
+LENGTH:OUT == 3
+D0 <= 8
+D1 >= 6", 10),
+            L(@"LIST STK
+PUSH STK = 3
+PUSH STK = 5
+PUSH STK = 7
+LET VAL = 0
+LET SUM = 0
+WAIT
+LET D0 = 4
+LET D1 = 5
+SET D1 = D1 + 1
+LET D2 = 6
+LET D3 = 7
+SET D3 = D3 + 1
+LET D4 = 8
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2", @"SUM == 15
+VAL == 3
+LENGTH:STK == 0
+OUT == [7,5,3]
+LENGTH:OUT == 3
+D0 >= 7
+D1 != 12
+D2 < D3", 10),
+            L(@"LIST STK
+PUSH STK = 4
+PUSH STK = 6
+PUSH STK = 8
+LET VAL = 0
+LET SUM = 0
+WAIT
+LET D0 = 5
+SET D0 = D0 + 1
+LET D1 = 6
+LET D2 = 7
+SET D2 = D2 + 1
+LET D3 = 8
+LET D4 = 0
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1", @"SUM == 18
+VAL == 4
+LENGTH:STK == 0
+OUT == [8,6,4]
+LENGTH:OUT == 3
+D0 != 13
+D1 < D2
+D2 > D3
+D3 <= 13", 10),
+            L(@"LIST STK
+PUSH STK = 5
+PUSH STK = 7
+PUSH STK = 9
+LET VAL = 0
+LET SUM = 0
+WAIT
+LET D0 = 6
+LET D1 = 7
+SET D1 = D1 + 1
+LET D2 = 8
+LET D3 = 0
+SET D3 = D3 + 1
+LET D4 = 1
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1", @"SUM == 21
+VAL == 5
+LENGTH:STK == 0
+OUT == [9,7,5]
+LENGTH:OUT == 3
+D0 < D1
+D1 == D2
+D2 <= 15
+D3 >= 6
+D4 != 2", 10),
+
+            // Level 23 - dual buffers
+            L(@"LIST A
 PUSH A = 1
 PUSH A = 4
 PUSH A = 7
 LIST B
 PUSH B = 2
 PUSH B = 5
-LIST OUTPUT
-LET CURRENT = 0
-SET CURRENT = SHIFT:A
-PUSH OUTPUT = CURRENT
-SET CURRENT = SHIFT:B
-PUSH OUTPUT = CURRENT
-WAIT", @"A == [4,7]
-B == [5]
-OUTPUT == [1,2,3,6]
-CURRENT == 6
-LENGTH:A == 2
-LENGTH:B == 1
-LENGTH:OUTPUT == 4
-MOVED == 4
-DONE == 1", 32),
-        L(@"LIST A
-PUSH A = 1
+LET VAL = 0
+LET CNT = 0
+WAIT
+LET D0 = 0
+SET D0 = D0 + 1
+LET D1 = 1
+LET D2 = 2
+SET D2 = D2 + 1
+LET D3 = 3
+LET D4 = 4
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1", @"CNT == 1
+LENGTH:A == 0
+LENGTH:B == 0
+OUT == [1,2,4,5,7]
+LENGTH:OUT == 5
+VAL < D0", 17),
+            L(@"LIST A
+PUSH A = 2
 PUSH A = 5
+PUSH A = 8
+LIST B
+PUSH B = 3
+PUSH B = 6
+LET VAL = 0
+LET CNT = 0
+WAIT
+LET D0 = 1
+LET D1 = 2
+SET D1 = D1 + 1
+LET D2 = 3
+LET D3 = 4
+SET D3 = D3 + 1
+LET D4 = 5
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1", @"CNT == 1
+LENGTH:A == 0
+LENGTH:B == 0
+OUT == [2,3,5,6,8]
+LENGTH:OUT == 5
+VAL <= 1
+D0 >= 3", 17),
+            L(@"LIST A
+PUSH A = 3
+PUSH A = 6
 PUSH A = 9
 LIST B
-PUSH B = 2
-PUSH B = 6
-LIST OUTPUT
-LET CURRENT = 0
-LOOP LENGTH:A > 0 OR LENGTH:B > 0
-   IF LENGTH:A > 0
-      PUSH OUTPUT = SHIFT:A
-   IF LENGTH:B > 0
-      PUSH OUTPUT = SHIFT:B
-WAIT", @"LENGTH:A == 0
+PUSH B = 4
+PUSH B = 7
+LET VAL = 0
+LET CNT = 0
+WAIT
+LET D0 = 2
+SET D0 = D0 + 1
+LET D1 = 3
+LET D2 = 4
+SET D2 = D2 + 1
+LET D3 = 5
+LET D4 = 6
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"CNT == 1
+LENGTH:A == 0
 LENGTH:B == 0
-OUTPUT == [1,2,5,6,9,10]
-LENGTH:OUTPUT == 6
-CURRENT == 10
-MOVED == 6
-ROUNDS == 3
-ORDERED == 1
-DONE == 1
-MOVED == LENGTH:OUTPUT", 37),
+OUT == [3,4,6,7,9]
+LENGTH:OUT == 5
+VAL >= -1
+D0 != 9
+D1 < D2", 17),
+            L(@"LIST A
+PUSH A = 4
+PUSH A = 7
+PUSH A = 10
+LIST B
+PUSH B = 5
+PUSH B = 8
+LET VAL = 0
+LET CNT = 0
+WAIT
+LET D0 = 3
+LET D1 = 4
+SET D1 = D1 + 1
+LET D2 = 5
+LET D3 = 6
+SET D3 = D3 + 1
+LET D4 = 7
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT", @"CNT == 1
+LENGTH:A == 0
+LENGTH:B == 0
+OUT == [4,5,7,8,10]
+LENGTH:OUT == 5
+VAL != 1
+D0 < D1
+D1 > D2
+D2 <= 10", 17),
+            L(@"LIST A
+PUSH A = 5
+PUSH A = 8
+PUSH A = 11
+LIST B
+PUSH B = 6
+PUSH B = 9
+LET VAL = 0
+LET CNT = 0
+WAIT
+LET D0 = 4
+SET D0 = D0 + 1
+LET D1 = 5
+LET D2 = 6
+SET D2 = D2 + 1
+LET D3 = 7
+LET D4 = 8
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1", @"CNT == 1
+LENGTH:A == 0
+LENGTH:B == 0
+OUT == [5,6,8,9,11]
+LENGTH:OUT == 5
+VAL < D0
+D0 > D1
+D1 <= 10
+D2 >= 11
+D3 != 12", 17),
 
-        // Level 24 - threshold routing
-        L(@"LET VALUE = 7
-LET BAND = 0
-IF VALUE >= 5
-   SET BAND = 1
-ELSE
-   SET BAND = 0", @"VALUE == 7
-BAND == 2
-LIMIT == 5
-CLASSIFIED == 1", 19),
-        L(@"LIST INPUT
-PUSH INPUT = 4
-PUSH INPUT = 8
-LIST HIGH
-LET CURRENT = SHIFT:INPUT
-IF CURRENT >= 5
-   PUSH HIGH = CURRENT
-WAIT", @"INPUT == [8]
-HIGH == [4,8]
-CURRENT == 4
-LENGTH:INPUT == 1
-LENGTH:HIGH == 2", 23),
-        L(@"LIST INPUT
-PUSH INPUT = 2
-PUSH INPUT = 6
-PUSH INPUT = 9
-LIST LOW
-LIST HIGH
-LET CURRENT = SHIFT:INPUT
-IF CURRENT >= 5
-   PUSH HIGH = CURRENT
-ELSE
-   PUSH LOW = CURRENT", @"INPUT == [6,9]
-LOW == [2,3]
-HIGH == [6,9]
-CURRENT == 3
-LENGTH:LOW == 2
-LENGTH:HIGH == 2
-CLASSIFIED == 4", 28),
-        L(@"LIST INPUT
-PUSH INPUT = 2
-PUSH INPUT = 6
-LIST LOW
-LIST MID
-LIST HIGH
-LET CURRENT = 0
-SET CURRENT = SHIFT:INPUT
-IF CURRENT < 5
-   PUSH LOW = CURRENT
-ELIF CURRENT < 9
-   PUSH MID = CURRENT
-ELSE
-   PUSH HIGH = CURRENT", @"INPUT == [6,10]
-LOW == [2,3]
-MID == [6,7]
-HIGH == [10]
-LENGTH:LOW == 2
-LENGTH:MID == 2
-LENGTH:HIGH == 1
-CURRENT == 7
-CLASSIFIED == 5", 33),
-        L(@"LIST INPUT
-PUSH INPUT = 2
-PUSH INPUT = 6
-LIST LOW
-LIST MID
-LIST HIGH
-LET CURRENT = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT < 5
-      PUSH LOW = CURRENT
-   ELIF CURRENT < 9
-      PUSH MID = CURRENT
-   ELSE
-      PUSH HIGH = CURRENT", @"LENGTH:INPUT == 0
-LOW == [2,3]
-MID == [6,7]
-HIGH == [10,12]
-LENGTH:LOW == 2
-LENGTH:MID == 2
-LENGTH:HIGH == 2
-CURRENT == 12
-CLASSIFIED == 6
-LOW_COUNT == 2
-MID_COUNT == 2
-HIGH_COUNT == 2", 38),
+            // Level 24 - threshold routing
+            L(@"LIST SRC
+PUSH SRC = 2
+PUSH SRC = 6
+PUSH SRC = 10
+PUSH SRC = 4
+LET LOW = 5
+LET HIGH = 9
+LET VAL = 0
+WAIT
+LET D0 = 7
+LET D1 = 8
+SET D1 = D1 + 1
+LET D2 = 0
+LET D3 = 1
+SET D3 = D3 + 1
+LET D4 = 2
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1", @"VAL == 4
+LENGTH:SRC == 0
+A == [2,4]
+LENGTH:A == 2
+B == [6]
+LENGTH:B == 1
+C == [10]
+LENGTH:C == 1", 20),
+            L(@"LIST SRC
+PUSH SRC = 3
+PUSH SRC = 7
+PUSH SRC = 11
+PUSH SRC = 5
+LET LOW = 6
+LET HIGH = 10
+LET VAL = 0
+WAIT
+LET D0 = 8
+SET D0 = D0 + 1
+LET D1 = 0
+LET D2 = 1
+SET D2 = D2 + 1
+LET D3 = 2
+LET D4 = 3
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT", @"VAL == 5
+LENGTH:SRC == 0
+A == [3,5]
+LENGTH:A == 2
+B == [7]
+LENGTH:B == 1
+C == [11]
+LENGTH:C == 1", 20),
+            L(@"LIST SRC
+PUSH SRC = 2
+PUSH SRC = 6
+PUSH SRC = 12
+PUSH SRC = 4
+LET LOW = 5
+LET HIGH = 9
+LET VAL = 0
+WAIT
+LET D0 = 0
+LET D1 = 1
+SET D1 = D1 + 1
+LET D2 = 2
+LET D3 = 3
+SET D3 = D3 + 1
+LET D4 = 4
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2", @"VAL == 4
+LENGTH:SRC == 0
+A == [2,4]
+LENGTH:A == 2
+B == [6]
+LENGTH:B == 1
+C == [12]
+LENGTH:C == 1", 20),
+            L(@"LIST SRC
+PUSH SRC = 3
+PUSH SRC = 7
+PUSH SRC = 13
+PUSH SRC = 5
+LET LOW = 6
+LET HIGH = 10
+LET VAL = 0
+WAIT
+LET D0 = 1
+SET D0 = D0 + 1
+LET D1 = 2
+LET D2 = 3
+SET D2 = D2 + 1
+LET D3 = 4
+LET D4 = 5
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1", @"VAL == 5
+LENGTH:SRC == 0
+A == [3,5]
+LENGTH:A == 2
+B == [7]
+LENGTH:B == 1
+C == [13]
+LENGTH:C == 1
+HIGH != 11", 20),
+            L(@"LIST SRC
+PUSH SRC = 2
+PUSH SRC = 6
+PUSH SRC = 14
+PUSH SRC = 4
+LET LOW = 5
+LET HIGH = 9
+LET VAL = 0
+WAIT
+LET D0 = 2
+LET D1 = 3
+SET D1 = D1 + 1
+LET D2 = 4
+LET D3 = 5
+SET D3 = D3 + 1
+LET D4 = 6
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1", @"VAL == 4
+LENGTH:SRC == 0
+A == [2,4]
+LENGTH:A == 2
+B == [6]
+LENGTH:B == 1
+C == [14]
+LENGTH:C == 1
+HIGH > LOW
+LOW > VAL", 20),
 
-        // Level 25 - retry queues
-        L(@"LIST QUEUE
-PUSH QUEUE = 2
-LET CURRENT = SHIFT:QUEUE
-INJECT QUEUE = CURRENT + 3
-WAIT", @"QUEUE == [5,7]
-CURRENT == 2
-LENGTH:QUEUE == 2
-RETRIED == 1", 19),
-        L(@"LIST QUEUE
-PUSH QUEUE = 2
-PUSH QUEUE = 7
-LET CURRENT = 0
-SET CURRENT = SHIFT:QUEUE
-IF CURRENT < 5
-   INJECT QUEUE = CURRENT + 5
-WAIT", @"QUEUE == [7,7,9]
-CURRENT == 9
-LENGTH:QUEUE == 3
-RETRIED == 2
-READY == 2", 23),
-        L(@"LIST QUEUE
-PUSH QUEUE = 1
-PUSH QUEUE = 6
-PUSH QUEUE = 3
-LET CURRENT = 0
-LOOP LENGTH:QUEUE > 0
-   SET CURRENT = SHIFT:QUEUE
-   IF CURRENT < 5
-      INJECT QUEUE = CURRENT + 5
-      SKIP", @"LENGTH:QUEUE == 0
-CURRENT == 8
-RETRIED == 2
-PROCESSED == 3
-READY == 3
-DONE == 1
-CURRENT >= 5", 28),
-        L(@"LIST QUEUE
-PUSH QUEUE = 1
-PUSH QUEUE = 6
-PUSH QUEUE = 3
-LIST DONE
-LET CURRENT = 0
-LET RETRIES = 0
-LOOP LENGTH:QUEUE > 0
-   SET CURRENT = SHIFT:QUEUE
-   IF CURRENT < 5
-      SET RETRIES = RETRIES + 1
-      INJECT QUEUE = CURRENT + 5
-      SKIP
-   PUSH DONE = CURRENT", @"LENGTH:QUEUE == 0
-DONE == [6,6,8,9]
-LENGTH:DONE == 4
-CURRENT == 9
-RETRIES == 3
-PROCESSED == 4
-READY == 4
-STOPPED == 0
-DONE_COUNT == 4", 33),
-        L(@"LIST QUEUE
-PUSH QUEUE = 1
-PUSH QUEUE = 6
-LIST DONE
-LET CURRENT = 0
-LET RETRIES = 0
-LOOP LENGTH:QUEUE > 0
-   SET CURRENT = SHIFT:QUEUE
-   IF CURRENT < 5
-      SET RETRIES = RETRIES + 1
-      INJECT QUEUE = CURRENT + 5
-      SKIP
-   PUSH DONE = CURRENT
-   IF RETRIES >= 3
-      STOP", @"QUEUE == [8]
-LENGTH:QUEUE == 1
+            // Level 25 - bounded retries
+            L(@"LIST QUE
+PUSH QUE = 1
+PUSH QUE = 6
+PUSH QUE = 2
+LET CUT = 5
+LET LIM = 2
+LET VAL = 0
+LET RET = 0
+WAIT
+LET D0 = 5
+SET D0 = D0 + 1
+LET D1 = 6
+LET D2 = 7
+SET D2 = D2 + 1
+LET D3 = 8
+LET D4 = 0
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2", @"RET == 2
+VAL == 2
+QUE == [7]
+LENGTH:QUE == 1
 DONE == [6,6]
+LENGTH:DONE == 2", 21),
+            L(@"LIST QUE
+PUSH QUE = 2
+PUSH QUE = 7
+PUSH QUE = 3
+LET CUT = 6
+LET LIM = 3
+LET VAL = 0
+LET RET = 0
+WAIT
+LET D0 = 6
+LET D1 = 7
+SET D1 = D1 + 1
+LET D2 = 8
+LET D3 = 0
+SET D3 = D3 + 1
+LET D4 = 1
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"RET == 2
+VAL == 9
+LENGTH:QUE == 0
+DONE == [8,7,9]
+LENGTH:DONE == 3
+CUT >= 5
+LIM != 4", 21),
+            L(@"LIST QUE
+PUSH QUE = 1
+PUSH QUE = 8
+PUSH QUE = 2
+LET CUT = 5
+LET LIM = 2
+LET VAL = 0
+LET RET = 0
+WAIT
+LET D0 = 7
+SET D0 = D0 + 1
+LET D1 = 8
+LET D2 = 0
+SET D2 = D2 + 1
+LET D3 = 1
+LET D4 = 2
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1", @"RET == 2
+VAL == 2
+QUE == [7]
+LENGTH:QUE == 1
+DONE == [6,8]
 LENGTH:DONE == 2
-CURRENT == 6
-RETRIES == 3
-PROCESSED == 2
-REQUEUED == 3
-STOPPED == 1
-LIMIT == 3
-DONE_COUNT == 2", 38),
+CUT != 6
+LIM == RET", 21),
+            L(@"LIST QUE
+PUSH QUE = 2
+PUSH QUE = 9
+PUSH QUE = 3
+LET CUT = 6
+LET LIM = 3
+LET VAL = 0
+LET RET = 0
+WAIT
+LET D0 = 8
+LET D1 = 0
+SET D1 = D1 + 1
+LET D2 = 1
+LET D3 = 2
+SET D3 = D3 + 1
+LET D4 = 3
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2", @"RET == 2
+VAL == 9
+LENGTH:QUE == 0
+DONE == [8,9,9]
+LENGTH:DONE == 3
+CUT > LIM
+LIM > RET
+D0 != 15
+D1 == D2", 21),
+            L(@"LIST QUE
+PUSH QUE = 1
+PUSH QUE = 10
+PUSH QUE = 2
+LET CUT = 5
+LET LIM = 2
+LET VAL = 0
+LET RET = 0
+WAIT
+LET D0 = 0
+SET D0 = D0 + 1
+LET D1 = 1
+LET D2 = 2
+SET D2 = D2 + 1
+LET D3 = 3
+LET D4 = 4
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2", @"RET == 2
+VAL == 2
+QUE == [7]
+LENGTH:QUE == 1
+DONE == [6,10]
+LENGTH:DONE == 2
+CUT > LIM
+LIM <= 3
+D0 == D1
+D1 < D2", 21),
 
-        // Level 26 - list aggregation
-        L(@"LIST DATA
-PUSH DATA = 3
-PUSH DATA = 5
-LET SUM = 0
-SET SUM = SHIFT:DATA + POP:DATA", @"LENGTH:DATA == 0
-SUM == 10
-COUNT == 3
-AVERAGE == 3", 19),
-        L(@"LIST DATA
-PUSH DATA = 2
-PUSH DATA = 4
-PUSH DATA = 6
-LET SUM = 0
-SET SUM = SUM + SHIFT:DATA
-SET SUM = SUM + POP:DATA
-WAIT", @"DATA == [4]
-SUM == 12
-COUNT == 3
-AVERAGE == 4
-LENGTH:DATA == 1", 23),
-        L(@"LIST DATA
-PUSH DATA = 2
-PUSH DATA = 4
-PUSH DATA = 6
-LET SUM = 0
-LET COUNT = 0
-LOOP LENGTH:DATA > 0
-   SET SUM = SUM + SHIFT:DATA
-   SET COUNT = COUNT + 1
-WAIT", @"LENGTH:DATA == 0
-SUM == 20
-COUNT == 4
-AVERAGE == 5
-MIN == 2
-MAX == 8
-DONE == 1", 28),
-        L(@"LIST DATA
-PUSH DATA = 4
-PUSH DATA = 9
-PUSH DATA = 2
-PUSH DATA = 7
-LET CURRENT = 0
-LET MAX = 0
-LET COUNT = 0
-LOOP LENGTH:DATA > 0
-   SET CURRENT = SHIFT:DATA
-   IF CURRENT > MAX
-      SET MAX = CURRENT
-   SET COUNT = COUNT + 1
-WAIT", @"LENGTH:DATA == 0
-CURRENT == 7
-MAX == 10
-COUNT == 5
-MIN == 2
-SUM == 32
-AVERAGE == 6
-FOUND == 1
-DONE == 1", 33),
-        L(@"LIST DATA
+            // Level 26 - aggregation
+            L(@"LIST DATA
 PUSH DATA = 2
 PUSH DATA = 5
 PUSH DATA = 8
-LET CURRENT = 0
+PUSH DATA = 3
+LET VAL = 0
 LET SUM = 0
-LET COUNT = 0
+LET CNT = 0
 LET MAX = 0
-LOOP LENGTH:DATA > 0
-   SET CURRENT = SHIFT:DATA
-   SET SUM = SUM + CURRENT
-   SET COUNT = COUNT + 1
-   IF CURRENT > MAX
-      SET MAX = CURRENT
-WAIT", @"LENGTH:DATA == 0
-CURRENT == 10
-SUM == 25
-COUNT == 4
+WAIT
+LET D0 = 3
+LET D1 = 4
+SET D1 = D1 + 1
+LET D2 = 5
+LET D3 = 6
+SET D3 = D3 + 1
+LET D4 = 7
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT", @"SUM == 18
+CNT == 4
+MAX == 8
+VAL == 3
+LENGTH:DATA == 0
+D0 <= 7", 15),
+            L(@"LIST DATA
+PUSH DATA = 3
+PUSH DATA = 6
+PUSH DATA = 9
+PUSH DATA = 4
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+LET MAX = 0
+WAIT
+LET D0 = 4
+SET D0 = D0 + 1
+LET D1 = 5
+LET D2 = 6
+SET D2 = D2 + 1
+LET D3 = 7
+LET D4 = 8
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"SUM == 22
+CNT == 4
+MAX == 9
+VAL == 4
+LENGTH:DATA == 0
+D0 >= 9
+D1 != 9", 15),
+            L(@"LIST DATA
+PUSH DATA = 4
+PUSH DATA = 7
+PUSH DATA = 10
+PUSH DATA = 5
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+LET MAX = 0
+WAIT
+LET D0 = 5
+LET D1 = 6
+SET D1 = D1 + 1
+LET D2 = 7
+LET D3 = 8
+SET D3 = D3 + 1
+LET D4 = 0
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT", @"SUM == 26
+CNT == 4
 MAX == 10
-MIN == 2
-AVERAGE == 6
-RANGE == 8
-PROCESSED == 4
-DONE == 1
-SUM > MAX", 38),
+VAL == 5
+LENGTH:DATA == 0
+D0 != 10
+D1 > D2
+D2 < D3", 15),
+            L(@"LIST DATA
+PUSH DATA = 5
+PUSH DATA = 8
+PUSH DATA = 11
+PUSH DATA = 6
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+LET MAX = 0
+WAIT
+LET D0 = 6
+SET D0 = D0 + 1
+LET D1 = 7
+LET D2 = 8
+SET D2 = D2 + 1
+LET D3 = 0
+LET D4 = 1
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"SUM == 30
+CNT == 4
+MAX == 11
+VAL == 6
+LENGTH:DATA == 0
+D0 == D1
+D1 < D2
+D2 <= 15
+D3 >= 3", 15),
+            L(@"LIST DATA
+PUSH DATA = 6
+PUSH DATA = 9
+PUSH DATA = 12
+PUSH DATA = 7
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+LET MAX = 0
+WAIT
+LET D0 = 7
+LET D1 = 8
+SET D1 = D1 + 1
+LET D2 = 0
+LET D3 = 1
+SET D3 = D3 + 1
+LET D4 = 2
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT", @"SUM == 34
+CNT == 4
+MAX == 12
+VAL == 7
+LENGTH:DATA == 0
+D0 < D1
+D1 <= 16
+D2 >= 5
+D3 != 9
+D4 < CNT", 15),
 
-        // Level 27 - ordered merging
-        L(@"LIST A
-PUSH A = 1
-LIST B
-PUSH B = 2
-PUSH A = SHIFT:B", @"A == [1,2,3]
-LENGTH:B == 0
-LENGTH:A == 3
-MOVED == 2", 19),
-        L(@"LIST A
-PUSH A = 1
-PUSH A = 3
-LIST B
-PUSH B = 2
-LIST RESULT
-PUSH RESULT = SHIFT:A
-PUSH RESULT = SHIFT:B", @"A == [3]
-LENGTH:B == 0
-RESULT == [1,2,4]
-LENGTH:RESULT == 3
-MOVED == 3", 23),
-        L(@"LIST A
-PUSH A = 1
-PUSH A = 3
-LIST B
-PUSH B = 2
-PUSH B = 4
-LIST RESULT
-PUSH RESULT = SHIFT:A
-PUSH RESULT = SHIFT:B
-PUSH RESULT = SHIFT:A
-WAIT", @"LENGTH:A == 0
-B == [4]
-RESULT == [1,2,3,5]
-LENGTH:RESULT == 4
-MOVED == 4
-ORDERED == 1
-DONE == 1", 28),
-        L(@"LIST A
-PUSH A = 1
-PUSH A = 3
-PUSH A = 5
-LIST B
-PUSH B = 2
-PUSH B = 4
-PUSH B = 6
-LIST RESULT
-LOOP LENGTH:A > 0
-   PUSH RESULT = SHIFT:A
-   IF LENGTH:B > 0
-      PUSH RESULT = SHIFT:B
-WAIT", @"LENGTH:A == 0
-LENGTH:B == 0
-RESULT == [1,2,3,4,5,6,7]
-LENGTH:RESULT == 7
-MOVED == 7
-ROUNDS == 3
-ORDERED == 1
-LAST == 7
-DONE == 1", 33),
-        L(@"LIST A
+            // Level 27 - ordered merging
+            L(@"LIST A
 PUSH A = 1
 PUSH A = 4
 PUSH A = 7
@@ -2191,282 +3394,850 @@ LIST B
 PUSH B = 2
 PUSH B = 5
 PUSH B = 8
-LIST RESULT
-LOOP LENGTH:A > 0 OR LENGTH:B > 0
-   IF LENGTH:A > 0
-      PUSH RESULT = SHIFT:A
-   IF LENGTH:B > 0
-      PUSH RESULT = SHIFT:B
-WAIT", @"LENGTH:A == 0
+LET CNT = 0
+WAIT
+LET D0 = 1
+SET D0 = D0 + 1
+LET D1 = 2
+LET D2 = 3
+SET D2 = D2 + 1
+LET D3 = 4
+LET D4 = 5
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT", @"CNT == 0
+LENGTH:A == 0
 LENGTH:B == 0
-RESULT == [1,2,4,5,7,8,10,11]
-LENGTH:RESULT == 8
-MOVED == 8
-ROUNDS == 4
-ORDERED == 1
-FIRST_VALUE == 1
-LAST_VALUE == 11
-DONE == 1
-MOVED == LENGTH:RESULT", 38),
+OUT == [1,2,4,5,7,8]
+LENGTH:OUT == 6
+D0 == D1", 15),
+            L(@"LIST A
+PUSH A = 2
+PUSH A = 5
+PUSH A = 8
+LIST B
+PUSH B = 3
+PUSH B = 6
+PUSH B = 9
+LET CNT = 0
+WAIT
+LET D0 = 2
+LET D1 = 3
+SET D1 = D1 + 1
+LET D2 = 4
+LET D3 = 5
+SET D3 = D3 + 1
+LET D4 = 6
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1", @"CNT == 0
+LENGTH:A == 0
+LENGTH:B == 0
+OUT == [2,3,5,6,8,9]
+LENGTH:OUT == 6
+D0 < D1
+D1 <= 10", 15),
+            L(@"LIST A
+PUSH A = 3
+PUSH A = 6
+PUSH A = 9
+LIST B
+PUSH B = 4
+PUSH B = 7
+PUSH B = 10
+LET CNT = 0
+WAIT
+LET D0 = 3
+SET D0 = D0 + 1
+LET D1 = 4
+LET D2 = 5
+SET D2 = D2 + 1
+LET D3 = 6
+LET D4 = 7
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT", @"CNT == 0
+LENGTH:A == 0
+LENGTH:B == 0
+OUT == [3,4,6,7,9,10]
+LENGTH:OUT == 6
+D0 <= 10
+D1 >= 7
+D2 != 12", 15),
+            L(@"LIST A
+PUSH A = 4
+PUSH A = 7
+PUSH A = 10
+LIST B
+PUSH B = 5
+PUSH B = 8
+PUSH B = 11
+LET CNT = 0
+WAIT
+LET D0 = 4
+LET D1 = 5
+SET D1 = D1 + 1
+LET D2 = 6
+LET D3 = 7
+SET D3 = D3 + 1
+LET D4 = 8
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1", @"CNT == 0
+LENGTH:A == 0
+LENGTH:B == 0
+OUT == [4,5,7,8,10,11]
+LENGTH:OUT == 6
+D0 >= 9
+D1 != 13
+D2 < D3
+D3 > D4", 15),
+            L(@"LIST A
+PUSH A = 5
+PUSH A = 8
+PUSH A = 11
+LIST B
+PUSH B = 6
+PUSH B = 9
+PUSH B = 12
+LET CNT = 0
+WAIT
+LET D0 = 5
+SET D0 = D0 + 1
+LET D1 = 6
+LET D2 = 7
+SET D2 = D2 + 1
+LET D3 = 8
+LET D4 = 0
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT", @"CNT == 0
+LENGTH:A == 0
+LENGTH:B == 0
+OUT == [5,6,8,9,11,12]
+LENGTH:OUT == 6
+D0 != 13
+D1 < D2
+D2 == D3
+D3 <= 15
+D4 >= 0", 15),
 
-        // Level 28 - priority scheduler
-        L(@"LIST NORMAL
-PUSH NORMAL = 4
-LIST PRIORITY
-INJECT PRIORITY = 2
-PUSH NORMAL = SHIFT:PRIORITY", @"NORMAL == [4,2,6]
-LENGTH:PRIORITY == 0
-LENGTH:NORMAL == 3
-PRIORITY_USED == 1", 19),
-        L(@"LIST NORMAL
-PUSH NORMAL = 4
-PUSH NORMAL = 6
-LIST PRIORITY
-INJECT PRIORITY = 2
-LET CURRENT = 0
-SET CURRENT = SHIFT:PRIORITY
-PUSH NORMAL = CURRENT", @"NORMAL == [4,6,2,8]
-LENGTH:NORMAL == 4
-LENGTH:PRIORITY == 0
-CURRENT == 8
-PROCESSED == 1", 23),
-        L(@"LIST NORMAL
-PUSH NORMAL = 3
-PUSH NORMAL = 6
-LIST PRIORITY
-INJECT PRIORITY = 1
-INJECT PRIORITY = 2
+            // Level 28 - priority scheduler
+            L(@"LIST NORM
+PUSH NORM = 3
+PUSH NORM = 6
+PUSH NORM = 9
+LIST PRIO
+INJECT PRIO = 1
+INJECT PRIO = 2
+LET VAL = 0
+LET PCNT = 0
+WAIT
+LET D0 = 8
+LET D1 = 0
+SET D1 = D1 + 1
+LET D2 = 1
+LET D3 = 2
+SET D3 = D3 + 1
+LET D4 = 3
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"VAL == 9
+PCNT == 2
+LENGTH:NORM == 0
+LENGTH:PRIO == 0
+DONE == [2,1,3,6,9]
+LENGTH:DONE == 5
+D0 <= 13", 16),
+            L(@"LIST NORM
+PUSH NORM = 4
+PUSH NORM = 7
+PUSH NORM = 10
+LIST PRIO
+INJECT PRIO = 2
+INJECT PRIO = 3
+LET VAL = 0
+LET PCNT = 0
+WAIT
+LET D0 = 0
+SET D0 = D0 + 1
+LET D1 = 1
+LET D2 = 2
+SET D2 = D2 + 1
+LET D3 = 3
+LET D4 = 4
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2", @"VAL == 10
+PCNT == 2
+LENGTH:NORM == 0
+LENGTH:PRIO == 0
+DONE == [3,2,4,7,10]
+LENGTH:DONE == 5
+D0 >= 5
+D1 != 6", 16),
+            L(@"LIST NORM
+PUSH NORM = 5
+PUSH NORM = 8
+PUSH NORM = 11
+LIST PRIO
+INJECT PRIO = 3
+INJECT PRIO = 4
+LET VAL = 0
+LET PCNT = 0
+WAIT
+LET D0 = 1
+LET D1 = 2
+SET D1 = D1 + 1
+LET D2 = 3
+LET D3 = 4
+SET D3 = D3 + 1
+LET D4 = 5
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1", @"VAL == 11
+PCNT == 2
+LENGTH:NORM == 0
+LENGTH:PRIO == 0
+DONE == [4,3,5,8,11]
+LENGTH:DONE == 5
+D0 != 8
+D1 > D2
+D2 < D3", 16),
+            L(@"LIST NORM
+PUSH NORM = 6
+PUSH NORM = 9
+PUSH NORM = 12
+LIST PRIO
+INJECT PRIO = 4
+INJECT PRIO = 5
+LET VAL = 0
+LET PCNT = 0
+WAIT
+LET D0 = 2
+SET D0 = D0 + 1
+LET D1 = 3
+LET D2 = 4
+SET D2 = D2 + 1
+LET D3 = 5
+LET D4 = 6
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2", @"VAL == 12
+PCNT == 2
+LENGTH:NORM == 0
+LENGTH:PRIO == 0
+DONE == [5,4,6,9,12]
+LENGTH:DONE == 5
+D0 == D1
+D1 < D2
+D2 <= 12
+D3 >= 10", 16),
+            L(@"LIST NORM
+PUSH NORM = 7
+PUSH NORM = 10
+PUSH NORM = 13
+LIST PRIO
+INJECT PRIO = 5
+INJECT PRIO = 6
+LET VAL = 0
+LET PCNT = 0
+WAIT
+LET D0 = 3
+LET D1 = 4
+SET D1 = D1 + 1
+LET D2 = 5
+LET D3 = 6
+SET D3 = D3 + 1
+LET D4 = 7
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"VAL == 13
+PCNT == 2
+LENGTH:NORM == 0
+LENGTH:PRIO == 0
+DONE == [6,5,7,10,13]
+LENGTH:DONE == 5
+D0 < D1
+D1 <= 14
+D2 >= 10
+D3 != 14", 16),
+
+            // Level 29 - sentinels
+            L(@"LIST IN
+PUSH IN = 3
+PUSH IN = 5
+PUSH IN = 0
+PUSH IN = 8
 LIST DONE
-PUSH DONE = SHIFT:PRIORITY
-PUSH DONE = SHIFT:NORMAL
-WAIT", @"NORMAL == [6]
-PRIORITY == [1]
-DONE == [2,3,4]
-LENGTH:NORMAL == 1
-LENGTH:PRIORITY == 1
-LENGTH:DONE == 3
-PROCESSED == 3", 28),
-        L(@"LIST NORMAL
-PUSH NORMAL = 3
-PUSH NORMAL = 6
-PUSH NORMAL = 9
-LIST PRIORITY
-INJECT PRIORITY = 1
-INJECT PRIORITY = 2
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+WAIT
+LET D0 = 6
+SET D0 = D0 + 1
+LET D1 = 7
+LET D2 = 8
+SET D2 = D2 + 1
+LET D3 = 0
+LET D4 = 1
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1", @"VAL == 0
+SUM == 8
+CNT == 2
+IN == [8]
+LENGTH:IN == 1
+DONE == [3,5]
+LENGTH:DONE == 2", 16),
+            L(@"LIST IN
+PUSH IN = 4
+PUSH IN = 6
+PUSH IN = 0
+PUSH IN = 9
 LIST DONE
-LET CURRENT = 0
-IF LENGTH:PRIORITY > 0
-   SET CURRENT = SHIFT:PRIORITY
-ELSE
-   SET CURRENT = SHIFT:NORMAL
-PUSH DONE = CURRENT", @"NORMAL == [6,9]
-PRIORITY == [1]
-DONE == [2,4]
-CURRENT == 4
-LENGTH:NORMAL == 2
-LENGTH:PRIORITY == 1
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+WAIT
+LET D0 = 7
+LET D1 = 8
+SET D1 = D1 + 1
+LET D2 = 0
+LET D3 = 1
+SET D3 = D3 + 1
+LET D4 = 2
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT", @"VAL == 0
+SUM == 10
+CNT == 2
+IN == [9]
+LENGTH:IN == 1
+DONE == [4,6]
 LENGTH:DONE == 2
-PROCESSED == 2
-PRIORITY_USED == 1", 33),
-        L(@"LIST NORMAL
-PUSH NORMAL = 3
-PUSH NORMAL = 6
-PUSH NORMAL = 9
-LIST PRIORITY
-INJECT PRIORITY = 1
-INJECT PRIORITY = 2
+D0 < D1", 16),
+            L(@"LIST IN
+PUSH IN = 5
+PUSH IN = 7
+PUSH IN = 0
+PUSH IN = 10
 LIST DONE
-LET CURRENT = 0
-LOOP LENGTH:NORMAL > 0 OR LENGTH:PRIORITY > 0
-   IF LENGTH:PRIORITY > 0
-      SET CURRENT = SHIFT:PRIORITY
-   ELSE
-      SET CURRENT = SHIFT:NORMAL
-   PUSH DONE = CURRENT", @"LENGTH:NORMAL == 0
-LENGTH:PRIORITY == 0
-DONE == [2,1,3,6,9,12]
-LENGTH:DONE == 6
-CURRENT == 12
-PROCESSED == 6
-PRIORITY_USED == 2
-NORMAL_USED == 4
-FIRST_DONE == 2
-LAST_DONE == 12
-DONE_COUNT == 6", 38),
-
-        // Level 29 - sentinels and checkpoints
-        L(@"LIST INPUT
-PUSH INPUT = 0
-LET CURRENT = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   STOP", @"LENGTH:INPUT == 0
-CURRENT == 0
-STOPPED == 1
-PROCESSED == 0", 20),
-        L(@"LIST INPUT
-PUSH INPUT = 4
-PUSH INPUT = 0
-LET CURRENT = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT == 0
-      STOP", @"LENGTH:INPUT == 0
-CURRENT == 0
-SUM == 4
-PROCESSED == 1
-STOPPED == 1", 24),
-        L(@"LIST INPUT
-PUSH INPUT = 4
-PUSH INPUT = 3
-PUSH INPUT = 0
-PUSH INPUT = 7
-LET CURRENT = 0
+LET VAL = 0
 LET SUM = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT == 0
-      STOP", @"INPUT == [7]
-CURRENT == 0
-SUM == 7
-PROCESSED == 2
-STOPPED == 1
-CHECKPOINT == 2
-LENGTH:INPUT == 1", 29),
-        L(@"LIST INPUT
-PUSH INPUT = 4
-PUSH INPUT = 3
-PUSH INPUT = 0
-PUSH INPUT = 7
-LET CURRENT = 0
-LET SUM = 0
-LET PROCESSED = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT == 0
-      STOP
-   SET SUM = SUM + CURRENT
-   SET PROCESSED = PROCESSED + 1", @"INPUT == [7]
-LENGTH:INPUT == 1
-CURRENT == 0
-SUM == 7
-PROCESSED == 2
-CHECKPOINT == 2
-STOPPED == 1
-REMAINING == 1
-DONE == 1", 34),
-        L(@"LIST INPUT
-PUSH INPUT = 2
-PUSH INPUT = 5
-PUSH INPUT = 0
+LET CNT = 0
+WAIT
+LET D0 = 8
+SET D0 = D0 + 1
+LET D1 = 0
+LET D2 = 1
+SET D2 = D2 + 1
+LET D3 = 2
+LET D4 = 3
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2", @"VAL == 0
+SUM == 12
+CNT == 2
+IN == [10]
+LENGTH:IN == 1
+DONE == [5,7]
+LENGTH:DONE == 2
+D0 > D1
+D1 <= 7", 16),
+            L(@"LIST IN
+PUSH IN = 6
+PUSH IN = 8
+PUSH IN = 0
+PUSH IN = 11
 LIST DONE
-LET CURRENT = 0
+LET VAL = 0
 LET SUM = 0
-LET PROCESSED = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT == 0
-      STOP
-   PUSH DONE = CURRENT
-   SET SUM = SUM + CURRENT
-   SET PROCESSED = PROCESSED + 1", @"LENGTH:INPUT == 0
-DONE == [2,5,8]
-LENGTH:DONE == 3
-CURRENT == 0
-SUM == 15
-PROCESSED == 3
-CHECKPOINT == 3
-STOPPED == 1
-REMAINING == 0
-AVERAGE == 5
-DONE_COUNT == 3", 39),
+LET CNT = 0
+WAIT
+LET D0 = 0
+LET D1 = 1
+SET D1 = D1 + 1
+LET D2 = 2
+LET D3 = 3
+SET D3 = D3 + 1
+LET D4 = 4
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1", @"VAL == 0
+SUM == 14
+CNT == 2
+IN == [11]
+LENGTH:IN == 1
+DONE == [6,8]
+LENGTH:DONE == 2
+D0 <= 8
+D1 >= 7
+D2 != 9", 16),
+            L(@"LIST IN
+PUSH IN = 7
+PUSH IN = 9
+PUSH IN = 0
+PUSH IN = 12
+LIST DONE
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+WAIT
+LET D0 = 1
+SET D0 = D0 + 1
+LET D1 = 2
+LET D2 = 3
+SET D2 = D2 + 1
+LET D3 = 4
+LET D4 = 5
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1", @"VAL == 0
+SUM == 16
+CNT == 2
+IN == [12]
+LENGTH:IN == 1
+DONE == [7,9]
+LENGTH:DONE == 2
+D0 >= 9
+D1 != 10
+D2 == D3", 16),
 
-        // Level 30 - advanced dispatch
-        L(@"LIST INPUT
-PUSH INPUT = 3
-LIST READY
-PUSH READY = SHIFT:INPUT
-INJECT INPUT = 5", @"INPUT == [5,7]
-READY == [3]
-LENGTH:INPUT == 2
-LENGTH:READY == 1", 20),
-        L(@"LIST INPUT
-PUSH INPUT = 3
-PUSH INPUT = 8
-LIST READY
-LIST REJECTED
-LET CURRENT = SHIFT:INPUT
-IF CURRENT >= 5
-   PUSH READY = CURRENT", @"INPUT == [8]
-READY == [5,8]
-REJECTED == [3]
-CURRENT == 5
-LENGTH:READY == 2", 24),
-        L(@"LIST INPUT
-PUSH INPUT = 3
-PUSH INPUT = 8
-PUSH INPUT = 1
-LIST READY
-LIST REJECTED
-LET CURRENT = SHIFT:INPUT
-IF CURRENT >= 5
-   PUSH READY = CURRENT
-ELSE
-   INJECT REJECTED = CURRENT", @"INPUT == [8,1]
-READY == [8]
-REJECTED == [3,2]
-CURRENT == 2
-LENGTH:INPUT == 2
-LENGTH:READY == 1
-LENGTH:REJECTED == 2", 29),
-        L(@"LIST INPUT
-PUSH INPUT = 3
-PUSH INPUT = 8
-PUSH INPUT = 1
-PUSH INPUT = 6
-LIST READY
-LIST REJECTED
-LET CURRENT = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT >= 5
-      PUSH READY = CURRENT
-   ELSE
-      INJECT REJECTED = CURRENT", @"LENGTH:INPUT == 0
-READY == [8,6,10]
-REJECTED == [1,3,2]
-LENGTH:READY == 3
-LENGTH:REJECTED == 3
-CURRENT == 10
-PROCESSED == 6
-ACCEPTED == 3
-REJECTED_COUNT == 3", 34),
-        L(@"LIST INPUT
-PUSH INPUT = 3
-PUSH INPUT = 8
-PUSH INPUT = 1
-LIST READY
-LIST RETRY
-LET CURRENT = 0
-LET TOTAL = 0
-LOOP LENGTH:INPUT > 0
-   SET CURRENT = SHIFT:INPUT
-   IF CURRENT >= 5
-      PUSH READY = CURRENT
-   ELSE
-      INJECT RETRY = CURRENT + 5
-   SET TOTAL = TOTAL + CURRENT", @"LENGTH:INPUT == 0
-READY == [8,10]
-RETRY == [6,8]
-LENGTH:READY == 2
-LENGTH:RETRY == 2
-CURRENT == 10
-TOTAL == 22
-PROCESSED == 4
-ACCEPTED == 2
-RETRIED == 2
-AVERAGE == 5
-DONE == 1", 40),
-    };
+            // Level 30 - final dispatch
+            L(@"LIST IN
+PUSH IN = 3
+PUSH IN = 8
+PUSH IN = 1
+PUSH IN = 0
+PUSH IN = 6
+LIST GOOD
+LIST RET
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+LET CUT = 5
+WAIT
+LET D0 = 4
+LET D1 = 5
+SET D1 = D1 + 1
+LET D2 = 6
+LET D3 = 7
+SET D3 = D3 + 1
+LET D4 = 8
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1", @"VAL == 0
+SUM == 8
+CNT == 2
+IN == [6]
+LENGTH:IN == 1
+GOOD == [8]
+LENGTH:GOOD == 1
+RET == [6,8]
+LENGTH:RET == 2", 21),
+            L(@"LIST IN
+PUSH IN = 4
+PUSH IN = 9
+PUSH IN = 2
+PUSH IN = 0
+PUSH IN = 7
+LIST GOOD
+LIST RET
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+LET CUT = 6
+WAIT
+LET D0 = 5
+SET D0 = D0 + 1
+LET D1 = 6
+LET D2 = 7
+SET D2 = D2 + 1
+LET D3 = 8
+LET D4 = 0
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1", @"VAL == 0
+SUM == 9
+CNT == 2
+IN == [7]
+LENGTH:IN == 1
+GOOD == [9]
+LENGTH:GOOD == 1
+RET == [8,10]
+LENGTH:RET == 2", 21),
+            L(@"LIST IN
+PUSH IN = 3
+PUSH IN = 10
+PUSH IN = 3
+PUSH IN = 0
+PUSH IN = 8
+LIST GOOD
+LIST RET
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+LET CUT = 5
+WAIT
+LET D0 = 6
+LET D1 = 7
+SET D1 = D1 + 1
+LET D2 = 8
+LET D3 = 0
+SET D3 = D3 + 1
+LET D4 = 1
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2", @"VAL == 0
+SUM == 10
+CNT == 2
+IN == [8]
+LENGTH:IN == 1
+GOOD == [10]
+LENGTH:GOOD == 1
+RET == [8,8]
+LENGTH:RET == 2", 21),
+            L(@"LIST IN
+PUSH IN = 4
+PUSH IN = 11
+PUSH IN = 1
+PUSH IN = 0
+PUSH IN = 9
+LIST GOOD
+LIST RET
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+LET CUT = 6
+WAIT
+LET D0 = 7
+SET D0 = D0 + 1
+LET D1 = 8
+LET D2 = 0
+SET D2 = D2 + 1
+LET D3 = 1
+LET D4 = 2
+SET D4 = D4 + 1
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1", @"VAL == 0
+SUM == 11
+CNT == 2
+IN == [9]
+LENGTH:IN == 1
+GOOD == [11]
+LENGTH:GOOD == 1
+RET == [7,10]
+LENGTH:RET == 2
+CUT < SUM", 21),
+            L(@"LIST IN
+PUSH IN = 3
+PUSH IN = 12
+PUSH IN = 2
+PUSH IN = 0
+PUSH IN = 10
+LIST GOOD
+LIST RET
+LET VAL = 0
+LET SUM = 0
+LET CNT = 0
+LET CUT = 5
+WAIT
+LET D0 = 8
+LET D1 = 0
+SET D1 = D1 + 1
+LET D2 = 1
+LET D3 = 2
+SET D3 = D3 + 1
+LET D4 = 3
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1
+SET D1 = D1 + 2
+SET D2 = D2 + 1
+SET D3 = D3 + 2
+WAIT
+SET D0 = D0 + 2
+SET D1 = D1 + 1
+SET D2 = D2 + 2
+SET D3 = D3 + 1
+WAIT
+SET D0 = D0 + 1", @"VAL == 0
+SUM == 12
+CNT == 2
+IN == [10]
+LENGTH:IN == 1
+GOOD == [12]
+LENGTH:GOOD == 1
+RET == [7,8]
+LENGTH:RET == 2
+CUT <= 6", 21),
+
+        };
     }
 }

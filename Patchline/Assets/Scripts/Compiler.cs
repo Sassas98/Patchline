@@ -120,14 +120,14 @@ public class Compiler : ExpressionHandler
         {
             if(!LoopGates.Any()) 
                 throw new Exception("Stop without Loop");
-            this.row = LoopGates.Keys.Max();
+            this.row = LoopGates.Keys.Min();
             LoopGates.Remove(this.row);
         }
         else if (line.Command == CMD.Skip)
         {
             if (!LoopGates.Any())
                 throw new Exception("Skip without Loop");
-            var end = LoopGates.Keys.Max();
+            var end = LoopGates.Keys.Min();
             this.row = LoopGates[end];
         }
         else if (line.Command == CMD.Wait)
