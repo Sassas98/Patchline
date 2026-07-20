@@ -31,7 +31,7 @@ public class GameMaster : MonoBehaviour
             ("#FF2B45", "#FF6B35", "#FF9F1C", "#FFE45E")
         };
     private readonly string select_color = "#E8E8E8";
-    private TextMeshProUGUI std, wk, gs, vars, runs, ene, lv;
+    private TextMeshProUGUI std, wk, gs, vars, runs, ene;
     private Button if_button;
     private string text = "LET TEMP = 10\nIF TEMP > 5\n   SET TEMP = -9";
     private string work = "";
@@ -50,7 +50,7 @@ public class GameMaster : MonoBehaviour
 
     private void UpdateInfoLabels()
     {
-        lv.SetText($"LV {lvl} - {step}");
+        //lv.SetText($"LV {lvl} - {step}");
         runs.SetText(MarkText($"RUNS [{lives}]", energy_colors[lives > 2 ? 0 : lives == 2 ? 1 : 2]));
         ene.SetText(MarkText($"ENERGY [{energy}]", energy_colors[energy >= 10 ? 0 : energy >= 5 ? 1 : 2]));
     }
@@ -63,7 +63,7 @@ public class GameMaster : MonoBehaviour
     public void UpdatePalette()
     {
         (string Keyword, string Simboli, string Variabili, string Numeri)
-            = palette[lives == 3 ? 0 : lives == 2 ? 1 : 2]
+            = palette[lives == 3 ? 0 : lives == 2 ? 1 : 2];
         palette_applier.SetPalette(Keyword, Simboli, Variabili, Numeri);
     }
 
@@ -84,7 +84,7 @@ public class GameMaster : MonoBehaviour
         palette_applier = new CodePaletteApplier();
         runs = GameObject.Find("RUNS").GetComponent<TextMeshProUGUI>();
         ene = GameObject.Find("ENERGY").GetComponent<TextMeshProUGUI>();
-        lv = GameObject.Find("LV").GetComponent<TextMeshProUGUI>();
+        //lv = GameObject.Find("LV").GetComponent<TextMeshProUGUI>();
         levelMaster = new LevelMaster();
         var l = levelMaster.GetLevel(lvl, step);
         text = l.Code;
@@ -92,7 +92,7 @@ public class GameMaster : MonoBehaviour
         energy = l.Energy;
         UpdateInfoLabels();
         std = GameObject.Find("Text_STD").GetComponent<TextMeshProUGUI>();
-        UpdateLegacyLine()
+        UpdateLegacyLine();
         vars = GameObject.Find("vars").GetComponent<TextMeshProUGUI>();
         wk = GameObject.Find("Text_Work").GetComponent<TextMeshProUGUI>();
         gs = GameObject.Find("Text_Goals").GetComponent<TextMeshProUGUI>();
@@ -108,7 +108,7 @@ public class GameMaster : MonoBehaviour
             .onClick.AddListener(() =>
             {
                 lives = 3;
-                if (++step > 2) { lvl++; step = 0; }
+                if (++step > 3) { lvl++; step = 0; }
                 HandleButtonInLevel();
                 work = string.Empty;
                 var ll = levelMaster.GetLevel(lvl, step);
@@ -413,8 +413,8 @@ public class GameMaster : MonoBehaviour
         gs.SetText(g);
         if (data.IsEnded || data.Memory.InError)
         {
-            std.SetText(text);
-            wk.SetText(work);
+            UpdateLegacyLine();
+            UpdateWorkCode();
             running = false;
             if(data.IsEnded && !data.Memory.InError && data.Goals.All(x => x.Result))
             {
@@ -442,6 +442,14 @@ public class GameMaster : MonoBehaviour
         if(run_time > 0.3f)
         run_time -= 0.03f;
         Invoke(nameof(ExecuteRun), run_time);
+    }
+    private string MarkText(string text, int line, bool patch)
+    {
+        string color = patch ? "#1EFC1E" : "#FB3640";
+        string[] parts = text.Split("\n");
+        if (parts.Length <= line) return text;
+        parts[line] = $"<color={color}>{parts[line]}</color>";
+        return string.Join("\n", parts);
     }
 
     public void ShowSetModal()

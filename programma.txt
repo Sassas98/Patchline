@@ -1,12 +1,14 @@
-week 1
-1. progetto unity + libreria compilatore base
-2. interfaccia gioco drag and drop elementi con argomenti
-3. introduzione variabili, sequenzialità, only mini gioco
-week 2
-1. sistema di dialoghi + integrazione nel puzzle
-2. scrittura di tutti gli altri dialoghi e rifinitura grafica
-3. dettagli delle prime sequenze e completamento gioco grafica + sound
+
 week 3
-1. scrittura gdd
+1. fix livelli (loop prima di if)
+2. integrazione colonne sonore
+3. sistema di dialoghi
+4. integrazione dialoghi puzzle
+5. effetti sonori puzzle
+6. rifinitura dialoghi (sprite pg e dialoghi ben pensati)
+7. opzioni aggiuntive out of puzzle (?)
+week 4
+1. riguardare tabella
 2. pitch
-3. presentazione
+3. scrittura gdd
+4. presentazione
