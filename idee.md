@@ -102,11 +102,11 @@ sviluppi futuri
 
 LIST TEMP
 
-PUSH TEMP << 7
+PUSH TEMP = 7
 
 LOOP LENGTH:TEMP < 20
 
-&#x20;  PUSH TEMP << LAST:TEMP + 1
+&#x20;  PUSH TEMP = LAST:TEMP + 1
 
 
 
