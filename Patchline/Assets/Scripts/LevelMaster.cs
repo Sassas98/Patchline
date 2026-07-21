@@ -63,7 +63,7 @@ WAIT
 SET TEMP = TEMP + 1", @"TEMP == 12
 AUX < TEMP", 11),
             L(@"LET CORE = 6
-LET SIDE = 9
+LET SIDE = 11
 WAIT
 SET CORE = CORE + 1
 WAIT
@@ -186,20 +186,15 @@ SET SUM = SUM + TEMP
 WAIT", @"TEMP >= LIM
 SUM >= 18
 STEP < SUM", 10),
-            L(@"LET WIDE = 2
+            L(@"LET WIDE = 4
 LET HIGH = 3
 LET X = 0
 LET Y = 0
-LET CELL = 0
 LOOP X < WIDE
-   SET Y = 0
    LOOP Y < HIGH
-      SET CELL = CELL + 1
       SET Y = Y + 1
-   SET X = X + 1
-WAIT", @"WIDE == -2
-X >= 3
-CELL <= 9
+      SET X = X + 1
+WAIT", @"X >= 3
 Y != 4
 HIGH <= WIDE", 15),
 
