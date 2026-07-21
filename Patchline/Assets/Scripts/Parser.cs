@@ -12,8 +12,14 @@ public class Parser : ConditionReader
             if(string.IsNullOrWhiteSpace(line)) continue;
             int ls = (line.Length - line.TrimStart().Length) / 3;
             var parts = line.Trim().ToLower().Split(' ');
-            var cmd = (CMD)Enum.Parse(typeof(CMD), parts[0], true);
-            var args = parts.Length > 1 ? parts[1..] : new string[0];
+            var cmd = cmd.Set;
+            try
+            {
+                cmd = (CMD)Enum.Parse(typeof(CMD), parts[0], true);
+            }
+            catch
+            { }
+            var args = cmd == CMD.Set ? parts : parts.Length > 1 ? parts[1..] : new string[0];
             if (ArgomentiNonCorretti(cmd, args.Length))
             {
                 throw new Exception($"Invalid command: {line}");

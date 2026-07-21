@@ -40,80 +40,80 @@ WAIT", @"A == 9", 12),
             L(@"LET B = 3
 LET C = 6
 WAIT
-SET B = B + 1
+B = B + 1
 WAIT", @"B == 10
 C != 7", 0),
             L(@"LET C = 4
 LET D = 7
 WAIT
-SET C = C + 1
+C = C + 1
 WAIT
-SET C = C + 1
+C = C + 1
 WAIT", @"C == 11
 D < C", 4),
             L(@"LET TEMP = 5
 LET AUX = 8
 WAIT
-SET TEMP = TEMP + 1
+TEMP = TEMP + 1
 WAIT
-SET TEMP = TEMP + 1
+TEMP = TEMP + 1
 WAIT
-SET TEMP = TEMP + 1
+TEMP = TEMP + 1
 WAIT
-SET TEMP = TEMP + 1", @"TEMP == 12
+TEMP = TEMP + 1", @"TEMP == 12
 AUX < TEMP", 11),
             L(@"LET CORE = 6
 LET SIDE = 11
 WAIT
-SET CORE = CORE + 1
+CORE = CORE + 1
 WAIT
-SET CORE = CORE + 1
+CORE = CORE + 1
 WAIT
-SET CORE = CORE + 1
+CORE = CORE + 1
 WAIT
-SET CORE = CORE + 1
+CORE = CORE + 1
 WAIT
-SET CORE = CORE + 1", @"CORE == 13
+CORE = CORE + 1", @"CORE == 13
 SIDE <= 10", 23),
 
             // Level 1 - LET snapshots
             L(@"LET BASE = 5
-SET BASE = BASE + 1
+BASE = BASE + 1
 WAIT", @"COPY == 5
 BASE >= 5", 23),
             L(@"LET SEED = 6
-SET SEED = SEED + 1
+SEED = SEED + 1
 WAIT
 LET D0 = 0", @"SNAP == 6
 SEED != 8
 D0 < SNAP", 5),
             L(@"LET RATE = 7
-SET RATE = RATE + 1
+RATE = RATE + 1
 WAIT
 LET D0 = 1
-SET D0 = D0 + 1
+D0 = D0 + 1
 LET D1 = 2
-SET D0 = D0 + 2", @"GAIN == 7
+D0 = D0 + 2", @"GAIN == 7
 RATE > D0
 D1 <= 1
 D0 != 4", 0),
             L(@"LET LIM = 8
-SET LIM = LIM + 1
+LIM = LIM + 1
 WAIT
 WAIT
 WAIT
 LET D0 = 2
 LET D3 = 5
-SET D3 = D3 + 1", @"SAVE == 8
+D3 = D3 + 1", @"SAVE == 8
 D0 == 5
 D3 < D0", 10),
             L(@"LET MODE = 9
-SET MODE = MODE + 1
+MODE = MODE + 1
 WAIT
 LET D0 = 3
-SET D0 = D0 + 2
+D0 = D0 + 2
 LET D1 = 4
-SET D0 = D0 + 2", @"MARK == 9
+D0 = D0 + 2", @"MARK == 9
 MODE == 9
 D0 != 7
 D1 > MODE", 13),
@@ -121,20 +121,20 @@ D1 > MODE", 13),
             // Level 2 - LET expressions
             L(@"LET A = 6
 LET B = 8
-SET A = A + 1
+A = A + 1
 WAIT", @"SUM == 14
 A != 8
 B < SUM", 24),
             L(@"LET X = 7
 LET Y = 9
-SET X = X + 1
+X = X + 1
 WAIT
 LET D0 = 7", @"X > D0
 Y > DIFF
 D0 <= 8", 0),
             L(@"LET BASE = 8
 LET RATE = 10
-SET BASE = BASE + 1
+BASE = BASE + 1
 WAIT
 LET D0 = 8", @"PROD == 80
 BASE > D0
@@ -142,47 +142,47 @@ RATE >= 9
 D0 != 8", 10),
             L(@"LET WIDE = 9
 LET TALL = 11
-SET WIDE = WIDE + 1
+WIDE = WIDE + 1
 WAIT
-SET TEMP = TEMP - 1", @"AREA == 99
+TEMP = TEMP - 1", @"AREA == 99
 TALL < 11
 WIDE >= 11", 2),
-            L(@"SET LEFT = 10
-SET RITE = 12
-SET LEFT = LEFT + 1
+            L(@"LEFT = 10
+RITE = 12
+LEFT = LEFT + 1
 WAIT
-SET D0 = 1
-SET D1 = D0 + 1
-SET D2 = D1 + 1
-SET D3 = D2 + 1", @"SPAN == -2", 24),
+D0 = 1
+D1 = D0 + 1
+D2 = D1 + 1
+D3 = D2 + 1", @"SPAN == -2", 24),
 
             // Level 3 - LOOP basics
             L(@"LET CNT = 0
 LOOP CNT < 10
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"CNT <= 5", 18),
             L(@"LET RATE = 2
-SET LIM = 10
+LIM = 10
 LOOP CNT < LIM
-   SET CNT = CNT + 1
-   SET SUM = SUM + RATE
+   CNT = CNT + 1
+   SUM = SUM + RATE
 WAIT", @"RATE == 3
 SUM == 30
 CNT == 10", 10),
             L(@"LET CNT = 6
 LET USED = 0
 LOOP CNT > 0
-   SET CNT = CNT - 1
-   SET USED = USED + 1
+   CNT = CNT - 1
+   USED = USED + 1
 WAIT", @"USED == 9
 CNT == 9000", 5),
             L(@"LET LIM = 4
 LET STEP = 2
 LET TEMP = 0
 LOOP TEMP < LIM
-   SET TEMP = TEMP + 1
-   SET SUM = SUM + STEP
-SET SUM = SUM + TEMP
+   TEMP = TEMP + 1
+   SUM = SUM + STEP
+SUM = SUM + TEMP
 WAIT", @"TEMP >= LIM
 SUM >= 18
 STEP < SUM", 10),
@@ -192,8 +192,8 @@ LET X = 0
 LET Y = 0
 LOOP X < WIDE
    LOOP Y < HIGH
-      SET Y = Y + 1
-      SET X = X + 1
+      Y = Y + 1
+      X = X + 1
 WAIT", @"X >= 3
 Y != 4
 HIGH <= WIDE", 15),
@@ -203,8 +203,8 @@ HIGH <= WIDE", 15),
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
-   SET SUM = SUM + I
+   I = I + 1
+   SUM = SUM + I
 WAIT", @"LIM == 5
 I <= 5
 SUM != 16", 12),
@@ -213,8 +213,8 @@ LET LIM = 4
 LET I = 0
 LET PROD = 1
 LOOP I < LIM
-   SET I = I + 1
-   SET PROD = PROD * BASE
+   I = I + 1
+   PROD = PROD * BASE
 WAIT", @"BASE == 3
 PROD != 82
 I > BASE
@@ -224,9 +224,9 @@ LET A = 0
 LET B = 8
 LET CNT = 0
 LOOP A < B
-   SET A = A + STEP
-   SET B = B - STEP
-   SET CNT = CNT + 1
+   A = A + STEP
+   B = B - STEP
+   CNT = CNT + 1
 WAIT", @"STEP == 2
 CNT >= STEP
 A >= 4
@@ -237,11 +237,11 @@ LET X = 0
 LET Y = 0
 LET CELL = 0
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < HIGH
-      SET CELL = CELL + X
-      SET Y = Y + 1
-   SET X = X + 1
+      CELL = CELL + X
+      Y = Y + 1
+   X = X + 1
 WAIT", @"HIGH == 3
 Y >= 3
 CELL <= 9
@@ -254,12 +254,12 @@ LET Y = 0
 LET SUM = 0
 LET BIAS = 1
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < HIGH
-      SET SUM = SUM + X
-      SET SUM = SUM + BIAS
-      SET Y = Y + 1
-   SET X = X + 1
+      SUM = SUM + X
+      SUM = SUM + BIAS
+      Y = Y + 1
+   X = X + 1
 WAIT", @"BIAS == 2
 SUM <= 27
 X != 4
@@ -272,8 +272,8 @@ WIDE >= 2", 17),
 LET CNT = 0
 LET SUM = 0
 LOOP CNT < 5
-   SET CNT = CNT + 1
-   SET SUM = SUM + ADD
+   CNT = CNT + 1
+   SUM = SUM + ADD
    STOP
 WAIT", @"ADD == 5
 SUM != 6
@@ -282,10 +282,10 @@ CNT < ADD", 22),
 LET CNT = 0
 LET OUT = 0
 LOOP CNT < 8
-   SET CNT = CNT + 1
-   SET OUT = BASE * CNT
+   CNT = CNT + 1
+   OUT = BASE * CNT
    STOP
-SET OUT = OUT + BASE
+OUT = OUT + BASE
 WAIT", @"BASE == 6
 OUT > BASE
 CNT >= 1", 10),
@@ -293,10 +293,10 @@ CNT >= 1", 10),
 LET CNT = 9
 LET USED = 0
 LOOP CNT > 0
-   SET CNT = CNT - STEP
-   SET USED = USED + 1
+   CNT = CNT - STEP
+   USED = USED + 1
    STOP
-SET CNT = CNT - STEP
+CNT = CNT - STEP
 WAIT", @"STEP == 3
 CNT >= 3
 USED <= 1", 10),
@@ -306,12 +306,12 @@ LET X = 0
 LET Y = 0
 LET CELL = 0
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < HIGH
-      SET CELL = CELL + 1
-      SET Y = Y + 1
+      CELL = CELL + 1
+      Y = Y + 1
       STOP
-   SET X = X + 1
+   X = X + 1
 WAIT", @"WIDE == 4
 X <= 4
 CELL != 5
@@ -324,13 +324,13 @@ LET Y = 0
 LET SUM = 0
 LET RATE = 2
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < HIGH
-      SET SUM = SUM + RATE
-      SET Y = Y + 1
+      SUM = SUM + RATE
+      Y = Y + 1
       STOP
-   SET SUM = SUM + X
-   SET X = X + 1
+   SUM = SUM + X
+   X = X + 1
 WAIT", @"RATE == 4
 SUM != 16
 X < RATE
@@ -343,10 +343,10 @@ WIDE != 4", 50),
 LET CNT = 0
 LET SUM = 1
 LOOP CNT < 9
-   SET CNT = CNT + 1
-   SET SUM = SUM * RATE
+   CNT = CNT + 1
+   SUM = SUM * RATE
    STOP
-SET SUM = SUM + CNT
+SUM = SUM + CNT
 WAIT", @"RATE == 4
 SUM > RATE
 CNT >= 1", 22),
@@ -354,9 +354,9 @@ CNT >= 1", 22),
 LET CNT = 0
 LET SUM = 0
 LOOP CNT < 9
-   SET CNT = CNT + 1
-   SET SUM = SUM + ADD
-   SET SUM = SUM + CNT
+   CNT = CNT + 1
+   SUM = SUM + ADD
+   SUM = SUM + CNT
    STOP
 WAIT", @"ADD == 5
 SUM >= 6
@@ -365,10 +365,10 @@ CNT <= 1", 10),
 LET CNT = 0
 LET SUM = 0
 LOOP CNT < LIM
-   SET CNT = CNT + 2
-   SET SUM = SUM + CNT
+   CNT = CNT + 2
+   SUM = SUM + CNT
    STOP
-SET SUM = SUM + LIM
+SUM = SUM + LIM
 WAIT", @"LIM == 9
 SUM <= 11
 CNT != 3", 0),
@@ -378,13 +378,13 @@ LET X = 0
 LET Y = 0
 LET SUM = 0
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < HIGH
-      SET Y = Y + 1
-      SET SUM = SUM + Y
+      Y = Y + 1
+      SUM = SUM + Y
       STOP
-   SET SUM = SUM + X
-   SET X = X + 1
+   SUM = SUM + X
+   X = X + 1
 WAIT", @"WIDE == 4
 X != 5
 SUM > WIDE
@@ -397,14 +397,14 @@ LET Y = 0
 LET SUM = 0
 LET ADD = 1
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < HIGH
-      SET Y = Y + 1
-      SET SUM = SUM + ADD
+      Y = Y + 1
+      SUM = SUM + ADD
       STOP
-   SET SUM = SUM + X
-   SET X = X + 1
-SET SUM = SUM + HIGH
+   SUM = SUM + X
+   X = X + 1
+SUM = SUM + HIGH
 WAIT", @"ADD == 3
 SUM > ADD
 X >= 4
@@ -417,10 +417,10 @@ WIDE < SUM", 37),
 LET CNT = 0
 LET SUM = 0
 LOOP CNT < LIM
-   SET CNT = CNT + 1
-   SET SUM = SUM + CNT
+   CNT = CNT + 1
+   SUM = SUM + CNT
    SKIP
-   SET SUM = 99
+   SUM = 99
 WAIT", @"LIM == 4
 CNT >= 4
 SUM <= 10", 12),
@@ -429,10 +429,10 @@ LET LIM = 4
 LET CNT = 0
 LET SUM = 0
 LOOP CNT < LIM
-   SET CNT = CNT + 1
-   SET SUM = SUM + RATE
+   CNT = CNT + 1
+   SUM = SUM + RATE
    SKIP
-   SET RATE = 99
+   RATE = 99
 WAIT", @"RATE == 3
 SUM <= 12
 CNT != 5
@@ -441,11 +441,11 @@ LIM < SUM", 0),
 LET CNT = 0
 LET SUM = 0
 LOOP CNT < 6
-   SET CNT = CNT + STEP
-   SET SUM = SUM + CNT
+   CNT = CNT + STEP
+   SUM = SUM + CNT
    SKIP
-   SET SUM = 0
-SET SUM = SUM + STEP
+   SUM = 0
+SUM = SUM + STEP
 WAIT", @"STEP == 3
 SUM != 13
 CNT > STEP", 0),
@@ -455,13 +455,13 @@ LET X = 0
 LET Y = 0
 LET SUM = 0
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < HIGH
-      SET Y = Y + 1
-      SET SUM = SUM + Y
+      Y = Y + 1
+      SUM = SUM + Y
       SKIP
-      SET SUM = 99
-   SET X = X + 1
+      SUM = 99
+   X = X + 1
 WAIT", @"HIGH == 3
 Y >= HIGH
 SUM >= 18
@@ -474,14 +474,14 @@ LET Y = 0
 LET SUM = 0
 LET ADD = 1
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < HIGH
-      SET Y = Y + 1
-      SET SUM = SUM + ADD
+      Y = Y + 1
+      SUM = SUM + ADD
       SKIP
-      SET ADD = 20
-   SET SUM = SUM + X
-   SET X = X + 1
+      ADD = 20
+   SUM = SUM + X
+   X = X + 1
 WAIT", @"ADD == 2
 SUM >= 21
 X <= 3
@@ -494,12 +494,12 @@ WIDE < SUM", 17),
 LET CNT = 0
 LET SUM = 0
 LOOP CNT < 3
-   SET CNT = CNT + 1
-   SET SUM = SUM + CNT
+   CNT = CNT + 1
+   SUM = SUM + CNT
 IF SUM >= CUT
-   SET SUM = SUM + 1
+   SUM = SUM + 1
 ELSE
-   SET SUM = SUM - 1
+   SUM = SUM - 1
 WAIT", @"CUT == 6
 SUM <= 7
 CNT != 4", 12),
@@ -509,12 +509,12 @@ LET CNT = 0
 LET SUM = 0
 LET FLAG = 0
 LOOP CNT < LIM
-   SET CNT = CNT + 1
-   SET SUM = SUM + RATE
+   CNT = CNT + 1
+   SUM = SUM + RATE
 IF SUM > LIM
-   SET FLAG = SUM
+   FLAG = SUM
 ELSE
-   SET FLAG = LIM
+   FLAG = LIM
 WAIT", @"RATE == 1
 SUM != 5
 FLAG > RATE
@@ -525,12 +525,12 @@ LET CNT = 6
 LET USED = 0
 LET FLAG = 0
 LOOP CNT > 0
-   SET CNT = CNT - 2
-   SET USED = USED + 1
+   CNT = CNT - 2
+   USED = USED + 1
 IF USED == CUT
-   SET FLAG = 1
+   FLAG = 1
 ELSE
-   SET FLAG = USED
+   FLAG = USED
 WAIT", @"CUT == 3
 FLAG < CUT
 USED >= 3
@@ -543,15 +543,15 @@ LET Y = 0
 LET CELL = 0
 LET FLAG = 0
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < HIGH
-      SET CELL = CELL + 1
-      SET Y = Y + 1
-   SET X = X + 1
+      CELL = CELL + 1
+      Y = Y + 1
+   X = X + 1
 IF CELL >= CUT
-   SET FLAG = 1
+   FLAG = 1
 ELSE
-   SET FLAG = CELL
+   FLAG = CELL
 WAIT", @"CUT == 6
 FLAG >= 1
 CELL <= 6
@@ -567,16 +567,16 @@ LET Y = 0
 LET SUM = 0
 LET FLAG = 0
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < HIGH
-      SET SUM = SUM + X
-      SET Y = Y + 1
-   SET X = X + 1
+      SUM = SUM + X
+      Y = Y + 1
+   X = X + 1
 IF SUM != CUT
-   SET FLAG = SUM
+   FLAG = SUM
 ELSE
-   SET FLAG = -1
-SET SUM = SUM + FLAG
+   FLAG = -1
+SUM = SUM + FLAG
 WAIT", @"CUT == 9
 SUM <= 8
 FLAG != 0
@@ -591,11 +591,11 @@ LET LIM = 4
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I > CUT
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
 WAIT", @"CUT == 1
 SUM != 11
 I > CUT
@@ -607,12 +607,12 @@ LET REM = 0
 LET HIT = 0
 LET MISS = 0
 LOOP I < LIM
-   SET I = I + 1
-   SET REM = I % MOD
+   I = I + 1
+   REM = I % MOD
    IF REM == 0
-      SET HIT = HIT + 1
+      HIT = HIT + 1
    ELSE
-      SET MISS = MISS + 1
+      MISS = MISS + 1
 WAIT", @"MOD == 3
 HIT < MOD
 MISS >= 4
@@ -624,11 +624,11 @@ LET I = 0
 LET LOW = 0
 LET HIGH = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I <= CUT
-      SET LOW = LOW + I
+      LOW = LOW + I
    ELSE
-      SET HIGH = HIGH + I
+      HIGH = HIGH + I
 WAIT", @"CUT == 3
 LOW >= 6
 HIGH <= 15
@@ -641,14 +641,14 @@ LET X = 0
 LET Y = 0
 LET SUM = 0
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < HIGH
-      SET Y = Y + 1
+      Y = Y + 1
       IF X < CUT
-         SET SUM = SUM + Y
+         SUM = SUM + Y
       ELSE
-         SET SUM = SUM + X
-   SET X = X + 1
+         SUM = SUM + X
+   X = X + 1
 WAIT", @"CUT == 2
 SUM <= 16
 X != 5
@@ -663,15 +663,15 @@ LET Y = 0
 LET SUM = 0
 LET CNT = 0
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < HIGH
-      SET Y = Y + 1
+      Y = Y + 1
       IF Y > CUT
-         SET SUM = SUM + X
+         SUM = SUM + X
       ELSE
-         SET SUM = SUM + Y
-      SET CNT = CNT + 1
-   SET X = X + 1
+         SUM = SUM + Y
+      CNT = CNT + 1
+   X = X + 1
 WAIT", @"CUT == 1
 SUM != 10
 X > CUT
@@ -687,11 +687,11 @@ LET LIM = 5
 LET I = 0
 LET HIT = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I >= LOW AND I <= HIGH
-      SET HIT = HIT + I
+      HIT = HIT + I
    ELSE
-      SET HIT = HIT + 0
+      HIT = HIT + 0
 WAIT", @"LOW == 1
 HIT > LOW
 I >= 5
@@ -703,12 +703,12 @@ LET I = 0
 LET REM = 0
 LET HIT = 0
 LOOP I < LIM
-   SET I = I + 1
-   SET REM = I % MOD
+   I = I + 1
+   REM = I % MOD
    IF REM == 0 AND I > CUT
-      SET HIT = HIT + 1
+      HIT = HIT + 1
    ELSE
-      SET HIT = HIT + 0
+      HIT = HIT + 0
 WAIT", @"CUT == 1
 HIT >= 3
 I <= 6
@@ -720,11 +720,11 @@ LET LIM = 7
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW OR I > HIGH
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
 WAIT", @"HIGH == 4
 SUM <= 25
 I != 8
@@ -738,14 +738,14 @@ LET X = 0
 LET Y = 0
 LET HIT = 0
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < YMAX
-      SET Y = Y + 1
+      Y = Y + 1
       IF X >= LOW AND Y <= HIGH
-         SET HIT = HIT + 1
+         HIT = HIT + 1
       ELSE
-         SET HIT = HIT + 0
-   SET X = X + 1
+         HIT = HIT + 0
+   X = X + 1
 WAIT", @"LOW == 2
 HIT != 7
 X > LOW
@@ -762,15 +762,15 @@ LET Y = 0
 LET SUM = 0
 LET HIT = 0
 LOOP X < WIDE
-   SET Y = 0
+   Y = 0
    LOOP Y < YMAX
-      SET Y = Y + 1
+      Y = Y + 1
       IF X >= LOW AND Y <= HIGH
-         SET SUM = SUM + X
-         SET HIT = HIT + 1
+         SUM = SUM + X
+         HIT = HIT + 1
       ELSE
-         SET SUM = SUM + Y
-   SET X = X + 1
+         SUM = SUM + Y
+   X = X + 1
 WAIT", @"HIGH == 2
 SUM > HIGH
 HIT >= 6
@@ -787,13 +787,13 @@ LET I = 0
 LET A = 0
 LET B = 0
 LOOP I < 3
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET B = B + 2
+      B = B + 2
 WAIT", @"HIGH == 4
 I >= 3
 A <= 1
@@ -807,13 +807,13 @@ LET A = 0
 LET B = 0
 LET C = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET C = C + 1
+      C = C + 1
 WAIT", @"HIGH == 5
 I <= 4
 A != 2
@@ -828,14 +828,14 @@ LET A = 0
 LET B = 0
 LET C = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET C = C + 1
-SET B = B + LENGTH:BUF
+      C = C + 1
+B = B + LENGTH:BUF
 WAIT", @"HIGH == 4
 B != 4
 C < HIGH
@@ -850,14 +850,14 @@ LET A = 0
 LET B = 0
 LET C = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET C = C + 1
-SET B = B + LENGTH:BUF
+      C = C + 1
+B = B + LENGTH:BUF
 WAIT", @"HIGH == 5
 I < HIGH
 A >= 1
@@ -873,14 +873,14 @@ LET A = 0
 LET B = 0
 LET C = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET C = C + 1
-SET B = B + LENGTH:BUF
+      C = C + 1
+B = B + LENGTH:BUF
 WAIT", @"HIGH == 4
 B >= 3
 C <= 0
@@ -896,14 +896,14 @@ LET I = 0
 LET A = 0
 LET B = 0
 LOOP I < 3
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET B = B + 2
-   SET B = B + LENGTH:BUF
+      B = B + 2
+   B = B + LENGTH:BUF
 WAIT", @"HIGH == 4
 I <= 3
 A != 2
@@ -917,14 +917,14 @@ LET A = 0
 LET B = 0
 LET C = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET C = C + 1
-   SET B = B + LENGTH:BUF
+      C = C + 1
+   B = B + LENGTH:BUF
 WAIT", @"HIGH == 5
 I != 5
 A < HIGH
@@ -939,14 +939,14 @@ LET A = 0
 LET B = 0
 LET C = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET C = C + 1
-   SET B = B + LENGTH:BUF
+      C = C + 1
+   B = B + LENGTH:BUF
 WAIT", @"HIGH == 4
 B < HIGH
 C >= 1
@@ -961,14 +961,14 @@ LET A = 0
 LET B = 0
 LET C = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET C = C + 1
-   SET B = B + LENGTH:BUF
+      C = C + 1
+   B = B + LENGTH:BUF
 WAIT", @"HIGH == 5
 I >= 3
 A <= 1
@@ -984,14 +984,14 @@ LET A = 0
 LET B = 0
 LET C = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET C = C + 1
-   SET B = B + LENGTH:BUF
+      C = C + 1
+   B = B + LENGTH:BUF
 WAIT", @"HIGH == 4
 B <= 3
 C != 1
@@ -1007,16 +1007,16 @@ LET I = 0
 LET A = 0
 LET B = 0
 LOOP I < 3
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET B = B + 2
-   SET B = B + LENGTH:BUF
+      B = B + 2
+   B = B + LENGTH:BUF
 LIST AUX
-SET B = B + LENGTH:AUX", @"HIGH == 4
+B = B + LENGTH:AUX", @"HIGH == 4
 I != 4
 A < HIGH
 B >= 2
@@ -1030,16 +1030,16 @@ LET A = 0
 LET B = 0
 LET C = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET C = C + 1
-   SET B = B + LENGTH:BUF
+      C = C + 1
+   B = B + LENGTH:BUF
 LIST AUX
-SET B = B + LENGTH:AUX", @"HIGH == 5
+B = B + LENGTH:AUX", @"HIGH == 5
 I < HIGH
 A >= 1
 B <= 3
@@ -1054,16 +1054,16 @@ LET A = 0
 LET B = 0
 LET C = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET C = C + 1
-   SET B = B + LENGTH:BUF
+      C = C + 1
+   B = B + LENGTH:BUF
 LIST AUX
-SET B = B + LENGTH:AUX
+B = B + LENGTH:AUX
 WAIT", @"HIGH == 4
 B >= 3
 C <= 1
@@ -1079,16 +1079,16 @@ LET A = 0
 LET B = 0
 LET C = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET C = C + 1
-   SET B = B + LENGTH:BUF
+      C = C + 1
+   B = B + LENGTH:BUF
 LIST AUX
-SET B = B + LENGTH:AUX
+B = B + LENGTH:AUX
 WAIT", @"HIGH == 5
 I <= 3
 A != 2
@@ -1104,16 +1104,16 @@ LET A = 0
 LET B = 0
 LET C = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < 2
-      SET A = A + 1
+      A = A + 1
    ELIF I <= HIGH
-      SET B = B + 1
+      B = B + 1
    ELSE
-      SET C = C + 1
-   SET B = B + LENGTH:BUF
+      C = C + 1
+   B = B + LENGTH:BUF
 LIST AUX
-SET B = B + LENGTH:AUX
+B = B + LENGTH:AUX
 WAIT", @"HIGH == 4
 B != 4
 C < HIGH
@@ -1131,16 +1131,16 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH", @"HIGH == 5
+      SUM = SUM + HIGH", @"HIGH == 5
 LOW < HIGH
 I >= 4
 SUM <= 11
@@ -1153,16 +1153,16 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 WAIT", @"LOW == 2
 SUM >= 16
 HIGH <= 5
@@ -1176,16 +1176,16 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 WAIT", @"HIGH == 5
 SUM <= 21
 LOW != 3
@@ -1200,16 +1200,16 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 WAIT", @"LOW == 2
 SUM != 12
 HIGH > LOW
@@ -1224,16 +1224,16 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 WAIT", @"HIGH == 5
 SUM > HIGH
 LOW >= 2
@@ -1250,16 +1250,16 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH", @"HIGH == 5
+      SUM = SUM + HIGH", @"HIGH == 5
 LOW >= 2
 I <= 4
 SUM != 12
@@ -1272,16 +1272,16 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 WAIT", @"LOW == 2
 SUM <= 16
 HIGH != 6
@@ -1295,16 +1295,16 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 WAIT", @"HIGH == 5
 SUM != 22
 LOW < HIGH
@@ -1319,16 +1319,16 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 WAIT", @"LOW == 2
 SUM > LOW
 HIGH >= 5
@@ -1343,16 +1343,16 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 WAIT", @"HIGH == 5
 SUM >= 16
 LOW <= 2
@@ -1369,18 +1369,18 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 LET HEAD = FIRST:OUT
-SET SUM = SUM + HEAD", @"HIGH == 5
+SUM = SUM + HEAD", @"HIGH == 5
 LOW <= 2
 I != 5
 SUM > HIGH
@@ -1394,20 +1394,20 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 LET HEAD = FIRST:OUT
-SET SUM = SUM + HEAD
+SUM = SUM + HEAD
 LET TAIL = LAST:OUT
-SET SUM = SUM + TAIL", @"LOW == 2
+SUM = SUM + TAIL", @"LOW == 2
 SUM != 24
 HEAD >= LOW
 HIGH >= 5
@@ -1422,20 +1422,20 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 LET HEAD = FIRST:OUT
-SET SUM = SUM + HEAD
+SUM = SUM + HEAD
 LET TAIL = LAST:OUT
-SET SUM = SUM + TAIL", @"HIGH == 5
+SUM = SUM + TAIL", @"HIGH == 5
 SUM > HIGH
 TAIL >= 5
 LOW <= 2
@@ -1450,20 +1450,20 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 LET HEAD = FIRST:OUT
-SET SUM = SUM + HEAD
+SUM = SUM + HEAD
 LET TAIL = LAST:OUT
-SET SUM = SUM + TAIL", @"LOW == 2
+SUM = SUM + TAIL", @"LOW == 2
 SUM >= 17
 HEAD <= 2
 HIGH != 6
@@ -1478,20 +1478,20 @@ LIST OUT
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < LOW
       PUSH OUT = LOW
-      SET SUM = SUM + LOW
+      SUM = SUM + LOW
    ELIF I <= HIGH
       PUSH OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELSE
       PUSH OUT = HIGH
-      SET SUM = SUM + HIGH
+      SUM = SUM + HIGH
 LET HEAD = FIRST:OUT
-SET SUM = SUM + HEAD
+SUM = SUM + HEAD
 LET TAIL = LAST:OUT
-SET SUM = SUM + TAIL", @"HIGH == 5
+SUM = SUM + TAIL", @"HIGH == 5
 SUM <= 23
 TAIL != 6
 LOW < HIGH
@@ -1509,16 +1509,16 @@ PUSH OUT = 9
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < CUT
       INJECT OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELIF I == CUT
       PUSH OUT = I
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
    ELSE
       INJECT OUT = CUT
-      SET SUM = SUM + CUT", @"CUT == 3
+      SUM = SUM + CUT", @"CUT == 3
 SUM != 10
 I > CUT
 OUT == [3,2,1,9,3]
@@ -1530,16 +1530,16 @@ PUSH OUT = 9
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < CUT
       INJECT OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELIF I == CUT
       PUSH OUT = I
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
    ELSE
       INJECT OUT = CUT
-      SET SUM = SUM + CUT", @"CUT == 4
+      SUM = SUM + CUT", @"CUT == 4
 SUM > CUT
 I >= 5
 OUT == [4,3,2,1,9,4]
@@ -1552,16 +1552,16 @@ PUSH OUT = 9
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < CUT
       INJECT OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELIF I == CUT
       PUSH OUT = I
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
    ELSE
       INJECT OUT = CUT
-      SET SUM = SUM + CUT", @"CUT == 3
+      SUM = SUM + CUT", @"CUT == 3
 SUM >= 15
 I <= 6
 OUT == [3,3,3,2,1,9,3]
@@ -1574,16 +1574,16 @@ PUSH OUT = 9
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < CUT
       INJECT OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELIF I == CUT
       PUSH OUT = I
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
    ELSE
       INJECT OUT = CUT
-      SET SUM = SUM + CUT", @"CUT == 4
+      SUM = SUM + CUT", @"CUT == 4
 SUM <= 10
 I != 5
 OUT == [3,2,1,9,4]
@@ -1596,16 +1596,16 @@ PUSH OUT = 9
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < CUT
       INJECT OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELIF I == CUT
       PUSH OUT = I
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
    ELSE
       INJECT OUT = CUT
-      SET SUM = SUM + CUT", @"CUT == 3
+      SUM = SUM + CUT", @"CUT == 3
 SUM != 13
 I > CUT
 OUT == [3,3,2,1,9,3]
@@ -1620,20 +1620,20 @@ PUSH OUT = 9
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < CUT
       INJECT OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELIF I == CUT
       PUSH OUT = I
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
    ELSE
       INJECT OUT = CUT
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
 LET HEAD = FIRST:OUT
 LET TAIL = LAST:OUT
-SET SUM = SUM + HEAD
-SET SUM = SUM + TAIL", @"CUT == 3
+SUM = SUM + HEAD
+SUM = SUM + TAIL", @"CUT == 3
 SUM > CUT
 HEAD >= 3
 TAIL <= 3
@@ -1647,20 +1647,20 @@ PUSH OUT = 9
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < CUT
       INJECT OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELIF I == CUT
       PUSH OUT = I
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
    ELSE
       INJECT OUT = CUT
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
 LET HEAD = FIRST:OUT
 LET TAIL = LAST:OUT
-SET SUM = SUM + HEAD
-SET SUM = SUM + TAIL", @"CUT == 4
+SUM = SUM + HEAD
+SUM = SUM + TAIL", @"CUT == 4
 SUM >= 22
 HEAD <= 4
 TAIL != 5
@@ -1674,20 +1674,20 @@ PUSH OUT = 9
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < CUT
       INJECT OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELIF I == CUT
       PUSH OUT = I
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
    ELSE
       INJECT OUT = CUT
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
 LET HEAD = FIRST:OUT
 LET TAIL = LAST:OUT
-SET SUM = SUM + HEAD
-SET SUM = SUM + TAIL", @"CUT == 3
+SUM = SUM + HEAD
+SUM = SUM + TAIL", @"CUT == 3
 SUM <= 21
 HEAD != 4
 TAIL >= CUT
@@ -1701,20 +1701,20 @@ PUSH OUT = 9
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < CUT
       INJECT OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELIF I == CUT
       PUSH OUT = I
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
    ELSE
       INJECT OUT = CUT
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
 LET HEAD = FIRST:OUT
 LET TAIL = LAST:OUT
-SET SUM = SUM + HEAD
-SET SUM = SUM + TAIL", @"CUT == 4
+SUM = SUM + HEAD
+SUM = SUM + TAIL", @"CUT == 4
 SUM != 18
 TAIL >= CUT
 I >= 4
@@ -1729,20 +1729,20 @@ PUSH OUT = 9
 LET I = 0
 LET SUM = 0
 LOOP I < LIM
-   SET I = I + 1
+   I = I + 1
    IF I < CUT
       INJECT OUT = I
-      SET SUM = SUM + I
+      SUM = SUM + I
    ELIF I == CUT
       PUSH OUT = I
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
    ELSE
       INJECT OUT = CUT
-      SET SUM = SUM + CUT
+      SUM = SUM + CUT
 LET HEAD = FIRST:OUT
 LET TAIL = LAST:OUT
-SET SUM = SUM + HEAD
-SET SUM = SUM + TAIL", @"CUT == 3
+SUM = SUM + HEAD
+SUM = SUM + TAIL", @"CUT == 3
 SUM > CUT
 HEAD >= 3
 TAIL <= 3
@@ -1764,15 +1764,15 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < CUT
-      SET CNT = CNT + 1
+      CNT = CNT + 1
    ELIF VAL == CUT
       PUSH OUT = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       INJECT OUT = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
 WAIT", @"CUT == 3
 VAL >= 2
 SUM <= 11
@@ -1792,15 +1792,15 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < CUT
-      SET CNT = CNT + 1
+      CNT = CNT + 1
    ELIF VAL == CUT
       PUSH OUT = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       INJECT OUT = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
 WAIT", @"CUT == 4
 VAL <= 3
 SUM != 14
@@ -1820,15 +1820,15 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < CUT
-      SET CNT = CNT + 1
+      CNT = CNT + 1
    ELIF VAL == CUT
       PUSH OUT = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       INJECT OUT = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
 WAIT", @"CUT == 3
 VAL != 3
 SUM > CUT
@@ -1848,15 +1848,15 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < CUT
-      SET CNT = CNT + 1
+      CNT = CNT + 1
    ELIF VAL == CUT
       PUSH OUT = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       INJECT OUT = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
 WAIT", @"CUT == 4
 VAL < CUT
 SUM >= 15
@@ -1876,15 +1876,15 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < CUT
-      SET CNT = CNT + 1
+      CNT = CNT + 1
    ELIF VAL == CUT
       PUSH OUT = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       INJECT OUT = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
 WAIT", @"CUT == 3
 VAL >= 2
 SUM <= 15
@@ -1904,15 +1904,15 @@ INJECT OUT = 0
 LET VAL = 0
 LET SUM = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < RATE
-      SET VAL = VAL + RATE
+      VAL = VAL + RATE
    ELIF VAL == RATE
-      SET VAL = VAL * RATE
+      VAL = VAL * RATE
    ELSE
-      SET VAL = VAL + 1
+      VAL = VAL + 1
    PUSH OUT = VAL
-   SET SUM = SUM + VAL
+   SUM = SUM + VAL
 WAIT", @"RATE == 3
 VAL <= 9
 SUM != 19
@@ -1929,15 +1929,15 @@ INJECT OUT = 0
 LET VAL = 0
 LET SUM = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < RATE
-      SET VAL = VAL + RATE
+      VAL = VAL + RATE
    ELIF VAL == RATE
-      SET VAL = VAL * RATE
+      VAL = VAL * RATE
    ELSE
-      SET VAL = VAL + 1
+      VAL = VAL + 1
    PUSH OUT = VAL
-   SET SUM = SUM + VAL
+   SUM = SUM + VAL
 WAIT", @"RATE == 4
 VAL != 17
 SUM > RATE
@@ -1954,15 +1954,15 @@ INJECT OUT = 0
 LET VAL = 0
 LET SUM = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < RATE
-      SET VAL = VAL + RATE
+      VAL = VAL + RATE
    ELIF VAL == RATE
-      SET VAL = VAL * RATE
+      VAL = VAL * RATE
    ELSE
-      SET VAL = VAL + 1
+      VAL = VAL + 1
    PUSH OUT = VAL
-   SET SUM = SUM + VAL
+   SUM = SUM + VAL
 WAIT", @"RATE == 3
 SUM > RATE
 VAL >= 6
@@ -1979,15 +1979,15 @@ INJECT OUT = 0
 LET VAL = 0
 LET SUM = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < RATE
-      SET VAL = VAL + RATE
+      VAL = VAL + RATE
    ELIF VAL == RATE
-      SET VAL = VAL * RATE
+      VAL = VAL * RATE
    ELSE
-      SET VAL = VAL + 1
+      VAL = VAL + 1
    PUSH OUT = VAL
-   SET SUM = SUM + VAL
+   SUM = SUM + VAL
 WAIT", @"RATE == 4
 SUM >= 29
 VAL <= 7
@@ -2004,15 +2004,15 @@ INJECT OUT = 0
 LET VAL = 0
 LET SUM = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < RATE
-      SET VAL = VAL + RATE
+      VAL = VAL + RATE
    ELIF VAL == RATE
-      SET VAL = VAL * RATE
+      VAL = VAL * RATE
    ELSE
-      SET VAL = VAL + 1
+      VAL = VAL + 1
    PUSH OUT = VAL
-   SET SUM = SUM + VAL
+   SUM = SUM + VAL
 WAIT", @"RATE == 3
 VAL <= 8
 SUM != 22
@@ -2030,9 +2030,9 @@ INJECT DONE = 0
 LET VAL = 0
 LET RET = 0
 LOOP LENGTH:QUE > 0
-   SET VAL = SHIFT:QUE
+   VAL = SHIFT:QUE
    IF VAL < CUT
-      SET RET = RET + 1
+      RET = RET + 1
       INJECT QUE = VAL + CUT
       SKIP
    ELIF VAL == CUT
@@ -2055,9 +2055,9 @@ INJECT DONE = 0
 LET VAL = 0
 LET RET = 0
 LOOP LENGTH:QUE > 0
-   SET VAL = SHIFT:QUE
+   VAL = SHIFT:QUE
    IF VAL < CUT
-      SET RET = RET + 1
+      RET = RET + 1
       INJECT QUE = VAL + CUT
       SKIP
    ELIF VAL == CUT
@@ -2080,9 +2080,9 @@ INJECT DONE = 0
 LET VAL = 0
 LET RET = 0
 LOOP LENGTH:QUE > 0
-   SET VAL = SHIFT:QUE
+   VAL = SHIFT:QUE
    IF VAL < CUT
-      SET RET = RET + 1
+      RET = RET + 1
       INJECT QUE = VAL + CUT
       SKIP
    ELIF VAL == CUT
@@ -2105,9 +2105,9 @@ INJECT DONE = 0
 LET VAL = 0
 LET RET = 0
 LOOP LENGTH:QUE > 0
-   SET VAL = SHIFT:QUE
+   VAL = SHIFT:QUE
    IF VAL < CUT
-      SET RET = RET + 1
+      RET = RET + 1
       INJECT QUE = VAL + CUT
       SKIP
    ELIF VAL == CUT
@@ -2130,9 +2130,9 @@ INJECT DONE = 0
 LET VAL = 0
 LET RET = 0
 LOOP LENGTH:QUE > 0
-   SET VAL = SHIFT:QUE
+   VAL = SHIFT:QUE
    IF VAL < CUT
-      SET RET = RET + 1
+      RET = RET + 1
       INJECT QUE = VAL + CUT
       SKIP
    ELIF VAL == CUT
@@ -2157,14 +2157,14 @@ INJECT OUT = 0
 LET VAL = 0
 LET SUM = 0
 LOOP LENGTH:STK > 0
-   SET VAL = POP:STK
+   VAL = POP:STK
    IF VAL < CUT
       INJECT OUT = VAL
    ELIF VAL == CUT
       PUSH OUT = VAL
    ELSE
       PUSH OUT = VAL
-   SET SUM = SUM + VAL
+   SUM = SUM + VAL
 WAIT", @"CUT == 4
 VAL < CUT
 SUM >= 9
@@ -2181,14 +2181,14 @@ INJECT OUT = 0
 LET VAL = 0
 LET SUM = 0
 LOOP LENGTH:STK > 0
-   SET VAL = POP:STK
+   VAL = POP:STK
    IF VAL < CUT
       INJECT OUT = VAL
    ELIF VAL == CUT
       PUSH OUT = VAL
    ELSE
       PUSH OUT = VAL
-   SET SUM = SUM + VAL
+   SUM = SUM + VAL
 WAIT", @"CUT == 5
 VAL >= 2
 SUM <= 12
@@ -2205,14 +2205,14 @@ INJECT OUT = 0
 LET VAL = 0
 LET SUM = 0
 LOOP LENGTH:STK > 0
-   SET VAL = POP:STK
+   VAL = POP:STK
    IF VAL < CUT
       INJECT OUT = VAL
    ELIF VAL == CUT
       PUSH OUT = VAL
    ELSE
       PUSH OUT = VAL
-   SET SUM = SUM + VAL
+   SUM = SUM + VAL
 WAIT", @"CUT == 6
 VAL <= 3
 SUM != 16
@@ -2229,14 +2229,14 @@ INJECT OUT = 0
 LET VAL = 0
 LET SUM = 0
 LOOP LENGTH:STK > 0
-   SET VAL = POP:STK
+   VAL = POP:STK
    IF VAL < CUT
       INJECT OUT = VAL
    ELIF VAL == CUT
       PUSH OUT = VAL
    ELSE
       PUSH OUT = VAL
-   SET SUM = SUM + VAL
+   SUM = SUM + VAL
 WAIT", @"CUT == 7
 VAL != 5
 SUM > CUT
@@ -2253,14 +2253,14 @@ INJECT OUT = 0
 LET VAL = 0
 LET SUM = 0
 LOOP LENGTH:STK > 0
-   SET VAL = POP:STK
+   VAL = POP:STK
    IF VAL < CUT
       INJECT OUT = VAL
    ELIF VAL == CUT
       PUSH OUT = VAL
    ELSE
       PUSH OUT = VAL
-   SET SUM = SUM + VAL
+   SUM = SUM + VAL
 WAIT", @"CUT == 8
 VAL < CUT
 SUM >= 21
@@ -2283,16 +2283,16 @@ LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      SET VAL = SHIFT:A
+      VAL = SHIFT:A
    ELIF LENGTH:B > 0
-      SET VAL = SHIFT:B
+      VAL = SHIFT:B
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       INJECT OUT = VAL
    ELSE
       PUSH OUT = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"CUT == 5
 VAL >= 5
 CNT <= 5
@@ -2314,16 +2314,16 @@ LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      SET VAL = SHIFT:A
+      VAL = SHIFT:A
    ELIF LENGTH:B > 0
-      SET VAL = SHIFT:B
+      VAL = SHIFT:B
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       INJECT OUT = VAL
    ELSE
       PUSH OUT = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"CUT == 6
 VAL <= 6
 CNT != 6
@@ -2345,16 +2345,16 @@ LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      SET VAL = SHIFT:A
+      VAL = SHIFT:A
    ELIF LENGTH:B > 0
-      SET VAL = SHIFT:B
+      VAL = SHIFT:B
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       INJECT OUT = VAL
    ELSE
       PUSH OUT = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"CUT == 7
 VAL != 8
 CNT < CUT
@@ -2376,16 +2376,16 @@ LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      SET VAL = SHIFT:A
+      VAL = SHIFT:A
    ELIF LENGTH:B > 0
-      SET VAL = SHIFT:B
+      VAL = SHIFT:B
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       INJECT OUT = VAL
    ELSE
       PUSH OUT = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"CUT == 8
 VAL >= CUT
 CNT >= 5
@@ -2407,16 +2407,16 @@ LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      SET VAL = SHIFT:A
+      VAL = SHIFT:A
    ELIF LENGTH:B > 0
-      SET VAL = SHIFT:B
+      VAL = SHIFT:B
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       INJECT OUT = VAL
    ELSE
       PUSH OUT = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"CUT == 9
 VAL >= 9
 CNT <= 5
@@ -2440,14 +2440,14 @@ INJECT A = 0
 LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < LOW
       INJECT A = VAL
    ELIF VAL < HIGH
       PUSH B = VAL
    ELSE
       PUSH C = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"HIGH == 10
 VAL <= 4
 CNT != 5
@@ -2469,14 +2469,14 @@ INJECT A = 0
 LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < LOW
       INJECT A = VAL
    ELIF VAL < HIGH
       PUSH B = VAL
    ELSE
       PUSH C = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"HIGH == 11
 VAL != 6
 CNT < HIGH
@@ -2498,14 +2498,14 @@ INJECT A = 0
 LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < LOW
       INJECT A = VAL
    ELIF VAL < HIGH
       PUSH B = VAL
    ELSE
       PUSH C = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"HIGH == 10
 VAL < HIGH
 CNT >= 4
@@ -2528,14 +2528,14 @@ INJECT A = 0
 LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < LOW
       INJECT A = VAL
    ELIF VAL < HIGH
       PUSH B = VAL
    ELSE
       PUSH C = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"HIGH == 11
 VAL >= 5
 CNT <= 4
@@ -2558,14 +2558,14 @@ INJECT A = 0
 LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:SRC > 0
-   SET VAL = SHIFT:SRC
+   VAL = SHIFT:SRC
    IF VAL < LOW
       INJECT A = VAL
    ELIF VAL < HIGH
       PUSH B = VAL
    ELSE
       PUSH C = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"HIGH == 10
 VAL <= 4
 CNT != 5
@@ -2587,9 +2587,9 @@ INJECT DONE = 0
 LET VAL = 0
 LET RET = 0
 LOOP LENGTH:QUE > 0
-   SET VAL = SHIFT:QUE
+   VAL = SHIFT:QUE
    IF VAL < CUT
-      SET RET = RET + 1
+      RET = RET + 1
       INJECT QUE = VAL + CUT
       IF RET >= LIM
          STOP
@@ -2616,9 +2616,9 @@ INJECT DONE = 0
 LET VAL = 0
 LET RET = 0
 LOOP LENGTH:QUE > 0
-   SET VAL = SHIFT:QUE
+   VAL = SHIFT:QUE
    IF VAL < CUT
-      SET RET = RET + 1
+      RET = RET + 1
       INJECT QUE = VAL + CUT
       IF RET >= LIM
          STOP
@@ -2645,9 +2645,9 @@ INJECT DONE = 0
 LET VAL = 0
 LET RET = 0
 LOOP LENGTH:QUE > 0
-   SET VAL = SHIFT:QUE
+   VAL = SHIFT:QUE
    IF VAL < CUT
-      SET RET = RET + 1
+      RET = RET + 1
       INJECT QUE = VAL + CUT
       IF RET >= LIM
          STOP
@@ -2674,9 +2674,9 @@ INJECT DONE = 0
 LET VAL = 0
 LET RET = 0
 LOOP LENGTH:QUE > 0
-   SET VAL = SHIFT:QUE
+   VAL = SHIFT:QUE
    IF VAL < CUT
-      SET RET = RET + 1
+      RET = RET + 1
       INJECT QUE = VAL + CUT
       IF RET >= LIM
          STOP
@@ -2703,9 +2703,9 @@ INJECT DONE = 0
 LET VAL = 0
 LET RET = 0
 LOOP LENGTH:QUE > 0
-   SET VAL = SHIFT:QUE
+   VAL = SHIFT:QUE
    IF VAL < CUT
-      SET RET = RET + 1
+      RET = RET + 1
       INJECT QUE = VAL + CUT
       IF RET >= LIM
          STOP
@@ -2737,14 +2737,14 @@ LET SUM = 0
 LET CNT = 0
 LET MAX = 0
 LOOP LENGTH:DATA > 0
-   SET VAL = SHIFT:DATA
-   SET SUM = SUM + VAL
-   SET CNT = CNT + 1
+   VAL = SHIFT:DATA
+   SUM = SUM + VAL
+   CNT = CNT + 1
    IF VAL < CUT
       INJECT LOW = VAL
    ELIF VAL > MAX
       PUSH HIGH = VAL
-      SET MAX = VAL
+      MAX = VAL
    ELSE
       PUSH HIGH = VAL
 WAIT", @"CUT == 6
@@ -2770,14 +2770,14 @@ LET SUM = 0
 LET CNT = 0
 LET MAX = 0
 LOOP LENGTH:DATA > 0
-   SET VAL = SHIFT:DATA
-   SET SUM = SUM + VAL
-   SET CNT = CNT + 1
+   VAL = SHIFT:DATA
+   SUM = SUM + VAL
+   CNT = CNT + 1
    IF VAL < CUT
       INJECT LOW = VAL
    ELIF VAL > MAX
       PUSH HIGH = VAL
-      SET MAX = VAL
+      MAX = VAL
    ELSE
       PUSH HIGH = VAL
 WAIT", @"CUT == 7
@@ -2803,14 +2803,14 @@ LET SUM = 0
 LET CNT = 0
 LET MAX = 0
 LOOP LENGTH:DATA > 0
-   SET VAL = SHIFT:DATA
-   SET SUM = SUM + VAL
-   SET CNT = CNT + 1
+   VAL = SHIFT:DATA
+   SUM = SUM + VAL
+   CNT = CNT + 1
    IF VAL < CUT
       INJECT LOW = VAL
    ELIF VAL > MAX
       PUSH HIGH = VAL
-      SET MAX = VAL
+      MAX = VAL
    ELSE
       PUSH HIGH = VAL
 WAIT", @"CUT == 8
@@ -2836,14 +2836,14 @@ LET SUM = 0
 LET CNT = 0
 LET MAX = 0
 LOOP LENGTH:DATA > 0
-   SET VAL = SHIFT:DATA
-   SET SUM = SUM + VAL
-   SET CNT = CNT + 1
+   VAL = SHIFT:DATA
+   SUM = SUM + VAL
+   CNT = CNT + 1
    IF VAL < CUT
       INJECT LOW = VAL
    ELIF VAL > MAX
       PUSH HIGH = VAL
-      SET MAX = VAL
+      MAX = VAL
    ELSE
       PUSH HIGH = VAL
 WAIT", @"CUT == 9
@@ -2869,14 +2869,14 @@ LET SUM = 0
 LET CNT = 0
 LET MAX = 0
 LOOP LENGTH:DATA > 0
-   SET VAL = SHIFT:DATA
-   SET SUM = SUM + VAL
-   SET CNT = CNT + 1
+   VAL = SHIFT:DATA
+   SUM = SUM + VAL
+   CNT = CNT + 1
    IF VAL < CUT
       INJECT LOW = VAL
    ELIF VAL > MAX
       PUSH HIGH = VAL
-      SET MAX = VAL
+      MAX = VAL
    ELSE
       PUSH HIGH = VAL
 WAIT", @"CUT == 10
@@ -2905,16 +2905,16 @@ LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      SET VAL = SHIFT:A
+      VAL = SHIFT:A
    ELIF LENGTH:B > 0
-      SET VAL = SHIFT:B
+      VAL = SHIFT:B
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       PUSH OUT = VAL
    ELSE
       INJECT OUT = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"CUT == 7
 VAL >= 8
 CNT <= 6
@@ -2936,16 +2936,16 @@ LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      SET VAL = SHIFT:A
+      VAL = SHIFT:A
    ELIF LENGTH:B > 0
-      SET VAL = SHIFT:B
+      VAL = SHIFT:B
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       PUSH OUT = VAL
    ELSE
       INJECT OUT = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"CUT == 8
 VAL <= 9
 CNT != 7
@@ -2967,16 +2967,16 @@ LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      SET VAL = SHIFT:A
+      VAL = SHIFT:A
    ELIF LENGTH:B > 0
-      SET VAL = SHIFT:B
+      VAL = SHIFT:B
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       PUSH OUT = VAL
    ELSE
       INJECT OUT = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"CUT == 9
 VAL != 11
 CNT < CUT
@@ -2998,16 +2998,16 @@ LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      SET VAL = SHIFT:A
+      VAL = SHIFT:A
    ELIF LENGTH:B > 0
-      SET VAL = SHIFT:B
+      VAL = SHIFT:B
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       PUSH OUT = VAL
    ELSE
       INJECT OUT = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"CUT == 10
 VAL > CUT
 CNT >= 6
@@ -3029,16 +3029,16 @@ LET VAL = 0
 LET CNT = 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      SET VAL = SHIFT:A
+      VAL = SHIFT:A
    ELIF LENGTH:B > 0
-      SET VAL = SHIFT:B
+      VAL = SHIFT:B
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       PUSH OUT = VAL
    ELSE
       INJECT OUT = VAL
-   SET CNT = CNT + 1
+   CNT = CNT + 1
 WAIT", @"CUT == 11
 VAL >= 12
 CNT <= 6
@@ -3061,12 +3061,12 @@ LET VAL = 0
 LET PCNT = 0
 LOOP LENGTH:NORM > 0 OR LENGTH:PRIO > 0
    IF LENGTH:PRIO > 0
-      SET VAL = SHIFT:PRIO
-      SET PCNT = PCNT + 1
+      VAL = SHIFT:PRIO
+      PCNT = PCNT + 1
    ELIF LENGTH:NORM > 0
-      SET VAL = SHIFT:NORM
+      VAL = SHIFT:NORM
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       PUSH DONE = VAL
    ELSE
@@ -3091,12 +3091,12 @@ LET VAL = 0
 LET PCNT = 0
 LOOP LENGTH:NORM > 0 OR LENGTH:PRIO > 0
    IF LENGTH:PRIO > 0
-      SET VAL = SHIFT:PRIO
-      SET PCNT = PCNT + 1
+      VAL = SHIFT:PRIO
+      PCNT = PCNT + 1
    ELIF LENGTH:NORM > 0
-      SET VAL = SHIFT:NORM
+      VAL = SHIFT:NORM
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       PUSH DONE = VAL
    ELSE
@@ -3121,12 +3121,12 @@ LET VAL = 0
 LET PCNT = 0
 LOOP LENGTH:NORM > 0 OR LENGTH:PRIO > 0
    IF LENGTH:PRIO > 0
-      SET VAL = SHIFT:PRIO
-      SET PCNT = PCNT + 1
+      VAL = SHIFT:PRIO
+      PCNT = PCNT + 1
    ELIF LENGTH:NORM > 0
-      SET VAL = SHIFT:NORM
+      VAL = SHIFT:NORM
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       PUSH DONE = VAL
    ELSE
@@ -3151,12 +3151,12 @@ LET VAL = 0
 LET PCNT = 0
 LOOP LENGTH:NORM > 0 OR LENGTH:PRIO > 0
    IF LENGTH:PRIO > 0
-      SET VAL = SHIFT:PRIO
-      SET PCNT = PCNT + 1
+      VAL = SHIFT:PRIO
+      PCNT = PCNT + 1
    ELIF LENGTH:NORM > 0
-      SET VAL = SHIFT:NORM
+      VAL = SHIFT:NORM
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       PUSH DONE = VAL
    ELSE
@@ -3181,12 +3181,12 @@ LET VAL = 0
 LET PCNT = 0
 LOOP LENGTH:NORM > 0 OR LENGTH:PRIO > 0
    IF LENGTH:PRIO > 0
-      SET VAL = SHIFT:PRIO
-      SET PCNT = PCNT + 1
+      VAL = SHIFT:PRIO
+      PCNT = PCNT + 1
    ELIF LENGTH:NORM > 0
-      SET VAL = SHIFT:NORM
+      VAL = SHIFT:NORM
    ELSE
-      SET VAL = 0
+      VAL = 0
    IF VAL < CUT
       PUSH DONE = VAL
    ELSE
@@ -3211,16 +3211,16 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:IN > 0
-   SET VAL = SHIFT:IN
+   VAL = SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL < CUT
       INJECT DONE = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       PUSH DONE = VAL
-      SET SUM = SUM + VAL
-   SET CNT = CNT + 1
+      SUM = SUM + VAL
+   CNT = CNT + 1
 WAIT", @"CUT == 6
 VAL != 1
 SUM > CUT
@@ -3240,16 +3240,16 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:IN > 0
-   SET VAL = SHIFT:IN
+   VAL = SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL < CUT
       INJECT DONE = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       PUSH DONE = VAL
-      SET SUM = SUM + VAL
-   SET CNT = CNT + 1
+      SUM = SUM + VAL
+   CNT = CNT + 1
 WAIT", @"CUT == 7
 VAL < CUT
 SUM >= 10
@@ -3269,16 +3269,16 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:IN > 0
-   SET VAL = SHIFT:IN
+   VAL = SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL < CUT
       INJECT DONE = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       PUSH DONE = VAL
-      SET SUM = SUM + VAL
-   SET CNT = CNT + 1
+      SUM = SUM + VAL
+   CNT = CNT + 1
 WAIT", @"CUT == 8
 VAL >= 0
 SUM <= 12
@@ -3298,16 +3298,16 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:IN > 0
-   SET VAL = SHIFT:IN
+   VAL = SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL < CUT
       INJECT DONE = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       PUSH DONE = VAL
-      SET SUM = SUM + VAL
-   SET CNT = CNT + 1
+      SUM = SUM + VAL
+   CNT = CNT + 1
 WAIT", @"CUT == 9
 VAL <= 0
 SUM != 15
@@ -3327,16 +3327,16 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:IN > 0
-   SET VAL = SHIFT:IN
+   VAL = SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL < CUT
       INJECT DONE = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       PUSH DONE = VAL
-      SET SUM = SUM + VAL
-   SET CNT = CNT + 1
+      SUM = SUM + VAL
+   CNT = CNT + 1
 WAIT", @"CUT == 10
 VAL != 1
 SUM > CUT
@@ -3360,15 +3360,15 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:IN > 0
-   SET VAL = SHIFT:IN
+   VAL = SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL >= CUT
       PUSH GOOD = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       INJECT RET = VAL + CUT
-      SET CNT = CNT + 1
+      CNT = CNT + 1
 WAIT", @"CUT == 6
 VAL < CUT
 SUM >= 8
@@ -3391,15 +3391,15 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:IN > 0
-   SET VAL = SHIFT:IN
+   VAL = SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL >= CUT
       PUSH GOOD = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       INJECT RET = VAL + CUT
-      SET CNT = CNT + 1
+      CNT = CNT + 1
 WAIT", @"CUT == 7
 VAL >= 0
 SUM <= 9
@@ -3422,15 +3422,15 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:IN > 0
-   SET VAL = SHIFT:IN
+   VAL = SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL >= CUT
       PUSH GOOD = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       INJECT RET = VAL + CUT
-      SET CNT = CNT + 1
+      CNT = CNT + 1
 WAIT", @"CUT == 6
 VAL <= 0
 SUM != 11
@@ -3453,15 +3453,15 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:IN > 0
-   SET VAL = SHIFT:IN
+   VAL = SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL >= CUT
       PUSH GOOD = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       INJECT RET = VAL + CUT
-      SET CNT = CNT + 1
+      CNT = CNT + 1
 WAIT", @"CUT == 7
 VAL != 1
 SUM > CUT
@@ -3484,15 +3484,15 @@ LET VAL = 0
 LET SUM = 0
 LET CNT = 0
 LOOP LENGTH:IN > 0
-   SET VAL = SHIFT:IN
+   VAL = SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL >= CUT
       PUSH GOOD = VAL
-      SET SUM = SUM + VAL
+      SUM = SUM + VAL
    ELSE
       INJECT RET = VAL + CUT
-      SET CNT = CNT + 1
+      CNT = CNT + 1
 WAIT", @"CUT == 6
 VAL < CUT
 SUM >= 12

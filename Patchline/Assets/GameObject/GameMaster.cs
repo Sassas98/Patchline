@@ -57,8 +57,8 @@ public class GameMaster : MonoBehaviour
 
     private void BtnEffect() 
     {
-        var rnd = UnityEngine.Random.Range(0, 3);
-        sfxSource.PlayOneShot(rnd == 0 ? btn1 : rnd == 1 ? btn2 : btn3);
+        //var rnd = UnityEngine.Random.Range(0, 3);
+        sfxSource.PlayOneShot(btn1);
     }
     private void CancelEffect() => sfxSource.PlayOneShot(cancel);
     private void FailEffect() => sfxSource.PlayOneShot(fail);
@@ -384,7 +384,7 @@ public class GameMaster : MonoBehaviour
                 var value = GameObject.Find("Set_Dropdown").Childrens()[0]
                     .GetComponent<TextMeshProUGUI>().text.Trim();
                 var input = GameObject.Find("set_input").GetComponent<TextMeshProUGUI>().text.Trim();
-                AddOnCodeWork($"{cmd.ToString().ToUpper()} {value} = {input}");
+                AddOnCodeWork((cmd == CMD.Set ? string.Empty : cmd.ToString().ToUpper() + " ") + $"{value} = {input}");
                 set_modal.SetActive(false);
                 Global.State.Energia -= cmd.DaiCosto();
                 UpdateInfoLabels();
@@ -598,7 +598,7 @@ public class GameMaster : MonoBehaviour
     {
         set_modal.SetActive(true);
         var input = GameObject.Find("set_input").GetComponent<TextMeshProUGUI>();
-        GameObject.Find("CMD").GetComponent<TextMeshProUGUI>().SetText(cmd.ToString().ToUpper());
+        GameObject.Find("CMD").GetComponent<TextMeshProUGUI>().SetText(cmd == CMD.Set ? "" : cmd.ToString().ToUpper());
         input.text = "0";
         var content = GameObject.Find("set_content");
         content.Childrens().ForEach(e => Destroy(e));
