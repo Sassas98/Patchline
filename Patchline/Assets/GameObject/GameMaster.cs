@@ -75,8 +75,8 @@ public class GameMaster : MonoBehaviour
             Global.State.Vite > 2 ? theme :
             Global.State.Vite == 2 ? error1 :
             Global.State.StepCorrente < 4 ? error2 :
-            Global.State.LivelloCorrente % 5 == 0 ? so_verify :
-            Global.State.LivelloCorrente % 3 == 0 ? help :
+            (Global.State.LivelloCorrente + 1) % 5 == 0 ? so_verify :
+            (Global.State.LivelloCorrente + 1) % 3 == 0 ? help :
             senior;
         musicSource.Play();
     }
@@ -170,8 +170,9 @@ public class GameMaster : MonoBehaviour
         GameObject.Find("CONTINUE").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (++Global.State.StepCorrente > 4) 
-                { 
+                if (++Global.State.StepCorrente > 4)
+                {
+                    Global.State.ResetRimasti++;
                     Global.State.LivelloCorrente++; 
                     Global.State.StepCorrente = 0; 
                 }
@@ -185,7 +186,8 @@ public class GameMaster : MonoBehaviour
                 CancelEffect();
                 if (running || string.IsNullOrWhiteSpace(work)) return;
                 var lines = work.Split("\n");
-                Global.State.Energia += Enum.Parse<CMD>(lines[lines.Length - 2].Trim().Split(" ")[0], true).DaiCosto();
+                var cmd = Enum.TryParse<CMD>(lines[lines.Length - 2].Trim().Split(" ")[0], true, out var result) ? result : CMD.Set;
+                Global.State.Energia += cmd.DaiCosto();
                 UpdateInfoLabels();
                 work = lines.Length < 3 ? string.Empty :
                 string.Join("", lines[..^2].Select(x => x + "\n"));
@@ -198,7 +200,7 @@ public class GameMaster : MonoBehaviour
         GameObject.Find("<--").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                CancelEffect();
+                BtnEffect();
                 if (running || string.IsNullOrWhiteSpace(work)) return;
                 var lines = work.Split("\n");
                 var spaces = lines.Last().Length - lines.Last().TrimStart().Length;
@@ -475,7 +477,7 @@ public class GameMaster : MonoBehaviour
     private void ExecuteRun()
     {
         var data = exec.GetData();
-        if (data.StepCount >= 100)
+        if (data.StepCount >= 300)
         {
             data.Memory.InError = true;
             data.Memory.ErrorMessage = "Loop detected";
@@ -502,24 +504,8 @@ public class GameMaster : MonoBehaviour
             }
             else
             {
-                if(--Global.State.Vite <= 0)
-                {
-                    Global.State.StepCorrente = 0;
-                    Global.State.Energia = 0;
-                    Global.State.Vite = 3;
-                    Global.Salva();
-#if UNITY_EDITOR
-                    UnityEditor.EditorApplication.isPlaying = false;
-#else
-                    Application.Quit();
-#endif
-                }
-                UpdateLegacyLine();
-                UpdateWorkCode();
-                UpdateInfoLabels();
-                ChangeMusic();
                 FailEffect();
-                Global.Salva();
+                Invoke(nameof(HandleLose), 2);
             }
             return;
         }
@@ -529,8 +515,33 @@ public class GameMaster : MonoBehaviour
         exec.MakeOneStep();
         if(run_time > 0.2f)
             run_time -= 0.06f;
+        else if (run_time > 0.05f)
+            run_time -= 0.005f;
         Invoke(nameof(ExecuteRun), run_time);
     }
+    private void HandleLose()
+    {
+        if (--Global.State.Vite <= 0)
+        {
+            Global.State.StepCorrente = 0;
+            if (--Global.State.ResetRimasti <= 0)
+            {
+                Global.State.LivelloCorrente = Math.Max(0, Global.State.LivelloCorrente - 3);
+                Global.State.ResetRimasti = 3;
+            }
+            Global.State.Energia = 0;
+            Global.State.Vite = 3;
+            Global.State.ResetCounter++;
+            Global.Salva();
+            SetUpLevel();
+        }
+        UpdateLegacyLine();
+        UpdateWorkCode();
+        UpdateInfoLabels();
+        ChangeMusic();
+        Global.Salva();
+    }
+
     private string MarkText(string text, int line, bool patch)
     {
         string color = patch ? "#1EFC1E" : "#FB3640";

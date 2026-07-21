@@ -20,7 +20,6 @@ public class SaveData
     public int Crediti = 0;
     public int ResetCounter = 0;
     public int ResetRimasti = 3;
-    public string NomeGiocatore = "";
 }
 
 public class Global : MonoBehaviour
@@ -34,7 +33,6 @@ public class Global : MonoBehaviour
     public int Crediti { get; set; } = 0;
     public int ResetCounter { get; set; } = 0;
     public int ResetRimasti { get; set; } = 3;
-    public string NomeGiocatore { get; set; } = "";
 
     private void Awake()
     {
@@ -60,7 +58,6 @@ public class Global : MonoBehaviour
             ResetRimasti = State.ResetRimasti,
             Energia = State.Energia,
             Vite = State.Vite,
-            NomeGiocatore = State.NomeGiocatore,
             LivelloCorrente = State.LivelloCorrente,
             StepCorrente = State.StepCorrente,
         };
@@ -74,6 +71,7 @@ public class Global : MonoBehaviour
 
     private static bool Carica()
     {
+        //Debug.Log(SavePath);
         if (!EsisteSalvataggio())
         {
             Debug.Log("Nessun salvataggio trovato.");
@@ -89,7 +87,6 @@ public class Global : MonoBehaviour
         State.Crediti = dati.Crediti;
         State.Energia = dati.Energia;
         State.Vite = dati.Vite;
-        State.NomeGiocatore = dati.NomeGiocatore;
         State.StepCorrente = dati.StepCorrente;
 
         Debug.Log("Partita caricata.");

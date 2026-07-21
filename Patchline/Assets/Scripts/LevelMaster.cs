@@ -208,64 +208,48 @@ LOOP I < LIM
 WAIT", @"LIM == 5
 I <= 5
 SUM != 16", 12),
-            L(@"LET BASE = 2
-LET LIM = 4
+            L(@"LET LIM = 4
 LET I = 0
-LET PROD = 1
+LET PROD = 2
+WAIT
+WAIT
+WAIT
+WAIT
+WAIT
 LOOP I < LIM
    I = I + 1
-   PROD = PROD * BASE
-WAIT", @"BASE == 3
-PROD != 82
-I > BASE
-LIM != 5", 10),
-            L(@"LET STEP = 1
-LET A = 0
-LET B = 8
-LET CNT = 0
-LOOP A < B
-   A = A + STEP
-   B = B - STEP
-   CNT = CNT + 1
-WAIT", @"STEP == 2
-CNT >= STEP
-A >= 4
-B <= 4", 5),
-            L(@"LET WIDE = 3
-LET HIGH = 2
-LET X = 0
+   PROD = PROD * PROD", @"PROD == 16", 10),
+            L(@"LET A = 8
+LET B = 1
+WAIT
+WAIT
+WAIT
+LOOP A != B
+   A = A + 1
+   B = B - 1
+WAIT
+WAIT", @"A == B", 5),
+            L(@"LET X = 10
 LET Y = 0
-LET CELL = 0
-LOOP X < WIDE
-   Y = 0
-   LOOP Y < HIGH
-      CELL = CELL + X
-      Y = Y + 1
+LET Z = 0
+LOOP X > Y
+   Y = X - Y
+   LOOP Y > Z
+      Z = Y - Z
+      Y = X - Z
    X = X + 1
-WAIT", @"HIGH == 3
-Y >= 3
-CELL <= 9
-X != 4
-WIDE <= HIGH", 10),
-            L(@"LET WIDE = 3
-LET HIGH = 3
-LET X = 0
-LET Y = 0
-LET SUM = 0
-LET BIAS = 1
-LOOP X < WIDE
-   Y = 0
-   LOOP Y < HIGH
-      SUM = SUM + X
-      SUM = SUM + BIAS
+WAIT", @"Y < 3
+X != Y", 10),
+            L(@"LET Y = 0
+LET Z = 0
+LOOP X > 0
+   LOOP Y < X
       Y = Y + 1
-   X = X + 1
-WAIT", @"BIAS == 2
-SUM <= 27
-X != 4
-Y > BIAS
-HIGH > BIAS
-WIDE >= 2", 17),
+      Z = Z - 1
+   X = X - 1", @"X > 10
+Y == 10
+Z != 10
+[ 35 ]", 9),
 
             // Level 5 - STOP basics
             L(@"LET ADD = 2

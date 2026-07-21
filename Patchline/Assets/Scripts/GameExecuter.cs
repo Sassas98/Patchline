@@ -44,7 +44,9 @@ namespace Assets.Scripts
                     var result = new GoalResult
                     {
                         Label = g,
-                        Result = handler.HandleCondition(g.Split(" "))
+                        Result = g.StartsWith("[") && g.EndsWith("]") ? 
+                            StepCount >= int.Parse(g[2..^2]) :
+                            handler.HandleCondition(g.Split(" "))
                     };
                     if(Memory.InError && !error)
                     {

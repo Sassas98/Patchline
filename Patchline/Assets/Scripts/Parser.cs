@@ -12,7 +12,7 @@ public class Parser : ConditionReader
             if(string.IsNullOrWhiteSpace(line)) continue;
             int ls = (line.Length - line.TrimStart().Length) / 3;
             var parts = line.Trim().ToLower().Split(' ');
-            var cmd = cmd.Set;
+            var cmd = CMD.Set;
             try
             {
                 cmd = (CMD)Enum.Parse(typeof(CMD), parts[0], true);
