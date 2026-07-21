@@ -80,57 +80,43 @@ SIDE <= 10", 23),
             L(@"LET BASE = 5
 SET BASE = BASE + 1
 WAIT", @"COPY == 5
-BASE >= 5", 13),
+BASE >= 5", 23),
             L(@"LET SEED = 6
 SET SEED = SEED + 1
 WAIT
 LET D0 = 0", @"SNAP == 6
 SEED != 8
-D0 < SNAP", 0),
+D0 < SNAP", 5),
             L(@"LET RATE = 7
 SET RATE = RATE + 1
 WAIT
 LET D0 = 1
 SET D0 = D0 + 1
 LET D1 = 2
-LET D2 = 3", @"GAIN == 7
-RATE > D2
-D0 <= 3
-D1 >= 1
-D2 != 4", 0),
+SET D0 = D0 + 2", @"GAIN == 7
+RATE > D0
+D1 <= 1
+D0 != 4", 0),
             L(@"LET LIM = 8
 SET LIM = LIM + 1
 WAIT
+WAIT
+WAIT
 LET D0 = 2
-LET D1 = 3
-SET D1 = D1 + 1
-LET D2 = 4
 LET D3 = 5
-SET D3 = D3 + 1
-LET D4 = 6", @"SAVE == 8
-LIM > D2
-D0 >= 1
-D1 != 5
-D2 < SAVE
-D3 > D0", 0),
+SET D3 = D3 + 1", @"SAVE == 8
+D0 == 5
+D3 < D0", 10),
             L(@"LET MODE = 9
 SET MODE = MODE + 1
 WAIT
 LET D0 = 3
-SET D0 = D0 + 1
+SET D0 = D0 + 2
 LET D1 = 4
-LET D2 = 5
-SET D2 = D2 + 1
-LET D3 = 6
-LET D4 = 7
-SET D4 = D4 + 1
 SET D0 = D0 + 2", @"MARK == 9
-MODE >= 9
+MODE == 9
 D0 != 7
-D1 < MODE
-D2 <= D0
-D3 <= 7
-D4 >= 7", 13),
+D1 > MODE", 13),
 
             // Level 2 - LET expressions
             L(@"LET A = 6
@@ -138,100 +124,66 @@ LET B = 8
 SET A = A + 1
 WAIT", @"SUM == 14
 A != 8
-B < SUM", 14),
+B < SUM", 24),
             L(@"LET X = 7
 LET Y = 9
 SET X = X + 1
 WAIT
-LET D0 = 7", @"DIFF == -2
-X > D0
+LET D0 = 7", @"X > D0
 Y > DIFF
 D0 <= 8", 0),
             L(@"LET BASE = 8
 LET RATE = 10
 SET BASE = BASE + 1
 WAIT
-LET D0 = 8
-LET D1 = 0
-SET D1 = D1 + 1
-LET D2 = 1", @"PROD == 80
+LET D0 = 8", @"PROD == 80
 BASE > D0
 RATE >= 9
-D0 != 9
-D1 < PROD", 0),
+D0 != 8", 10),
             L(@"LET WIDE = 9
 LET TALL = 11
 SET WIDE = WIDE + 1
 WAIT
-LET D0 = 0
-SET D0 = D0 + 1
-LET D1 = 1
-LET D2 = 2
-SET D2 = D2 + 1
-LET D3 = 3
-LET D4 = 4", @"AREA == 99
-TALL >= 10
-WIDE != 11
-D0 < D4
-D1 < AREA
-D2 <= 4", 2),
-            L(@"LET LEFT = 10
-LET RITE = 12
+SET TEMP = TEMP - 1", @"AREA == 99
+TALL < 11
+WIDE >= 11", 2),
+            L(@"SET LEFT = 10
+SET RITE = 12
 SET LEFT = LEFT + 1
 WAIT
-LET D0 = 1
-LET D1 = 2
-SET D1 = D1 + 1
-LET D2 = 3
-LET D3 = 4
-SET D3 = D3 + 1
-LET D4 = 5
-SET D0 = D0 + 1
-SET D1 = D1 + 2", @"SPAN == -2
-LEFT >= 10
-RITE != 13
-D0 < LEFT
-D1 <= 6
-D2 >= 2
-D3 != 6", 14),
+SET D0 = 1
+SET D1 = D0 + 1
+SET D2 = D1 + 1
+SET D3 = D2 + 1", @"SPAN == -2", 24),
 
             // Level 3 - LOOP basics
-            L(@"LET LIM = 3
-LET CNT = 0
-LOOP CNT < LIM
+            L(@"LET CNT = 0
+LOOP CNT < 10
    SET CNT = CNT + 1
-WAIT", @"LIM == 5
-CNT >= 5", 18),
+WAIT", @"CNT <= 5", 18),
             L(@"LET RATE = 2
-LET LIM = 4
-LET CNT = 0
-LET SUM = 0
+SET LIM = 10
 LOOP CNT < LIM
    SET CNT = CNT + 1
    SET SUM = SUM + RATE
 WAIT", @"RATE == 3
-SUM <= 12
-CNT != 5
-LIM <= 5", 10),
-            L(@"LET STEP = 1
-LET CNT = 6
+SUM == 30
+CNT == 10", 10),
+            L(@"LET CNT = 6
 LET USED = 0
 LOOP CNT > 0
-   SET CNT = CNT - STEP
+   SET CNT = CNT - 1
    SET USED = USED + 1
-WAIT", @"STEP == 2
-USED != 4
-CNT < STEP", 5),
+WAIT", @"USED == 9
+CNT == 9000", 5),
             L(@"LET LIM = 4
 LET STEP = 2
-LET CNT = 0
-LET SUM = 0
-LOOP CNT < LIM
-   SET CNT = CNT + 1
+LET TEMP = 0
+LOOP TEMP < LIM
+   SET TEMP = TEMP + 1
    SET SUM = SUM + STEP
-SET SUM = SUM + CNT
-WAIT", @"LIM == 6
-CNT >= LIM
+SET SUM = SUM + TEMP
+WAIT", @"TEMP >= LIM
 SUM >= 18
 STEP < SUM", 10),
             L(@"LET WIDE = 2
@@ -245,7 +197,7 @@ LOOP X < WIDE
       SET CELL = CELL + 1
       SET Y = Y + 1
    SET X = X + 1
-WAIT", @"WIDE == 3
+WAIT", @"WIDE == -2
 X >= 3
 CELL <= 9
 Y != 4
