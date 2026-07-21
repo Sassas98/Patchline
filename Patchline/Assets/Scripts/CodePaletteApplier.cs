@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 public class CodePaletteApplier
 {
-	private string Keyword, Simboli, Variabili, Numeri;
+	private string Keyword,  Simboli, Variabili, Numeri;
 
 	public void SetPalette(string Keyword, string Simboli, string Variabili, string Numeri)
 	{
@@ -51,9 +51,8 @@ public class CodePaletteApplier
 	{
 		return word.ToLower() == "or" 
 			|| word.ToLower() == "and" 
-			|| !word.All(c => char.IsLetter(c));
+			|| !word.Any(c => char.IsLetter(c));
 	}
-
 	private bool IsCMD(string word)
 	{
 		return Enum.GetNames(typeof(CMD))

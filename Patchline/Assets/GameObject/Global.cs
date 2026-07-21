@@ -10,13 +10,17 @@ using UnityEngine.UI;
 using UnityEngine.Windows;
 using File = System.IO.File;
 
+[Serializable]
 public class SaveData
 {
-    public int LivelloCorrente { get; set; } = 0;
-    public int Crediti { get; set; } = 0;
-    public int ResetCounter { get; set; } = 0;
-    public int ResetRimasti { get; set; } = 3;
-    public string NomeGiocatore { get; set; } = "";
+    public int LivelloCorrente = 0;
+    public int StepCorrente = 0;
+    public int Energia = 0;
+    public int Vite = 0;
+    public int Crediti = 0;
+    public int ResetCounter = 0;
+    public int ResetRimasti = 3;
+    public string NomeGiocatore = "";
 }
 
 public class Global : MonoBehaviour
@@ -24,6 +28,9 @@ public class Global : MonoBehaviour
     public static Global State { get; private set; }
 
     public int LivelloCorrente { get; set; } = 0;
+    public int StepCorrente { get; set; } = 0;
+    public int Energia { get; set; } = 0;
+    public int Vite { get; set; } = 0;
     public int Crediti { get; set; } = 0;
     public int ResetCounter { get; set; } = 0;
     public int ResetRimasti { get; set; } = 3;
@@ -51,8 +58,11 @@ public class Global : MonoBehaviour
             Crediti = State.Crediti,
             ResetCounter = State.ResetCounter,
             ResetRimasti = State.ResetRimasti,
+            Energia = State.Energia,
+            Vite = State.Vite,
             NomeGiocatore = State.NomeGiocatore,
-            LivelloCorrente = State.LivelloCorrente
+            LivelloCorrente = State.LivelloCorrente,
+            StepCorrente = State.StepCorrente,
         };
 
         string json = JsonUtility.ToJson(dati, true);
@@ -73,11 +83,14 @@ public class Global : MonoBehaviour
         string json = System.IO.File.ReadAllText(SavePath);
         SaveData dati = JsonUtility.FromJson<SaveData>(json);
 
-        State.LivelloCorrente = dati.LivelloCorrente;
+        State.LivelloCorrente = Math.Max(dati.LivelloCorrente, 0);
         State.ResetCounter = dati.ResetCounter;
         State.ResetRimasti = dati.ResetRimasti;
         State.Crediti = dati.Crediti;
+        State.Energia = dati.Energia;
+        State.Vite = dati.Vite;
         State.NomeGiocatore = dati.NomeGiocatore;
+        State.StepCorrente = dati.StepCorrente;
 
         Debug.Log("Partita caricata.");
         return true;

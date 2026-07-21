@@ -16,10 +16,6 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class GameMaster : MonoBehaviour
 {
-    private int lvl = 5;
-    private int step = 0;
-    private int lives = 3;
-    private int energy = 0;
     private int line_counter = 0;
 
     private readonly string[] energy_colors = { "#3BC55C", "#c5ac3b", "#c53963" };
@@ -47,12 +43,47 @@ public class GameMaster : MonoBehaviour
     [SerializeField] private GameObject btnOption;
     [SerializeField] private GameObject set_modal;
     [SerializeField] private GameObject if_modal;
+    [SerializeField] private AudioClip theme, error1, error2, help, so_verify, senior
+                                     , btn1, btn2, btn3, cancel, fail, step1, step2, success;
+    private AudioSource musicSource;
+    private AudioSource sfxSource;
+    private bool stepflag = false;
 
     private void UpdateInfoLabels()
     {
-        //lv.SetText($"LV {lvl} - {step}");
-        runs.SetText(MarkText($"RUNS [{lives}]", energy_colors[lives > 2 ? 0 : lives == 2 ? 1 : 2]));
-        ene.SetText(MarkText($"ENERGY [{energy}]", energy_colors[energy >= 10 ? 0 : energy >= 5 ? 1 : 2]));
+        runs.SetText(MarkText($"RUNS [{Global.State.Vite}]", energy_colors[Global.State.Vite > 2 ? 0 : Global.State.Vite == 2 ? 1 : 2]));
+        ene.SetText(MarkText($"ENERGY [{Global.State.Energia}]", energy_colors[Global.State.Energia >= 10 ? 0 : Global.State.Energia >= 5 ? 1 : 2]));
+    }
+
+    private void BtnEffect() 
+    {
+        var rnd = UnityEngine.Random.Range(0, 3);
+        sfxSource.PlayOneShot(rnd == 0 ? btn1 : rnd == 1 ? btn2 : btn3);
+    }
+    private void CancelEffect() => sfxSource.PlayOneShot(cancel);
+    private void FailEffect() => sfxSource.PlayOneShot(fail);
+    private void SuccessEffect() => sfxSource.PlayOneShot(success);
+    private void StepEffect()
+    {
+        sfxSource.PlayOneShot(stepflag ? step1 : step2);
+        stepflag = !stepflag;
+    }
+
+    private void ChangeMusic()
+    {
+        musicSource.clip =
+            Global.State.Vite > 2 ? theme :
+            Global.State.Vite == 2 ? error1 :
+            Global.State.StepCorrente < 4 ? error2 :
+            Global.State.LivelloCorrente % 5 == 0 ? so_verify :
+            Global.State.LivelloCorrente % 3 == 0 ? help :
+            senior;
+        musicSource.Play();
+    }
+
+    public void StopMusic()
+    {
+        musicSource.Stop();
     }
 
     private string MarkText(string text, string color)
@@ -63,14 +94,14 @@ public class GameMaster : MonoBehaviour
     public void UpdatePalette()
     {
         (string Keyword, string Simboli, string Variabili, string Numeri)
-            = palette[lives == 3 ? 0 : lives == 2 ? 1 : 2];
+            = palette[Global.State.Vite == 3 ? 0 : Global.State.Vite == 2 ? 1 : 2];
         palette_applier.SetPalette(Keyword, Simboli, Variabili, Numeri);
     }
 
     private void UpdateLegacyLine()
     {
         UpdatePalette();
-        std.SetText(palette_applier.MarkText(text, line_counter - 1, select_color));
+        std.SetText(palette_applier.MarkText(text, line_counter - 1, "#46F0FF"));
     }
 
     private void UpdateWorkCode()
@@ -79,17 +110,43 @@ public class GameMaster : MonoBehaviour
         wk.SetText(palette_applier.MarkText(work, -1, select_color));
     }
 
+    public void SetUpLevel()
+    {
+        HandleButtonInLevel();
+        work = string.Empty;
+        var ll = levelMaster.GetLevel(Global.State.LivelloCorrente, Global.State.StepCorrente);
+        text = ll.Code;
+        goals = ll.Goals;
+        Global.State.Vite = Global.State.StepCorrente == 4 ? 1 : 3;
+        Global.State.Energia = Global.State.StepCorrente == 0 || Global.State.StepCorrente == 4 ? ll.Energy : Global.State.Energia + ll.Energy;
+        gs.SetText(goals);
+        vars.SetText("");
+        wk.SetText("");
+        UpdateInfoLabels();
+        line_counter = 0;
+        UpdateLegacyLine();
+        ChangeMusic();
+        Global.Salva();
+    }
+
     void Start()
     {
+        musicSource = gameObject.AddComponent<AudioSource>();
+        sfxSource = gameObject.AddComponent<AudioSource>(); 
+        musicSource.loop = true;
+        musicSource.volume = 0.4f;
+        sfxSource.loop = false;
+        sfxSource.volume = 1f;
+        ChangeMusic();
         palette_applier = new CodePaletteApplier();
         runs = GameObject.Find("RUNS").GetComponent<TextMeshProUGUI>();
         ene = GameObject.Find("ENERGY").GetComponent<TextMeshProUGUI>();
         //lv = GameObject.Find("LV").GetComponent<TextMeshProUGUI>();
         levelMaster = new LevelMaster();
-        var l = levelMaster.GetLevel(lvl, step);
+        var l = levelMaster.GetLevel(Global.State.LivelloCorrente, Global.State.StepCorrente);
         text = l.Code;
         goals = l.Goals;
-        energy = l.Energy;
+        Global.State.Energia = Math.Max(Global.State.Energia, l.Energy);
         UpdateInfoLabels();
         std = GameObject.Find("Text_STD").GetComponent<TextMeshProUGUI>();
         UpdateLegacyLine();
@@ -101,33 +158,34 @@ public class GameMaster : MonoBehaviour
         set_modal.SetActive(true);
         if_modal.SetActive(true);
         GameObject.Find("set_back").GetComponent<Button>()
-            .onClick.AddListener(() => set_modal.SetActive(false));
+            .onClick.AddListener(() => {
+                CancelEffect();
+                set_modal.SetActive(false);
+            });
         GameObject.Find("if_back").GetComponent<Button>()
-            .onClick.AddListener(() => if_modal.SetActive(false));
+            .onClick.AddListener(() => {
+                CancelEffect();
+                if_modal.SetActive(false);
+            });
         GameObject.Find("CONTINUE").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                lives = 3;
-                if (++step > 3) { lvl++; step = 0; }
-                HandleButtonInLevel();
-                work = string.Empty;
-                var ll = levelMaster.GetLevel(lvl, step);
-                text = ll.Code;
-                goals = ll.Goals;
-                energy = step == 0 ? ll.Energy : energy + ll.Energy;
-                gs.SetText(goals);
-                vars.SetText("");
-                wk.SetText("");
-                UpdateInfoLabels();
-                line_counter = 0;
-                UpdateLegacyLine();
+                if (++Global.State.StepCorrente > 4) 
+                { 
+                    Global.State.LivelloCorrente++; 
+                    Global.State.StepCorrente = 0; 
+                }
+                Global.Salva();
+                SetUpLevel();
+                BtnEffect();
             });
         GameObject.Find("CANC").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
+                CancelEffect();
                 if (running || string.IsNullOrWhiteSpace(work)) return;
                 var lines = work.Split("\n");
-                energy += Enum.Parse<CMD>(lines[lines.Length - 2].Trim().Split(" ")[0], true).DaiCosto();
+                Global.State.Energia += Enum.Parse<CMD>(lines[lines.Length - 2].Trim().Split(" ")[0], true).DaiCosto();
                 UpdateInfoLabels();
                 work = lines.Length < 3 ? string.Empty :
                 string.Join("", lines[..^2].Select(x => x + "\n"));
@@ -140,6 +198,7 @@ public class GameMaster : MonoBehaviour
         GameObject.Find("<--").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
+                CancelEffect();
                 if (running || string.IsNullOrWhiteSpace(work)) return;
                 var lines = work.Split("\n");
                 var spaces = lines.Last().Length - lines.Last().TrimStart().Length;
@@ -151,102 +210,115 @@ public class GameMaster : MonoBehaviour
         GameObject.Find("WAIT").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (running || energy < CMD.Wait.DaiCosto()) return;
+                BtnEffect();
+                if (running || Global.State.Energia < CMD.Wait.DaiCosto()) return;
                 AddOnCodeWork("WAIT");
-                energy-= CMD.Wait.DaiCosto();
+                Global.State.Energia-= CMD.Wait.DaiCosto();
                 UpdateInfoLabels();
 
             });
         GameObject.Find("SKIP").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (running || energy < CMD.Skip.DaiCosto()) return;
+                BtnEffect();
+                if (running || Global.State.Energia < CMD.Skip.DaiCosto()) return;
                 AddOnCodeWork("SKIP");
-                energy-= CMD.Skip.DaiCosto();
+                Global.State.Energia-= CMD.Skip.DaiCosto();
                 UpdateInfoLabels();
 
             });
         GameObject.Find("STOP").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (running || energy < CMD.Stop.DaiCosto()) return;
+                BtnEffect();
+                if (running || Global.State.Energia < CMD.Stop.DaiCosto()) return;
                 AddOnCodeWork("STOP");
-                energy-= CMD.Stop.DaiCosto();
+                Global.State.Energia-= CMD.Stop.DaiCosto();
                 UpdateInfoLabels();
 
             });
         GameObject.Find("ELSE").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (running || energy < CMD.Else.DaiCosto()) return;
+                BtnEffect();
+                if (running || Global.State.Energia < CMD.Else.DaiCosto()) return;
                 var lines = work.Split("\n");
                 var spaces = lines.Last().Length - lines.Last().TrimStart().Length;
                 if (spaces >= 3)  work = string.Join("", lines[..^1].Select(x => x + "\n"))
                                        + string.Join("", Enumerable.Range(0, spaces - 3).Select(_ => " "));
                 AddOnCodeWork("ELSE", true);
-                energy-= CMD.Else.DaiCosto();
+                Global.State.Energia-= CMD.Else.DaiCosto();
                 UpdateInfoLabels();
 
             });
         GameObject.Find("LIST").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (running || energy < CMD.List.DaiCosto()) return;
+                BtnEffect();
+                if (running || Global.State.Energia < CMD.List.DaiCosto()) return;
                 int num = (text + "\n" + wk).Split("\n")
                     .Where(x => x.StartsWith("LIST L"))
                     .Select(x => x.Replace("LIST L", ""))
                     .Select(n => int.TryParse(n, out num) ? num : -1)
                     .DefaultIfEmpty(-1).Max() + 1;
                 AddOnCodeWork("LIST L" + num);
-                energy-= CMD.List.DaiCosto();
+                Global.State.Energia-= CMD.List.DaiCosto();
                 UpdateInfoLabels();
 
             });
         GameObject.Find("SET").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (!(running || energy < CMD.Set.DaiCosto())) 
+                BtnEffect();
+                if (!(running || Global.State.Energia < CMD.Set.DaiCosto())) 
                     ShowSetModal();
             });
         GameObject.Find("LET").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (!(running || energy < CMD.Let.DaiCosto())) 
+                BtnEffect();
+                if (!(running || Global.State.Energia < CMD.Let.DaiCosto())) 
                     ShowLetModal();
             });
         GameObject.Find("PUSH").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (!(running || energy < CMD.Push.DaiCosto())) 
+                BtnEffect();
+                if (!(running || Global.State.Energia < CMD.Push.DaiCosto())) 
                     ShowPushModal();
             });
         GameObject.Find("INJECT").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (!(running || energy < CMD.Inject.DaiCosto())) 
+                BtnEffect();
+                if (!(running || Global.State.Energia < CMD.Inject.DaiCosto())) 
                     ShowInjectModal();
             });
         GameObject.Find("IF").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (!(running || energy < CMD.If.DaiCosto()))
+                BtnEffect();
+                if (!(running || Global.State.Energia < CMD.If.DaiCosto()))
                     ShowIfModal();
             });
         GameObject.Find("ELIF").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (!(running || energy < CMD.Elif.DaiCosto()))
+                BtnEffect();
+                if (!(running || Global.State.Energia < CMD.Elif.DaiCosto()))
                     ShowElifModal();
             });
         GameObject.Find("LOOP").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (!(running || energy < CMD.Loop.DaiCosto()))
+                BtnEffect();
+                if (!(running || Global.State.Energia < CMD.Loop.DaiCosto()))
                     ShowLoopModal();
             });
         GameObject.Find("PLAY").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
+                BtnEffect();
                 if (!running)
                 {
                     running = true;
@@ -256,6 +328,7 @@ public class GameMaster : MonoBehaviour
         GameObject.Find("set_canc").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
+                CancelEffect();
                 var input = GameObject.Find("set_input").GetComponent<TextMeshProUGUI>();
                 var parts = input.text.Split(" ");
                 var last = parts.Last();
@@ -279,6 +352,7 @@ public class GameMaster : MonoBehaviour
         GameObject.Find("if_canc").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
+                CancelEffect();
                 var input = GameObject.Find("if_input").GetComponent<TextMeshProUGUI>();
                 var parts = input.text.Split(" ");
                 var last = parts.Last();
@@ -306,30 +380,32 @@ public class GameMaster : MonoBehaviour
         GameObject.Find("ADD_SET").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
+                BtnEffect();
                 var value = GameObject.Find("Set_Dropdown").Childrens()[0]
                     .GetComponent<TextMeshProUGUI>().text.Trim();
                 var input = GameObject.Find("set_input").GetComponent<TextMeshProUGUI>().text.Trim();
                 AddOnCodeWork($"{cmd.ToString().ToUpper()} {value} = {input}");
                 set_modal.SetActive(false);
-                energy -= cmd.DaiCosto();
+                Global.State.Energia -= cmd.DaiCosto();
                 UpdateInfoLabels();
             });
         if_button = GameObject.Find("ADD_IF").GetComponent<Button>();
         if_button.onClick.AddListener(() =>
+        {
+            BtnEffect();
+            if (cmd == CMD.Elif)
             {
-                if(cmd == CMD.Elif)
-                {
-                    var lines = work.Split("\n");
-                    var spaces = lines.Last().Length - lines.Last().TrimStart().Length;
-                    if (spaces >= 3) work = string.Join("", lines[..^1].Select(x => x + "\n"))
-                                           + string.Join("", Enumerable.Range(0, spaces - 3).Select(_ => " "));
-                }
-                var input = GameObject.Find("if_input").GetComponent<TextMeshProUGUI>().text.Trim();
-                AddOnCodeWork($"{cmd.ToString().ToUpper()} {input}", true);
-                if_modal.SetActive(false);
-                energy -= cmd.DaiCosto();
-                UpdateInfoLabels();
-            });
+                var lines = work.Split("\n");
+                var spaces = lines.Last().Length - lines.Last().TrimStart().Length;
+                if (spaces >= 3) work = string.Join("", lines[..^1].Select(x => x + "\n"))
+                                        + string.Join("", Enumerable.Range(0, spaces - 3).Select(_ => " "));
+            }
+            var input = GameObject.Find("if_input").GetComponent<TextMeshProUGUI>().text.Trim();
+            AddOnCodeWork($"{cmd.ToString().ToUpper()} {input}", true);
+            if_modal.SetActive(false);
+            Global.State.Energia -= cmd.DaiCosto();
+            UpdateInfoLabels();
+        });
 
         static_button = new List<GameObject>
         {
@@ -360,6 +436,7 @@ public class GameMaster : MonoBehaviour
 
     private void HandleButtonInLevel()
     {
+        var lvl = Global.State.LivelloCorrente;
         static_button.ForEach(x => x.SetActive(true));
         change_button.ForEach(x => x.SetActive(true));
         if (lvl < 1) change_button.ForEach(x => x.SetActive(false));
@@ -421,26 +498,37 @@ public class GameMaster : MonoBehaviour
                 static_button.ForEach(x => x.SetActive(false));
                 change_button.ForEach(x => x.SetActive(false));
                 change_button.Last().SetActive(true);
+                SuccessEffect();
             }
             else
             {
-                if(--lives == 0)
+                if(--Global.State.Vite <= 0)
                 {
+                    Global.State.StepCorrente = 0;
+                    Global.State.Energia = 0;
+                    Global.State.Vite = 3;
+                    Global.Salva();
 #if UNITY_EDITOR
                     UnityEditor.EditorApplication.isPlaying = false;
 #else
                     Application.Quit();
 #endif
                 }
+                UpdateLegacyLine();
+                UpdateWorkCode();
                 UpdateInfoLabels();
+                ChangeMusic();
+                FailEffect();
+                Global.Salva();
             }
             return;
         }
-        std.SetText(palette_applier.MarkText(text, data.StdRow, "#FB3640"));
-        wk.SetText(palette_applier.MarkText(work, data.PlayerRow, "#1EFC1E"));
+        StepEffect();
+        std.SetText(palette_applier.MarkText(text, data.StdRow, select_color));
+        wk.SetText(palette_applier.MarkText(work, data.PlayerRow, select_color));
         exec.MakeOneStep();
-        if(run_time > 0.3f)
-        run_time -= 0.03f;
+        if(run_time > 0.2f)
+            run_time -= 0.06f;
         Invoke(nameof(ExecuteRun), run_time);
     }
     private string MarkText(string text, int line, bool patch)
@@ -515,21 +603,28 @@ public class GameMaster : MonoBehaviour
         var content = GameObject.Find("set_content");
         content.Childrens().ForEach(e => Destroy(e));
 
-        if(lvl > 0)
+        if(Global.State.LivelloCorrente > 0)
         {
             var vars = GetAllVariables();
             foreach (var v in vars)
             {
                 GameObject btn = Instantiate(btnOption, content.transform);
                 btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
-                btn.GetComponent<Button>().onClick.AddListener(() => input.text = string.Join(" ", input.text.Split(" ")[..^1]) + " " + v);
+                btn.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    BtnEffect();
+                    input.text = string.Join(" ", input.text.Split(" ")[..^1]) + " " + v; 
+                });
             }
         }
         foreach (var v in GetOperators())
         {
             GameObject btn = Instantiate(btnOption, content.transform);
             btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
-            btn.GetComponent<Button>().onClick.AddListener(() => input.text += " " + v + " 0");
+            btn.GetComponent<Button>().onClick.AddListener(() => {
+                BtnEffect(); 
+                input.text += " " + v + " 0"; 
+            });
         }
 
         foreach (var n in Enumerable.Range(0, 10))
@@ -537,6 +632,7 @@ public class GameMaster : MonoBehaviour
             GameObject btn = Instantiate(btnOption, content.transform);
             btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = n.ToString();
             btn.GetComponent<Button>().onClick.AddListener(() => {
+                BtnEffect();
                 var parts = input.text.Split(" ");
                 var last = parts[parts.Length - 1];
                 parts = parts[..^1];
@@ -554,6 +650,7 @@ public class GameMaster : MonoBehaviour
             GameObject btn = Instantiate(btnOption, content.transform);
             btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = "-VAR";
             btn.GetComponent<Button>().onClick.AddListener(() => {
+                BtnEffect();
                 var parts = input.text.Split(" ");
                 var last = parts[parts.Length - 1];
                 parts = parts[..^1];
@@ -579,6 +676,7 @@ public class GameMaster : MonoBehaviour
             GameObject btn = Instantiate(btnOption, content.transform);
             btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
             btn.GetComponent<Button>().onClick.AddListener(() => {
+                BtnEffect();
                 input.text += " " + v + " 0";
                 ChangeIfSubmit();
             });
@@ -603,13 +701,17 @@ public class GameMaster : MonoBehaviour
         {
             GameObject btn = Instantiate(btnOption, content.transform);
             btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
-            btn.GetComponent<Button>().onClick.AddListener(() => input.text = string.Join(" ", input.text.Split(" ")[..^1]) + " " + v);
+            btn.GetComponent<Button>().onClick.AddListener(() => 
+            { 
+                BtnEffect(); 
+                input.text = string.Join(" ", input.text.Split(" ")[..^1]) + " " + v; 
+            });
         }
         foreach (var v in GetOperators())
         {
             GameObject btn = Instantiate(btnOption, content.transform);
             btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
-            btn.GetComponent<Button>().onClick.AddListener(() => input.text += " " + v + " 0");
+            btn.GetComponent<Button>().onClick.AddListener(() => { BtnEffect(); input.text += " " + v + " 0"; });
         }
 
         foreach (var n in Enumerable.Range(0, 10))
@@ -617,6 +719,7 @@ public class GameMaster : MonoBehaviour
             GameObject btn = Instantiate(btnOption, content.transform);
             btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = n.ToString();
             btn.GetComponent<Button>().onClick.AddListener(() => {
+                BtnEffect();
                 var parts = input.text.Split(" ");
                 var last = parts[parts.Length - 1];
                 parts = parts[..^1];
@@ -634,6 +737,7 @@ public class GameMaster : MonoBehaviour
             GameObject btn = Instantiate(btnOption, content.transform);
             btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = "-VAR";
             btn.GetComponent<Button>().onClick.AddListener(() => {
+                BtnEffect();
                 var parts = input.text.Split(" ");
                 var last = parts[parts.Length - 1];
                 parts = parts[..^1];
@@ -648,6 +752,7 @@ public class GameMaster : MonoBehaviour
             GameObject btn = Instantiate(btnOption, content.transform);
             btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
             btn.GetComponent<Button>().onClick.AddListener(() => {
+                BtnEffect();
                 input.text += " " + v + " 0";
                 ChangeIfSubmit();
             });
@@ -683,7 +788,7 @@ public class GameMaster : MonoBehaviour
         return GetBasicVariables()
             .Concat(
                 GetListVariables()
-                .SelectMany(x =>( lvl < 17 ? 
+                .SelectMany(x =>(Global.State.LivelloCorrente < 17 ? 
                     new string[] { "LENGTH", "LAST", "POP" } : 
                     new string[] { "LENGTH", "FIRST", "LAST", "POP", "SHIFT" } )
                 .Select(y => y + ":" + x))
@@ -706,30 +811,12 @@ public class GameMaster : MonoBehaviour
             .ToList();
         return new string[]
         {
-            "main", 
             "base",
-            "core",
-            "hold",
-            "slot",
-            "unit",
-            "seed",
-            "mark",
-            "ctxs",
-            "refs",
             "args",
-            "parm",
-            "pack",
-            "cell",
-            "part",
-            "step",
-            "task",
-            "objx",
-            "misc",
             "data",
             "item",
             "node",
-            "temp",
-            "curr"
+            "temp"
         }
         .Concat(GetGoalVariables())
         .Distinct()
