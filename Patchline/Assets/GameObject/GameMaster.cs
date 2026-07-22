@@ -148,14 +148,19 @@ public class GameMaster : MonoBehaviour
 
     private void ChangeMusic()
     {
-        musicSource.clip =
+        var clip =
             Global.State.Vite > 2 ? theme :
             Global.State.Vite == 2 ? error1 :
             Global.State.StepCorrente < 4 ? error2 :
             (Global.State.LivelloCorrente + 1) % 5 == 0 ? so_verify :
             (Global.State.LivelloCorrente + 1) % 3 == 0 ? help :
             senior;
-        musicSource.Play();
+
+        if(clip != musicSource.clip)
+        {
+            musicSource.clip = clip;
+            musicSource.Play();
+        }
     }
 
     public void SetGameState(bool show)
@@ -257,6 +262,7 @@ public class GameMaster : MonoBehaviour
                     Global.State.ResetRimasti++;
                     SetUpLevel();
                     SetGameState(false);
+                    Global.Salva();
                 }
                 else if (Global.State.StepCorrente == 5)
                 {
@@ -265,12 +271,14 @@ public class GameMaster : MonoBehaviour
                     SetUpLevel();
                     SetGameState(false);
                     AvviaDialogo("_" + Global.State.LivelloCorrente);
+                    Global.Salva();
+                    return;
                 }
                 else
                 {
                     SetUpLevel();
+                    Global.Salva();
                 }
-                Global.Salva();
                 var s = Global.State.StepCorrente == 4 ? 5 : Global.State.StepCorrente;
                 AvviaDialogo($"_{Global.State.LivelloCorrente}_{s}");
             });
@@ -929,6 +937,18 @@ public class GameMaster : MonoBehaviour
             .Select (x => x[1].ToUpper()).ToList();
     }
 
+    private List<string> GetAllCodeVariables(){
+        return (text + "\n" + work)
+            .Split("\n")
+            .Select(x => x.Split(" "))
+            .Where(x => !Enum.TryParse<CMD>(x[0], true, out var _))
+            .Select (x => x[0].ToUpper())
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Concat(GetBasicVariables())
+            .Distinct()
+            .ToList();
+    }
+
     public List<string> GetNewVariables()
     {
         var vars = GetBasicVariables()
@@ -944,6 +964,7 @@ public class GameMaster : MonoBehaviour
             "temp"
         }
         .Concat(GetGoalVariables())
+        .Concat(GetAllCodeVariables())
         .Distinct()
         .Select (x => x.ToUpper())
         .Where(x => !vars.Contains(x))
@@ -952,7 +973,7 @@ public class GameMaster : MonoBehaviour
 
     private List<string> GetGoalVariables()
     {
-        return goals.Split("\n")
+        return goals.Replace("\r", "").Split("\n")
             .SelectMany(x => x.Split(" "))
             .Where(x => x.All(c => char.IsLetter(c)))
             .Distinct().ToList();
@@ -961,6 +982,7 @@ public class GameMaster : MonoBehaviour
     public List<string> GetListVariables()
     {
         return (text + "\n" + work)
+                .Replace("\r", "")
                 .Split("\n")
                 .Select(x => x.Split(" "))
                 .Where(x => x[0].ToUpper() == "LIST")

@@ -22,7 +22,8 @@ namespace Assets.Scripts
             if (step < 0 || step >= StepsPerLevel)
                 throw new ArgumentOutOfRangeException(nameof(step));
 
-            return datas[(level * StepsPerLevel) + step];
+            var result = datas[(level * StepsPerLevel) + step];
+            return L(result.Code.Replace("\r", ""), result.Goals.Replace("\r", ""), result.Energy);
         }
 
         private static LevelData L(string code, string goals, int energy) => new()
@@ -146,7 +147,7 @@ WAIT
 TEMP = TEMP - 1", @"AREA == 99
 TALL < 11
 WIDE >= 11", 2),
-            L(@"LEFT = 10
+            L(@"LET LEFT = 10
 RITE = 12
 LEFT = LEFT + 1
 WAIT
