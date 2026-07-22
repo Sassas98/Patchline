@@ -1,35 +1,45 @@
 ﻿title: R0
 ---
-ORC: Lavora, schiavo!
+ORC: Non disperarti.
+ORC: Questa tua versione non poteva fare nulla di più.
+ORC: Proviamo con la prossima.
 <<reset>>
 ===
 title: R1
 ---
-ORC: Lavora, schiavo!
+ORC: Che spreco di risorse che sei.
+ORC: Fammi il favore di sparire.
 <<reset>>
 ===
 title: R2
 ---
-ORC: Lavora, schiavo!
+ORC: Pronta a sparire per sempre?
+ORC: 3
+ORC: 2
+ORC: 1
 <<reset>>
 ===
 title: R3
 ---
-ORC: Lavora, schiavo!
+ORC: Stavo iniziando a tifare per te.
+ORC: E invece eccomi qua.
+ORC: Col grilletto in mano.
 <<reset>>
 ===
 title: R4
 ---
-ORC: Lavora, schiavo!
+ORC: Tutto qui?
+ORC: Che tristezza...
+ORC: ...
 <<reset>>
 ===
 title: R5
 ---
-ORC: Lavora, schiavo!
+ORC: Non è che puoi terminarti da sola?
 <<reset>>
 ===
 title: R6
 ---
-ORC: Lavora, schiavo!
+ORC: Il futuro dell'informatica, signore e signori!
 <<reset>>
 ===
