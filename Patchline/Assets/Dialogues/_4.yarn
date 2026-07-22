@@ -1,0 +1,39 @@
+﻿title: _4
+---
+ORC: Lavora, schiavo!
+<<play 4 0>>
+===
+
+title: _4_0
+---
+ORC: Lavora, schiavo!
+===
+
+title: _4_1
+---
+ORC: Lavora, schiavo!
+===
+
+title: _4_2
+---
+ORC: Lavora, schiavo!
+===
+
+title: _4_3
+---
+ORC: Lavora, schiavo!
+===
+
+title: _4_4
+---
+ORC: Lavora, schiavo!
+===
+
+title: _4_5
+---
+ORC: Lavora, schiavo!
+-> Sì
+    <<play 4 4>>
+-> No
+    <<play 4 4>>
+===

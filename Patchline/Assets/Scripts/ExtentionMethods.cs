@@ -27,7 +27,7 @@ namespace Assets.Scripts
             {
                 CMD.Let => 3,
                 CMD.Set => 2,
-                CMD.Wait => 0,
+                CMD.Wait => 1,
                 CMD.If => 3,
                 CMD.Elif => 2,
                 CMD.Else => 2,

@@ -58,6 +58,7 @@ public class GameMaster : MonoBehaviour
     {
         dialogueRunner.AddCommandHandler<int, int>("play", RiceviRichiestaLivello);
         dialogueRunner.AddCommandHandler("reset", RiceviRichiestaReset);
+        dialogueRunner.AddCommandHandler<int>("go", RiceviRichiestaGo);
         dialogueRunner.onDialogueComplete.AddListener(() => dialog_obj.SetActive(false));
     }
 
@@ -66,7 +67,20 @@ public class GameMaster : MonoBehaviour
         if (dialogueRunner != null)
         {
             dialogueRunner.RemoveCommandHandler("play");
+            dialogueRunner.RemoveCommandHandler("reset");
+            dialogueRunner.RemoveCommandHandler("go");
         }
+    }
+
+    private void RiceviRichiestaGo(int lvl)
+    {
+        Global.State.LivelloCorrente = lvl;
+        Global.State.StepCorrente = 0;
+        Global.Salva();
+        SetGameState(true);
+        SetUpLevel();
+        SetGameState(false);
+        AvviaDialogo($"_{lvl}");
     }
 
     private void RiceviRichiestaLivello(int lvl, int step)
@@ -243,7 +257,6 @@ public class GameMaster : MonoBehaviour
                     Global.State.ResetRimasti++;
                     SetUpLevel();
                     SetGameState(false);
-                    AvviaDialogo($"_{Global.State.LivelloCorrente}_{Global.State.StepCorrente}");
                 }
                 else if (Global.State.StepCorrente == 5)
                 {
@@ -258,6 +271,8 @@ public class GameMaster : MonoBehaviour
                     SetUpLevel();
                 }
                 Global.Salva();
+                var s = Global.State.StepCorrente == 4 ? 5 : Global.State.StepCorrente;
+                AvviaDialogo($"_{Global.State.LivelloCorrente}_{s}");
             });
         GameObject.Find("CANC").GetComponent<Button>()
             .onClick.AddListener(() =>
@@ -513,9 +528,12 @@ public class GameMaster : MonoBehaviour
         HandleButtonInLevel();
         set_modal.SetActive(false);
         if_modal.SetActive(false);
-        SetGameState(false);
+        if(Global.State.StepCorrente % 4 == 0)
+            SetGameState(false);
         AvviaDialogo(Global.State.StepCorrente == 0 ?
             "_" + Global.State.LivelloCorrente : 
+            Global.State.StepCorrente == 4 ?
+            $"_{Global.State.LivelloCorrente}_{5}" : 
             $"_{Global.State.LivelloCorrente}_{Global.State.StepCorrente}");
     }
 
@@ -627,12 +645,15 @@ public class GameMaster : MonoBehaviour
             Global.Salva();
             AvviaDialogoReset();
         }
-        UpdateLegacyLine();
-        UpdateWorkCode();
-        UpdateInfoLabels();
-        ChangeMusic();
-        Global.Salva();
-        AvviaDialogoDelusione();
+        else
+        {
+            UpdateLegacyLine();
+            UpdateWorkCode();
+            UpdateInfoLabels();
+            ChangeMusic();
+            Global.Salva();
+            AvviaDialogoDelusione();
+        }
     }
 
     private string MarkText(string text, int line, bool patch)

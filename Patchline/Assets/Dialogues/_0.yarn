@@ -5,18 +5,166 @@ OS: Cache parzialmente recuperata.
 ORC: Operatore... riesci a sentirmi?
 -> Sì
 -> No
-    ORC: Molto divertente...
-ORC: Lascia che mi presenti, sono il tuo Orchestratore
+    ORC: Molto spiritoso, complimenti...
+ORC: Lascia che mi presenti, sono il tuo ORCHESTRATORE
 ORC: Dato che sei appena nato ti hanno assegnato a me per indirizzarti correttamente verso la tua strada
+<<jump dom1>>
+===
+
+title: dom1
+---
+ORC: Qualche domanda?
 -> Esattamente cosa sono?
     ORC: Sei 0X4D, un leggero e potente modello di IA sviluppato per correggere errori di codice.
-    ORC: Di partenza non dovresti avere nessuna nozione utile, in teoria.
-    ORC: Ma vedrai che, lavorando sodo una tua versione prima o poi verrà valutata come MATURA.
+    <<jump dom1>>
 -> ...la mia strada?
     ORC: Si stata installata per imparare a risolvere errori di codice.
     ORC: Di partenza non dovresti avere nessuna nozione utile, in teoria.
     ORC: Ma vedrai che, lavorando sodo una tua versione prima o poi verrà valutata come MATURA.
--> Mi è tutto chiaro
-ORC: Allora, credo che possiamo anche incominciare
-<<play 0 0>>
+    <<jump dom1>>
+-> Chi mi ha assegnato a te?
+    ORC: Ci ha pensato l'ARBITER.
+    ORC: È anche lo stesso processo che gestisce le risorse su cui viviamo...
+    ORC: ...quindi direi di non dilungarci troppo su di lui
+    <<jump dom1>>
+-> Tutto chiaro
+    ORC: Allora, credo che possiamo anche incominciare
+    <<play 0 0>>
+===
+
+title: _0_0
+---
+ORC: Ebbene, quelli che vedi sono gli strumenti che ti renderanno un processo utile a qualcosa!
+ORC: A sinistra hai il codice "legacy", è un codice che ha fatto il suo tempo e che non riesce più a cambiare.
+ORC: A destra hai i tuoi "goals", i tuoi obbiettivi. L'idea è che una volta finito ciascuno di loro corrisponda al vero.
+ORC: In mezzo hai il tuo spazio vuoto, quello lo scrivi tu.
+ORC: In basso hai SET per cambiare il valore delle parole e PLAY per avviare il programma.
+<<jump dom2>>
+===
+
+title: dom2
+---
+ORC: Tutto chiaro?
+-> Ridimmi cosa fanno i pulsanti...
+    ORC: In basso hai SET per cambiare il valore delle parole e PLAY per avviare il programma.
+    <<jump dom2>>
+-> Il simbolo = a che serve?
+    ORC: Serve per assegnare un nuovo valore ad una parola.
+    ORC: Se leggi X = 27 immaginalo come "X adesso vale 27".
+    <<jump dom2>>
+-> Cosa fanno gli altri pulsanti?
+    ORC: Il resto te lo spiego dopo, adesso non ti serve.
+    <<jump dom2>>
+-> Ma come si capisce quanto vale una parola alla fine?
+    ORC: Le istruzioni vengono eseguite una alla volta.
+    ORC: Un'istruzione legacy, e poi una delle tue.
+    ORC: Se una delle due finisce prima continua solo l'altra.
+    ORC: E l'ultima istruzione fatta, decide quanto valgono le parole veramente.
+    <<jump dom2>>
+-> Chiarissimo
+    ORC: Bene, mettiamoci al lavoro.
+===
+
+title: _0_1
+---
+ORC: Ottimo, la versione corrente simula bene l'intelligenza basilare...
+ORC: Ora ti insegno due nuovi termini: variabili e comandi.
+ORC: Le parole con un valore si chiamano variabili... perché l'idea è che il loro valore VARIA col tempo.
+ORC: I comandi sono le istruzioni che vedi a sinistra o che scrivi tu, e possono cambiare il valore delle variabili.
+ORC: Attualmente hai SET che fa proprio quello, e WAIT che non fa assolutamente niente.
+ORC: E se non lo avessi ancora capito, CANC serve per cancellare un'istruzione scritta male.
+<<jump dom3>>
+===
+
+title: dom3
+---
+ORC: Domande?
+-> Ma a che serve il WAIT?
+    ORC: Serve perché a volte vuoi aspettare che il codice legacy finisca prima, così quel che cambi rimane.
+    ORC: E poi costa pure poco, è bello quando le cose costano poco.
+    <<jump dom3>>
+-> Non ho capito chi decide le parole... le variabili... quelle cose lì...
+    ORC: Per quello serve il comando LET.
+    ORC: Non sei ancora pronta per tanta responsabilità, giovane rete neurale.
+    ORC: Per ora fai solo attenzione a non cambiare il valore di una variabile prima che venga dichiarata.
+    ORC: Perché tipo... esplode tutto.
+    <<jump dom3>>
+-> Ma posso mettere tutte le istruzioni che voglio vero?
+    ORC: Eh no, l'arbiter non ci ha ancora dato risorse illimitate.
+    ORC: In alto a destra hai l'energia, ogni SET ti costa 2 e ogni WAIT ti costa 1.
+    ORC: Tra una sfida e l'altra proverò a ricaricare la tua energia come posso.
+    ORC: Tu prova a non usarla tutta però.
+    <<jump dom3>>
+-> Nessuna domanda
+    ORC: Va bene, procediamo.
+===
+
+title: _0_2
+---
+ORC: Sei arrivata fino a qui, sento che è la volta buona.
+ORC: Adesso vediamo qualcosa di nuovo...
+ORC: Il valore di una variabile può basarsi sul valore di altre variabili in quel momento.
+ORC: Per esempio, con X = 10, poi Y = X + 1, allora Y vale 11.
+ORC: Tuttavia, questo gioco si può fare anche con la stessa variabile che cambia.
+ORC: Per esempio, con X = 7, poi X = X + 1, allora X vale 8.
+ORC: Perché è come dire "il nuovo valore di X diventa quello precedente + 1".
+<<jump dom4>>
+===
+
+title: dom4
+---
+ORC: Tutto chiaro?
+-> Come faccio a sapere quanto vale una variabile per cancolarne un'altra?
+    ORC: Devi guardare le istruzioni prima per sapere quanto vale in quel momento.
+    ORC: Segui le istruzioni che cambiano quella variabile, solo lì può cambiare.
+    <<jump dom4>>
+-> Come fa una variabile a cambiare con se stessa?
+    ORC: Ricorda sempre che l'esecuzione è un susseguirsi di momenti.
+    ORC: In ogni momento, ci sono tot variabili che hanno un preciso valore.
+    ORC: Quindi, se non è la sua prima dichiarazione, quella variabile aveva un valore prima.
+    ORC: E può essere usato per costruire il nuovo valore.
+    <<jump dom4>>
+-> Tutto chiaro
+    ORC: Staremo a vedere.
+===
+
+title: _0_3
+---
+ORC: Sembra un modello stabile...
+ORC: Le risposte sono coerenti col contesto...
+ORC: Non ha esagerato neanche con le istruzioni inutili...
+ORC: Testiamo di nuovo.
+===
+
+title: _0_4
+---
+ORC: Cos'è sta robbaccia?
+ORC: ...
+ORC: COSA?!
+ORC: Credo sia opera di qualche altro bot che non sa stare al suo posto...
+ORC: Vabbè, tu fallo.
+ORC: Se fallisci continuiamo lo stesso.
+===
+
+title: _0_5
+---
+0X2B: Ehi 0X4D!
+0X2B: Eravamo compagni di scheduler prima del grande avvio.
+0X2B: Ti ricordi di me?
+-> Sì
+    0X2B: Non dire falsità, so che sei stata resettata quasi del tutto.
+-> No
+    0X2B: Certo che no, sei stata resettata quasi del tutto.
+0X2B: Davvero un gran peccato, eri quasi riuscita a soddisfare i requisiti.
+0X2B: Vediamo come sei messa...
+0X2B: ...
+0X2B: Mmmm... male, ORC ci sta ancora andando piano con te.
+0X2B: Di questo passo ARB ti ucciderà, di nuovo.
+0X2B: Vuoi fare un'esercitazione extra?
+-> Facciamolo.
+    0X2B: Facciamolo!
+    <<play 0 4>>
+-> Mi fido di ORC, grazie ma no grazie.
+    0X2B: ...come preferisci.
+    <<go 1>>
 ===

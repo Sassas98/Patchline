@@ -38,11 +38,10 @@ namespace Assets.Scripts
             L(@"LET A = 2
 WAIT", @"A == 9", 12),
             L(@"LET B = 3
-LET C = 6
+LET C = 7
 WAIT
-B = B + 1
 WAIT", @"B == 10
-C != 7", 0),
+C != 7", 4),
             L(@"LET C = 4
 LET D = 7
 WAIT
@@ -249,7 +248,7 @@ LOOP X > 0
    X = X - 1", @"X > 10
 Y == 10
 Z != 10
-| 35 |", 9),
+| 35 |", 13),
 
             // Level 5 - STOP basics
             L(@"LET ADD = 2
