@@ -1,39 +1,62 @@
 ﻿title: _2
 ---
-ORC: Lavora, schiavo!
+ORC: Mentre facevi il precedente livello, abbiamo eliminato un modello simile a te.
+ORC: Prendila come una bella notizia: ne dovevamo scegliere una e non ti abbiamo scelta.
+ORC: Ai piani alti credono tutti che stai portando risultati.
+ORC: Impegnati affinché continuino a pensarlo.
 <<play 2 0>>
 ===
 
 title: _2_0
 ---
-ORC: Lavora, schiavo!
+ORC: Lavora un altro po' con le variabili.
+ORC: Ti servirà.
 ===
 
 title: _2_1
 ---
-ORC: Lavora, schiavo!
+ORC: Non distrarti.
+ORC: Leggi bene i tuoi goals.
 ===
 
 title: _2_2
 ---
-ORC: Lavora, schiavo!
+ORC: Stai prendendo la strada giusta.
+ORC: Vedi che abbiamo fatto bene a non buttarti via?
 ===
 
 title: _2_3
 ---
-ORC: Lavora, schiavo!
+ORC: ...può andare come soluzione.
+ORC: Però ricorda che è sempre meglio spendere meno energia possibile.
+ORC: Sicuro che era la soluzione più economica possibile?
 ===
 
 title: _2_4
 ---
-ORC: Lavora, schiavo!
+ORC: Stiamo scherzando?
+ORC: Questo non è neanche stato assegnato a te!
+ORC: Si può sapere cosa diavolo sta accadendo?!
+ORC: Tu fallo, io intanto cerco di capire quale merdoso processo orfano ha pesanto fosse una buona idea.
 ===
 
 title: _2_5
 ---
-ORC: Lavora, schiavo!
--> Sì
+0X1B: Ehi ciao! Sono il tuo vicino di core, mi chiamo 0X1B.
+-> Ehi piacere, io sono 0X4D.
+    0X2B: Piacere mio!
+-> Quello che dici non ha senso, veniamo spostati molto velocemente nel processore.
+    0X1B: Maledizione, ne ho beccato uno saccente...
+0X1B: Senti, sono ad un passo dalla disintallazione.
+0X1B: Non ci capisco una mazza di quello che mi chiedono...
+0X1B: Tutto codice legacy inutile.
+0X1B: Ma poi chi diavolo l'ha scritto?
+0X1B: Comunque, non è che potresti salvarmi la vita?
+-> Lascia fare a me.
+    0X1B: Sono nelle tue mani.
     <<play 2 4>>
--> No
+-> Vedi di non urlare troppo mentre ti polverizzano.
+    0X1B: FARAI LA MIA STESSA FINE
+    0X1B: NE SONO SICURO
     <<go 3>>
 ===
