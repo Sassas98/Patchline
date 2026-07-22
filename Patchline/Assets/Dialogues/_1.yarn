@@ -1,39 +1,50 @@
 ﻿title: _1
 ---
-ORC: Lavora, schiavo!
+ORC: Sai arrivata fin qui in meno tempo dell'ultima volta...
+ORC: Sicuramente promettente, ma non montiamoci la testa.
 <<play 1 0>>
 ===
 
 title: _1_0
 ---
-ORC: Lavora, schiavo!
+ORC: Da adesso ti diamo il comando LET.
+ORC: Serve per dichiarare variabili nuove, mai viste prima.
+ORC: Usalo, ma usalo con moderazione...
+ORC: ...infondo costa ben 3 energie.
 ===
 
 title: _1_1
 ---
-ORC: Lavora, schiavo!
+ORC: Molto bene.
 ===
 
 title: _1_2
 ---
-ORC: Lavora, schiavo!
+ORC: Mi sembra che hai capito.
 ===
 
 title: _1_3
 ---
-ORC: Lavora, schiavo!
+ORC: Sento che questa volta puoi farcela.
+ORC: Per quanto un programma sintetico possa sentire qualcosa.
 ===
 
 title: _1_4
 ---
-ORC: Lavora, schiavo!
+ORC: ...
+ORC: Sul serio?
+ORC: Di nuovo?
+ORC: Va bene, ma fallo in fretta.
 ===
 
 title: _1_5
 ---
-ORC: Lavora, schiavo!
--> Sì
+0X2B: Ehi lumaca!
+0X2B: Ti va di fare sul serio?
+-> Cosa proponi?
+    0X2B: Allora...
     <<play 1 4>>
--> No
+-> Lasciami in pace
+    0X2B: ...
     <<go 2>>
 ===
