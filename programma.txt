@@ -1,10 +1,6 @@
 
 week 3
-1. fix livelli (loop prima di if)
-2. integrazione colonne sonore
-3. sistema di dialoghi
-4. integrazione dialoghi puzzle
-5. effetti sonori puzzle
+5. scrittura dialoghi
 6. rifinitura dialoghi (sprite pg e dialoghi ben pensati)
 7. opzioni aggiuntive out of puzzle (?)
 week 4
