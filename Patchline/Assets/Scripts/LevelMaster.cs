@@ -249,7 +249,7 @@ LOOP X > 0
    X = X - 1", @"X > 10
 Y == 10
 Z != 10
-[ 35 ]", 9),
+| 35 |", 9),
 
             // Level 5 - STOP basics
             L(@"LET ADD = 2
