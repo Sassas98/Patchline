@@ -82,7 +82,6 @@ public class GameMaster : MonoBehaviour
     private void RiceviRichiestaReset()
     {
         SetUpLevel();
-        ResetEffect();
         SetGameState(false);
         AvviaDialogo("_" + Global.State.LivelloCorrente);
     }
@@ -127,7 +126,6 @@ public class GameMaster : MonoBehaviour
     private void CancelEffect() => sfxSource.PlayOneShot(cancel);
     private void FailEffect() => sfxSource.PlayOneShot(fail);
     private void SuccessEffect() => sfxSource.PlayOneShot(success);
-    private void ResetEffect() => ToString(); // TODO
     private void StepEffect()
     {
         sfxSource.PlayOneShot(stepflag ? step1 : step2);

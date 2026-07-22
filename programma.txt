@@ -1,8 +1,12 @@
-
-week 3
-5. scrittura dialoghi
-6. rifinitura dialoghi (sprite pg e dialoghi ben pensati)
-7. opzioni aggiuntive out of puzzle (?)
+dialoghi reset x 7
+dialoghi delusione x 7
+dialoghi lv0
+dialoghi lv1
+dialoghi lv2
+dialoghi lv3
+dialoghi lv4
+titolo gioco
+end of content
 week 4
 1. riguardare tabella
 2. pitch
