@@ -1,7 +1,7 @@
 ﻿title: _0
 ---
-OS: Processo di ripristino avviato.
-OS: Cache parzialmente recuperata.
+???: Processo di ripristino avviato.
+???: Cache parzialmente recuperata.
 ORC: Operatore... riesci a sentirmi?
 -> Sì
 -> No
@@ -148,8 +148,8 @@ ORC: Se fallisci continuiamo lo stesso.
 
 title: _0_5
 ---
-0X2B: Ehi 0X4D!
-0X2B: Eravamo compagni di scheduler prima del grande avvio.
+???: Ehi 0X4D!
+???:  Sono 0X2B, eravamo compagni di scheduler prima del grande avvio.
 0X2B: Ti ricordi di me?
 -> Sì
     0X2B: Non dire falsità, so che sei stata resettata quasi del tutto.
