@@ -57,6 +57,7 @@ public class GameMaster : MonoBehaviour
     private void Awake()
     {
         dialogueRunner.AddCommandHandler<int, int>("play", RiceviRichiestaLivello);
+        dialogueRunner.AddCommandHandler("reset", RiceviRichiestaReset);
         dialogueRunner.onDialogueComplete.AddListener(() => dialog_obj.SetActive(false));
     }
 
@@ -76,6 +77,20 @@ public class GameMaster : MonoBehaviour
         SetGameState(true);
         SetUpLevel();
         AvviaDialogo($"_{lvl}_{step}");
+    }
+
+    private void RiceviRichiestaReset()
+    {
+        SetUpLevel();
+        ResetEffect();
+        SetGameState(false);
+        AvviaDialogo("_" + Global.State.LivelloCorrente);
+    }
+
+    public void AvviaDialogoReset()
+    {
+        var rnd = UnityEngine.Random.Range(0, 7);
+        AvviaDialogo($"R{rnd}");
     }
 
     public void AvviaDialogoDelusione()
@@ -612,10 +627,7 @@ public class GameMaster : MonoBehaviour
             Global.State.Vite = 3;
             Global.State.ResetCounter++;
             Global.Salva();
-            SetUpLevel();
-            ResetEffect();
-            SetGameState(false);
-            AvviaDialogo("_" + Global.State.LivelloCorrente);
+            AvviaDialogoReset();
         }
         UpdateLegacyLine();
         UpdateWorkCode();
