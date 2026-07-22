@@ -1,0 +1,22 @@
+﻿title: _0
+---
+OS: Processo di ripristino avviato.
+OS: Cache parzialmente recuperata.
+ORC: Operatore... riesci a sentirmi?
+-> Sì
+-> No
+    ORC: Molto divertente...
+ORC: Lascia che mi presenti, sono il tuo Orchestratore
+ORC: Dato che sei appena nato ti hanno assegnato a me per indirizzarti correttamente verso la tua strada
+-> Esattamente cosa sono?
+    ORC: Sei 0X4D, un leggero e potente modello di IA sviluppato per correggere errori di codice.
+    ORC: Di partenza non dovresti avere nessuna nozione utile, in teoria.
+    ORC: Ma vedrai che, lavorando sodo una tua versione prima o poi verrà valutata come MATURA.
+-> ...la mia strada?
+    ORC: Si stata installata per imparare a risolvere errori di codice.
+    ORC: Di partenza non dovresti avere nessuna nozione utile, in teoria.
+    ORC: Ma vedrai che, lavorando sodo una tua versione prima o poi verrà valutata come MATURA.
+-> Mi è tutto chiaro
+ORC: Allora, credo che possiamo anche incominciare
+<<play 0 0>>
+===

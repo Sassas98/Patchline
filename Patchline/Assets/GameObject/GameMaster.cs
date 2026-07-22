@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 using TMPro;
 using Unity.Burst.Intrinsics;
 using UnityEditor.Experimental.GraphView;
@@ -10,6 +12,7 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using UnityEngine.Windows;
+using Yarn.Unity;
 using static Unity.Burst.Intrinsics.X86.Avx;
 using static UnityEditor.Progress;
 using static UnityEngine.EventSystems.EventTrigger;
@@ -43,11 +46,57 @@ public class GameMaster : MonoBehaviour
     [SerializeField] private GameObject btnOption;
     [SerializeField] private GameObject set_modal;
     [SerializeField] private GameObject if_modal;
+    [SerializeField] private GameObject game_obj, dialog_obj;
     [SerializeField] private AudioClip theme, error1, error2, help, so_verify, senior
                                      , btn1, btn2, btn3, cancel, fail, step1, step2, success;
     private AudioSource musicSource;
     private AudioSource sfxSource;
     private bool stepflag = false;
+    public DialogueRunner dialogueRunner;
+    
+    private void Awake()
+    {
+        dialogueRunner.AddCommandHandler<int, int>("play", RiceviRichiestaLivello);
+        dialogueRunner.onDialogueComplete.AddListener(() => dialog_obj.SetActive(false));
+    }
+
+    private void OnDestroy()
+    {
+        if (dialogueRunner != null)
+        {
+            dialogueRunner.RemoveCommandHandler("play");
+        }
+    }
+
+    private void RiceviRichiestaLivello(int lvl, int step)
+    {
+        Global.State.LivelloCorrente = lvl;
+        Global.State.StepCorrente = step;
+        Global.Salva();
+        SetGameState(true);
+        SetUpLevel();
+        AvviaDialogo($"_{lvl}_{step}");
+    }
+
+    public void AvviaDialogoDelusione()
+    {
+        var rnd = UnityEngine.Random.Range(0, 7);
+        AvviaDialogo($"D{rnd}");
+    }
+
+    private string d_name = null;
+
+    public void AvviaDialogo(string titolo)
+    {
+        d_name = titolo;
+        Invoke(nameof(Start_D), 1);
+    }
+
+    private void Start_D()
+    {
+        dialog_obj.SetActive(true);
+        dialogueRunner.StartDialogue(d_name);
+    }
 
     private void UpdateInfoLabels()
     {
@@ -63,6 +112,7 @@ public class GameMaster : MonoBehaviour
     private void CancelEffect() => sfxSource.PlayOneShot(cancel);
     private void FailEffect() => sfxSource.PlayOneShot(fail);
     private void SuccessEffect() => sfxSource.PlayOneShot(success);
+    private void ResetEffect() => ToString(); // TODO
     private void StepEffect()
     {
         sfxSource.PlayOneShot(stepflag ? step1 : step2);
@@ -81,9 +131,9 @@ public class GameMaster : MonoBehaviour
         musicSource.Play();
     }
 
-    public void StopMusic()
+    public void SetGameState(bool show)
     {
-        musicSource.Stop();
+        game_obj.SetActive(show);
     }
 
     private string MarkText(string text, string color)
@@ -170,15 +220,31 @@ public class GameMaster : MonoBehaviour
         GameObject.Find("CONTINUE").GetComponent<Button>()
             .onClick.AddListener(() =>
             {
-                if (++Global.State.StepCorrente > 4)
+                BtnEffect();
+                if (Global.State.StepCorrente > 2)
+                {
+                    Global.State.Crediti += Global.State.Energia;
+                }
+                if (++Global.State.StepCorrente == 4)
                 {
                     Global.State.ResetRimasti++;
+                    SetUpLevel();
+                    SetGameState(false);
+                    AvviaDialogo($"_{Global.State.LivelloCorrente}_{Global.State.StepCorrente}");
+                }
+                else if (Global.State.StepCorrente == 5)
+                {
                     Global.State.LivelloCorrente++; 
-                    Global.State.StepCorrente = 0; 
+                    Global.State.StepCorrente = 0;
+                    SetUpLevel();
+                    SetGameState(false);
+                    AvviaDialogo("_" + Global.State.LivelloCorrente);
+                }
+                else
+                {
+                    SetUpLevel();
                 }
                 Global.Salva();
-                SetUpLevel();
-                BtnEffect();
             });
         GameObject.Find("CANC").GetComponent<Button>()
             .onClick.AddListener(() =>
@@ -434,6 +500,10 @@ public class GameMaster : MonoBehaviour
         HandleButtonInLevel();
         set_modal.SetActive(false);
         if_modal.SetActive(false);
+        SetGameState(false);
+        AvviaDialogo(Global.State.StepCorrente == 0 ?
+            "_" + Global.State.LivelloCorrente : 
+            $"_{Global.State.LivelloCorrente}_{Global.State.StepCorrente}");
     }
 
     private void HandleButtonInLevel()
@@ -521,6 +591,15 @@ public class GameMaster : MonoBehaviour
     }
     private void HandleLose()
     {
+        if(Global.State.StepCorrente == 4 && (Global.State.LivelloCorrente + 1) % 5 != 0)
+        {
+            Global.State.LivelloCorrente++;
+            Global.State.StepCorrente = 0;
+            SetUpLevel();
+            SetGameState(false);
+            AvviaDialogo("_" + Global.State.LivelloCorrente);
+            return;
+        }
         if (--Global.State.Vite <= 0)
         {
             Global.State.StepCorrente = 0;
@@ -534,12 +613,16 @@ public class GameMaster : MonoBehaviour
             Global.State.ResetCounter++;
             Global.Salva();
             SetUpLevel();
+            ResetEffect();
+            SetGameState(false);
+            AvviaDialogo("_" + Global.State.LivelloCorrente);
         }
         UpdateLegacyLine();
         UpdateWorkCode();
         UpdateInfoLabels();
         ChangeMusic();
         Global.Salva();
+        AvviaDialogoDelusione();
     }
 
     private string MarkText(string text, int line, bool patch)
