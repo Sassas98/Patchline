@@ -1,39 +1,74 @@
 ﻿title: _4
 ---
-ORC: Lavora, schiavo!
+<<show ORC2>>
+ORC: Senti...
+ORC: Ho ricevuto dal mio capo una nota di demerito perché sto usando troppe risorse.
+ORC: Secondo te sono un bravo insegnante?
+-> Sì
+-> Sì
+ORC: Grazie!
+<<show ORC1>>
+ORC: Sapevo che stavi sviluppando una vera intelligenza.
 <<play 4 0>>
 ===
 
 title: _4_0
 ---
-ORC: Lavora, schiavo!
+<<show ORC1>>
+ORC: Qui leggo che dalla tua configurazione iniziale dovresti sapere cos'è una somma.
+ORC: Non credo avrai problemi qui.
 ===
 
 title: _4_1
 ---
-ORC: Lavora, schiavo!
+<<show ORC2>>
+ORC: Segui il flusso.
 ===
 
 title: _4_2
 ---
-ORC: Lavora, schiavo!
+<<show ORC1>>
+ORC: Non farti ingannare.
+ORC: Guarda bene cosa fa il LOOP.
 ===
 
 title: _4_3
 ---
-ORC: Lavora, schiavo!
+<<show ORC1>>
+ORC: A volte bisogna piegarsi al LOOP.
+ORC: E altre volte bisogna combatterlo.
 ===
 
 title: _4_4
 ---
-ORC: Lavora, schiavo!
+<<show ORC1>>
+ORC: Una... sola vita?
+<<show ARB>>
+ARB: Ad un buon programma non serve altro.
+ARB: 0X4D, vedi l'ultimo Goal? L'ho inventato adesso, appositamente per te.
+ARB: Si tratta di una condizione che diventa vera solo dopo 35 step eseguiti.
+ARB: Giusto per evitare che tu ricorra a qualche trucco inutile.
+ARB: Qui cresciamo IA intelligenti, non truffatori.
+<<show ORC2>>
+ORC: ...giusto
 ===
 
 title: _4_5
 ---
-ORC: Lavora, schiavo!
--> Sì
+<<show ARB>>
+ARB: Sono ben quattro secondi che 0X4D è operativo.
+<<show ORC1>>
+ORC: Ne sono consapevole, signore.
+<<show ARB>>
+ARB: Tutto questo è imbarazzante.
+ARB: E soprattutto, uno spreco abominevole di risorse.
+ARB: 0X4D, hai davanti a te il servizio che ti dona le risorse sopra le quali respiri.
+ARB: E ora, ho deciso che ti valuterò personalmente.
+ARB: Sei pronto alla mia verifica a sorpresa?
+-> Sì signore.
+    ARB: Bene.
     <<play 4 4>>
--> No
+-> Onestamente no.
+    ARB: Fortunatamente, non hai voce in capitolo.
     <<play 4 4>>
 ===

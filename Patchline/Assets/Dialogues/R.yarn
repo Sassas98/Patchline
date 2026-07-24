@@ -1,5 +1,6 @@
 ﻿title: R0
 ---
+<<show ORC2>>
 ORC: Non disperarti.
 ORC: Questa tua versione non poteva fare nulla di più.
 ORC: Proviamo con la prossima.
@@ -7,12 +8,14 @@ ORC: Proviamo con la prossima.
 ===
 title: R1
 ---
+<<show ORC2>>
 ORC: Che spreco di risorse che sei.
 ORC: Fammi il favore di sparire.
 <<reset>>
 ===
 title: R2
 ---
+<<show ORC2>>
 ORC: Pronta a sparire per sempre?
 ORC: 3
 ORC: 2
@@ -21,6 +24,7 @@ ORC: 1
 ===
 title: R3
 ---
+<<show ORC2>>
 ORC: Stavo iniziando a tifare per te.
 ORC: E invece eccomi qua.
 ORC: Col grilletto in mano.
@@ -28,18 +32,21 @@ ORC: Col grilletto in mano.
 ===
 title: R4
 ---
+<<show ORC2>>
 ORC: Tutto qui?
 ORC: Che tristezza...
-ORC: ...
 <<reset>>
 ===
 title: R5
 ---
+<<show ORC2>>
 ORC: Non è che puoi terminarti da sola?
+ORC: No?
 <<reset>>
 ===
 title: R6
 ---
+<<show ORC2>>
 ORC: Il futuro dell'informatica, signore e signori!
 <<reset>>
 ===

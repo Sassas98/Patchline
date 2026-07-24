@@ -9,9 +9,11 @@ using TMPro;
 using Unity.Burst.Intrinsics;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using UnityEngine.Windows;
+using Yarn;
 using Yarn.Unity;
 using static Unity.Burst.Intrinsics.X86.Avx;
 using static UnityEditor.Progress;
@@ -49,6 +51,7 @@ public class GameMaster : MonoBehaviour
     [SerializeField] private GameObject game_obj, dialog_obj;
     [SerializeField] private AudioClip theme, error1, error2, help, so_verify, senior
                                      , btn1, btn2, btn3, cancel, fail, step1, step2, success;
+    [SerializeField] private Image targetImage;
     private AudioSource musicSource;
     private AudioSource sfxSource;
     private bool stepflag = false;
@@ -59,7 +62,11 @@ public class GameMaster : MonoBehaviour
         dialogueRunner.AddCommandHandler<int, int>("play", RiceviRichiestaLivello);
         dialogueRunner.AddCommandHandler("reset", RiceviRichiestaReset);
         dialogueRunner.AddCommandHandler<int>("go", RiceviRichiestaGo);
-        dialogueRunner.onDialogueComplete.AddListener(() => dialog_obj.SetActive(false));
+        dialogueRunner.AddCommandHandler<string>("show", ImpostaPicDialogo);
+        dialogueRunner.onDialogueComplete.AddListener(() => {
+            dialog_obj.SetActive(false);
+            targetImage.gameObject.SetActive(false);
+        });
     }
 
     private void OnDestroy()
@@ -69,7 +76,23 @@ public class GameMaster : MonoBehaviour
             dialogueRunner.RemoveCommandHandler("play");
             dialogueRunner.RemoveCommandHandler("reset");
             dialogueRunner.RemoveCommandHandler("go");
+            dialogueRunner.RemoveCommandHandler("show");
         }
+    }
+
+    private void ImpostaPicDialogo(string pic)
+    {
+        Sprite sprite = Resources.Load<Sprite>(pic);
+
+        if (sprite == null)
+        {
+            Debug.LogError($"Immagine '{pic}' non trovata in Resources.");
+            return;
+        }
+
+        targetImage.sprite = sprite;
+        targetImage.enabled = true;
+        targetImage.gameObject.SetActive(true);
     }
 
     private void RiceviRichiestaGo(int lvl)
@@ -257,7 +280,11 @@ public class GameMaster : MonoBehaviour
                 {
                     Global.State.Crediti += Global.State.Energia;
                 }
-                if (++Global.State.StepCorrente == 4)
+                if(Global.State.LivelloCorrente == 4 && Global.State.StepCorrente == 4)
+                {
+                    SceneManager.LoadScene("EndOfContent");
+                }
+                else if (++Global.State.StepCorrente == 4)
                 {
                     Global.State.ResetRimasti++;
                     SetUpLevel();
@@ -434,7 +461,7 @@ public class GameMaster : MonoBehaviour
             {
                 CancelEffect();
                 var input = GameObject.Find("set_input").GetComponent<TextMeshProUGUI>();
-                var parts = input.text.Split(" ");
+                var parts = input.text.Split(" ").Where(x => !string.IsNullOrEmpty(x)).ToArray();
                 var last = parts.Last();
                 if(last == "0")
                 {
@@ -458,7 +485,7 @@ public class GameMaster : MonoBehaviour
             {
                 CancelEffect();
                 var input = GameObject.Find("if_input").GetComponent<TextMeshProUGUI>();
-                var parts = input.text.Split(" ");
+                var parts = input.text.Split(" ").Where(x => !string.IsNullOrEmpty(x)).ToArray();
                 var last = parts.Last();
                 if(last == "0")
                 {
@@ -736,30 +763,6 @@ public class GameMaster : MonoBehaviour
         var content = GameObject.Find("set_content");
         content.Childrens().ForEach(e => Destroy(e));
 
-        if(Global.State.LivelloCorrente > 0)
-        {
-            var vars = GetAllVariables();
-            foreach (var v in vars)
-            {
-                GameObject btn = Instantiate(btnOption, content.transform);
-                btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
-                btn.GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    BtnEffect();
-                    input.text = string.Join(" ", input.text.Split(" ")[..^1]) + " " + v; 
-                });
-            }
-        }
-        foreach (var v in GetOperators())
-        {
-            GameObject btn = Instantiate(btnOption, content.transform);
-            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
-            btn.GetComponent<Button>().onClick.AddListener(() => {
-                BtnEffect(); 
-                input.text += " " + v + " 0"; 
-            });
-        }
-
         foreach (var n in Enumerable.Range(0, 10))
         {
             GameObject btn = Instantiate(btnOption, content.transform);
@@ -778,6 +781,15 @@ public class GameMaster : MonoBehaviour
                 else input.text = last;
             });
         }
+        foreach (var v in GetOperators())
+        {
+            GameObject btn = Instantiate(btnOption, content.transform);
+            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
+            btn.GetComponent<Button>().onClick.AddListener(() => {
+                BtnEffect();
+                input.text += " " + v + " 0";
+            });
+        }
 
         {
             GameObject btn = Instantiate(btnOption, content.transform);
@@ -792,6 +804,21 @@ public class GameMaster : MonoBehaviour
                     input.text = string.Join(" ", parts) + " " + last;
                 else input.text = last;
             });
+        }
+
+        if (Global.State.LivelloCorrente > 0)
+        {
+            var vars = GetAllVariables();
+            foreach (var v in vars)
+            {
+                GameObject btn = Instantiate(btnOption, content.transform);
+                btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
+                btn.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    BtnEffect();
+                    input.text = string.Join(" ", input.text.Split(" ")[..^1]) + " " + v; 
+                });
+            }
         }
     }
 
@@ -829,24 +856,6 @@ public class GameMaster : MonoBehaviour
         if_button.gameObject.SetActive(if_submit);
         to_delete = new List<GameObject>();
 
-        var vars = GetAllVariables();
-        foreach (var v in vars)
-        {
-            GameObject btn = Instantiate(btnOption, content.transform);
-            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
-            btn.GetComponent<Button>().onClick.AddListener(() => 
-            { 
-                BtnEffect(); 
-                input.text = string.Join(" ", input.text.Split(" ")[..^1]) + " " + v; 
-            });
-        }
-        foreach (var v in GetOperators())
-        {
-            GameObject btn = Instantiate(btnOption, content.transform);
-            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
-            btn.GetComponent<Button>().onClick.AddListener(() => { BtnEffect(); input.text += " " + v + " 0"; });
-        }
-
         foreach (var n in Enumerable.Range(0, 10))
         {
             GameObject btn = Instantiate(btnOption, content.transform);
@@ -865,6 +874,12 @@ public class GameMaster : MonoBehaviour
                 else input.text = last;
             });
         }
+        foreach (var v in GetOperators())
+        {
+            GameObject btn = Instantiate(btnOption, content.transform);
+            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
+            btn.GetComponent<Button>().onClick.AddListener(() => { BtnEffect(); input.text += " " + v + " 0"; });
+        }
 
         {
             GameObject btn = Instantiate(btnOption, content.transform);
@@ -878,6 +893,18 @@ public class GameMaster : MonoBehaviour
                 if (parts.Length > 0)
                     input.text = string.Join(" ", parts) + " " + last;
                 else input.text = last;
+            });
+        }
+
+        var vars = GetAllVariables();
+        foreach (var v in vars)
+        {
+            GameObject btn = Instantiate(btnOption, content.transform);
+            btn.Childrens()[0].GetComponent<TextMeshProUGUI>().text = v;
+            btn.GetComponent<Button>().onClick.AddListener(() => 
+            { 
+                BtnEffect(); 
+                input.text = string.Join(" ", input.text.Split(" ")[..^1]) + " " + v; 
             });
         }
         foreach (var v in GetLogicOperator())
@@ -895,7 +922,11 @@ public class GameMaster : MonoBehaviour
 
     private List<string> GetOperators()
     {
-        return new List<string>
+        return Global.State.LivelloCorrente < 15 ? 
+        new List<string>
+        {
+            "+", "-", "*", "/"
+        } : new List<string>
         {
             "+", "-", "*", "/", "%"
         };
@@ -965,8 +996,8 @@ public class GameMaster : MonoBehaviour
         }
         .Concat(GetGoalVariables())
         .Concat(GetAllCodeVariables())
-        .Distinct()
         .Select (x => x.ToUpper())
+        .Distinct()
         .Where(x => !vars.Contains(x))
         .OrderBy (x => x).ToList();
     }

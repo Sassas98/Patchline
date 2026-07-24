@@ -23,7 +23,7 @@ public class CodePaletteApplier
 		foreach (var line in lines)
 		{
 			if (counter == selectLine)
-				list.Add(GenerateSpace(line.Length - line.TrimStart().Length, selectColor) + MarkText(line, selectColor));
+				list.Add(GenerateSpace(line.Length - line.TrimStart().Length, selectColor) + MarkText(line.TrimStart(), selectColor));
 			else if (string.IsNullOrWhiteSpace(line))
 				list.Add(GenerateSpace(line.Length, selectColor));
 			else
