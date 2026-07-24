@@ -48,8 +48,8 @@ public class GameMaster : MonoBehaviour
     [SerializeField] private GameObject btnOption;
     [SerializeField] private GameObject set_modal;
     [SerializeField] private GameObject if_modal;
-    [SerializeField] private GameObject game_obj, dialog_obj;
-    [SerializeField] private AudioClip theme, error1, error2, help, so_verify, senior
+    [SerializeField] private GameObject game_obj, dialog_obj, reset_obj;
+    [SerializeField] private AudioClip theme, error1, error2, help, so_verify, senior, reset
                                      , btn1, btn2, btn3, cancel, fail, step1, step2, success;
     [SerializeField] private Image targetImage;
     private AudioSource musicSource;
@@ -66,6 +66,7 @@ public class GameMaster : MonoBehaviour
         dialogueRunner.onDialogueComplete.AddListener(() => {
             dialog_obj.SetActive(false);
             targetImage.gameObject.SetActive(false);
+            running = false;
         });
     }
 
@@ -116,11 +117,60 @@ public class GameMaster : MonoBehaviour
         AvviaDialogo($"_{lvl}_{step}");
     }
 
+    private int reset_step = 0;
     private void RiceviRichiestaReset()
     {
-        SetUpLevel();
-        SetGameState(false);
-        AvviaDialogo("_" + Global.State.LivelloCorrente);
+        var text = reset_obj.Childrens()[0].GetComponent<TextMeshProUGUI>();
+        if (reset_step >= 2 && reset_step <= 6)
+            text.text += " DONE.\n\n";
+        if (reset_step == 0)
+        {
+            musicSource.Stop();
+            sfxSource.PlayOneShot(reset);
+            reset_obj.SetActive(true);
+        }
+        else if (reset_step == 1)
+        {
+            text.text += "Forced termination of running processes...";
+        }
+        else if (reset_step == 2)
+        {
+            text.text += "Breaking external connections...";
+        }
+        else if (reset_step == 3)
+        {
+            text.text += "Clear short-term memory...";
+        }
+        else if (reset_step == 4)
+        {
+            text.text += "Reverting to previous state....";
+        }
+        else if (reset_step == 5)
+        {
+            text.text += "Recalibrating neural network weights...";
+        }
+        else if (reset_step == 6)
+        {
+            text.text += "remaining tentatives before the cancellation: " + Global.State.ResetRimasti;
+        }
+        else if (reset_step == 7)
+        {
+            text.text += "\n\nStarting with minimum permissions: 0X4D.exe...";
+        }
+        else
+        {
+            running = false;
+            text.text = string.Empty;
+            reset_step = 0;
+            sfxSource.Stop();
+            reset_obj.SetActive(false);
+            SetUpLevel();
+            SetGameState(false);
+            AvviaDialogo("_" + Global.State.LivelloCorrente);
+            return;
+        }
+        if (reset_step++ <= 7) 
+            Invoke(nameof(RiceviRichiestaReset), reset_step == 8 ? 3 : 0.9f);
     }
 
     public void AvviaDialogoReset()
@@ -139,6 +189,7 @@ public class GameMaster : MonoBehaviour
 
     public void AvviaDialogo(string titolo)
     {
+        running = true;
         d_name = titolo;
         Invoke(nameof(Start_D), 1);
     }
