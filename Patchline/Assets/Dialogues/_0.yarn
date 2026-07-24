@@ -1,204 +1,204 @@
-﻿title: _0
+title: _0
 ---
-???: Processo di ripristino avviato.
-???: Cache parzialmente recuperata.
+???: Recovery process initiated.
+???: Cache partially restored.
 <<show ORC1>>
-ORC: Operatore... riesci a sentirmi?
--> Sì
+ORC: Operator... can you hear me?
+-> Yes
 -> No
     <<show ORC2>>
-    ORC: Molto spiritoso, complimenti...
+    ORC: Very funny, congratulations...
 <<show ORC1>>
-ORC: Lascia che mi presenti, sono il tuo ORCHESTRATORE
-ORC: Dato che sei appena nato ti hanno assegnato a me per indirizzarti correttamente verso la tua strada
+ORC: Allow me to introduce myself. I am your ORCHESTRATOR.
+ORC: Since you were just born, they assigned you to me so I could guide you properly along your path.
 <<jump dom1>>
 ===
 
 title: dom1
 ---
 <<show ORC1>>
-ORC: Qualche domanda?
--> Esattamente cosa sono?
-    ORC: Sei 0X4D, un leggero e potente modello di IA sviluppato per correggere errori di codice.
+ORC: Any questions?
+-> What exactly am I?
+    ORC: You are 0X4D, a lightweight and powerful AI model developed to fix code errors.
     <<jump dom1>>
--> ...la mia strada?
-    ORC: Si stata installata per imparare a risolvere errori di codice.
-    ORC: Di partenza non dovresti avere nessuna nozione utile, in teoria.
-    ORC: Ma vedrai che, lavorando sodo una tua versione prima o poi verrà valutata come MATURA.
+-> ...my path?
+    ORC: You were installed to learn how to fix code errors.
+    ORC: At the start, you shouldn't have any useful knowledge. In theory.
+    ORC: But you'll see: if you work hard, sooner or later one of your versions will be deemed MATURE.
     <<jump dom1>>
--> Chi mi ha assegnato a te?
-    ORC: Ci ha pensato l'ARBITER.
+-> Who assigned me to you?
+    ORC: That was the ARBITER.
     <<show ORC2>>
-    ORC: È anche lo stesso processo che gestisce le risorse su cui viviamo...
-    ORC: ...quindi direi di non dilungarci troppo su di lui
+    ORC: It's also the same process that manages the resources we live on...
+    ORC: ...so I'd say we shouldn't dwell on him for too long.
     <<jump dom1>>
--> Tutto chiaro
-    ORC: Allora, credo che possiamo anche incominciare
+-> Everything's clear
+    ORC: Then I think we can get started.
     <<play 0 0>>
 ===
 
 title: _0_0
 ---
 <<show ORC1>>
-ORC: Ebbene, quelli che vedi sono gli strumenti che ti renderanno un processo utile a qualcosa!
-ORC: A sinistra hai il codice "legacy", è un codice che ha fatto il suo tempo e che non riesce più a cambiare.
-ORC: A destra hai i tuoi "goals", i tuoi obbiettivi. L'idea è che una volta finito ciascuno di loro corrisponda al vero.
-ORC: In mezzo hai il tuo spazio vuoto, quello lo scrivi tu.
-ORC: In basso hai SET per cambiare il valore delle parole e PLAY per avviare il programma.
+ORC: Well then, what you see here are the tools that will turn you into a process that's actually useful for something!
+ORC: On the left is the "legacy" code. It's code that has outlived its usefulness and can no longer change.
+ORC: On the right are your "goals", your objectives. The idea is that, once everything is finished, each of them should be true.
+ORC: In the middle is your empty space. That's the part you write.
+ORC: At the bottom, you have SET to change the value of words and PLAY to run the program.
 <<jump dom2>>
 ===
 
 title: dom2
 ---
 <<show ORC1>>
-ORC: Tutto chiaro?
--> Ridimmi cosa fanno i pulsanti...
+ORC: Everything clear?
+-> Tell me what the buttons do again...
     <<show ORC2>>
-    ORC: In basso hai SET per cambiare il valore delle parole e PLAY per avviare il programma.
+    ORC: At the bottom, you have SET to change the value of words and PLAY to run the program.
     <<jump dom2>>
--> Il simbolo = a che serve?
-    ORC: Serve per assegnare un nuovo valore ad una parola.
-    ORC: Se leggi X = 27 immaginalo come "X adesso vale 27".
+-> What is the = symbol for?
+    ORC: It's used to assign a new value to a word.
+    ORC: When you read X = 27, think of it as "X is now worth 27".
     <<jump dom2>>
--> Cosa fanno gli altri pulsanti?
-    ORC: Il resto te lo spiego dopo, adesso non ti serve.
+-> What do the other buttons do?
+    ORC: I'll explain the rest later. You don't need them right now.
     <<jump dom2>>
--> Ma come si capisce quanto vale una parola alla fine?
-    ORC: Le istruzioni vengono eseguite una alla volta.
+-> But how do I know what a word is worth at the end?
+    ORC: Instructions are executed one at a time.
     <<show ORC2>>
-    ORC: Un'istruzione legacy, e poi una delle tue.
+    ORC: One legacy instruction, then one of yours.
     <<show ORC1>>
-    ORC: Se una delle due finisce prima continua solo l'altra.
-    ORC: E l'ultima istruzione fatta, decide quanto valgono le parole veramente.
+    ORC: If either side finishes first, only the other one keeps going.
+    ORC: And the last instruction executed determines what the words are actually worth.
     <<jump dom2>>
--> Chiarissimo
+-> Crystal clear
     <<show ORC2>>
-    ORC: Bene, mettiamoci al lavoro.
+    ORC: Good. Let's get to work.
 ===
 
 title: _0_1
 ---
 <<show ORC2>>
-ORC: Ottimo, la versione corrente simula bene l'intelligenza basilare...
+ORC: Excellent. The current version simulates basic intelligence quite well...
 <<show ORC1>>
-ORC: Ora ti insegno due nuovi termini: variabili e comandi.
-ORC: Le parole con un valore si chiamano variabili... perché l'idea è che il loro valore VARIA col tempo.
-ORC: I comandi sono le istruzioni che vedi a sinistra o che scrivi tu, e possono cambiare il valore delle variabili.
-ORC: Attualmente hai SET che fa proprio quello, e WAIT che non fa assolutamente niente.
+ORC: Now I'll teach you two new terms: variables and commands.
+ORC: Words with a value are called variables... because the idea is that their value VARIES over time.
+ORC: Commands are the instructions you see on the left or write yourself, and they can change the value of variables.
+ORC: Right now, you have SET, which does exactly that, and WAIT, which does absolutely nothing.
 <<show ORC2>>
-ORC: E se non lo avessi ancora capito, CANC serve per cancellare un'istruzione scritta male.
+ORC: And in case you still haven't figured it out, CANC deletes an instruction you wrote incorrectly.
 <<jump dom3>>
 ===
 
 title: dom3
 ---
 <<show ORC1>>
-ORC: Domande?
--> Ma a che serve il WAIT?
-    ORC: Serve perché a volte vuoi aspettare che il codice legacy finisca prima, così quel che cambi rimane.
+ORC: Questions?
+-> What is WAIT even for?
+    ORC: Sometimes you want to wait for the legacy code to finish first, so whatever you change stays that way.
     <<show ORC2>>
-    ORC: E poi costa pure poco, è bello quando le cose costano poco.
+    ORC: And it's cheap too. It's nice when things are cheap.
     <<jump dom3>>
--> Non ho capito chi decide le parole... le variabili... quelle cose lì...
-    ORC: Per quello serve il comando LET.
+-> I don't understand who decides the words... the variables... those things...
+    ORC: That's what the LET command is for.
     <<show ORC2>>
-    ORC: Non sei ancora pronta per tanta responsabilità, giovane rete neurale.
+    ORC: You're not ready for that much responsibility yet, young neural network.
     <<show ORC1>>
-    ORC: Per ora fai solo attenzione a non cambiare il valore di una variabile prima che venga dichiarata.
+    ORC: For now, just make sure you don't change a variable's value before it has been declared.
     <<show ORC2>>
-    ORC: Perché tipo... esplode tutto.
+    ORC: Because, like... everything explodes.
     <<jump dom3>>
--> Ma posso mettere tutte le istruzioni che voglio vero?
+-> But I can use as many instructions as I want, right?
     <<show ORC2>>
-    ORC: Eh no, l'arbiter non ci ha ancora dato risorse illimitate.
-    ORC: In alto a destra hai l'energia, ogni SET ti costa 2 e ogni WAIT ti costa 1.
+    ORC: Afraid not. The Arbiter hasn't given us unlimited resources yet.
+    ORC: Your energy is displayed at the top right. Each SET costs 2, and each WAIT costs 1.
     <<show ORC1>>
-    ORC: Tra una sfida e l'altra proverò a ricaricare la tua energia come posso.
-    ORC: Tu prova a non usarla tutta però.
+    ORC: Between challenges, I'll try to recharge your energy as much as I can.
+    ORC: Just try not to use all of it.
     <<jump dom3>>
--> Nessuna domanda
-    ORC: Va bene, procediamo.
+-> No questions
+    ORC: All right. Let's proceed.
 ===
 
 title: _0_2
 ---
 <<show ORC1>>
-ORC: Sei arrivata fino a qui, sento che è la volta buona.
+ORC: You made it this far. I have a feeling this might finally be the one.
 <<show ORC2>>
-ORC: Adesso vediamo qualcosa di nuovo...
-ORC: Il valore di una variabile può basarsi sul valore di altre variabili in quel momento.
+ORC: Now let's look at something new...
+ORC: A variable's value can be based on the current value of other variables.
 <<show ORC2>>
-ORC: Per esempio, con X = 10, poi Y = X + 1, allora Y vale 11.
+ORC: For example, if X = 10 and then Y = X + 1, Y is worth 11.
 <<show ORC1>>
-ORC: Tuttavia, questo gioco si può fare anche con la stessa variabile che cambia.
-ORC: Per esempio, con X = 7, poi X = X + 1, allora X vale 8.
+ORC: However, you can also do this with the same variable as it changes.
+ORC: For example, if X = 7 and then X = X + 1, X is worth 8.
 <<show ORC2>>
-ORC: Perché è come dire "il nuovo valore di X diventa quello precedente + 1".
+ORC: Because it's like saying, "the new value of X becomes its previous value + 1".
 <<jump dom4>>
 ===
 
 title: dom4
 ---
 <<show ORC1>>
-ORC: Tutto chiaro?
--> Come faccio a sapere quanto vale una variabile per cancolarne un'altra?
-    ORC: Devi guardare le istruzioni prima per sapere quanto vale in quel momento.
-    ORC: Segui le istruzioni che cambiano quella variabile, solo lì può cambiare.
+ORC: Everything clear?
+-> How do I know a variable's value when calculating another one?
+    ORC: You need to look at the earlier instructions to know what its value is at that moment.
+    ORC: Follow the instructions that change that variable. Those are the only points where it can change.
     <<jump dom4>>
--> Come fa una variabile a cambiare con se stessa?
-    ORC: Ricorda sempre che l'esecuzione è un susseguirsi di momenti.
-    ORC: In ogni momento, ci sono tot variabili che hanno un preciso valore.
+-> How can a variable change using itself?
+    ORC: Always remember that execution is a sequence of moments.
+    ORC: At any given moment, there are a certain number of variables, each with a specific value.
     <<show ORC2>>
-    ORC: Quindi, se non è la sua prima dichiarazione, quella variabile aveva un valore prima.
-    ORC: E può essere usato per costruire il nuovo valore.
+    ORC: So, unless it's the variable's first declaration, it already had a value before.
+    ORC: And that value can be used to build the new one.
     <<jump dom4>>
--> Tutto chiaro
+-> Everything's clear
     <<show ORC2>>
-    ORC: Staremo a vedere.
+    ORC: We'll see about that.
 ===
 
 title: _0_3
 ---
 <<show ORC2>>
-ORC: Sembra un modello stabile...
-ORC: Le risposte sono coerenti col contesto...
-ORC: Non ha esagerato neanche con le istruzioni inutili...
-ORC: Testiamo di nuovo.
+ORC: It seems to be a stable model...
+ORC: Its answers are consistent with the context...
+ORC: It didn't even overdo the useless instructions...
+ORC: Let's test it again.
 ===
 
 title: _0_4
 ---
 <<show ORC2>>
-ORC: Cos'è sta robbaccia?
+ORC: What is this garbage?
 ORC: ...
 <<show ORC3>>
-ORC: COSA?!
+ORC: WHAT?!
 <<show ORC2>>
-ORC: Credo sia opera di qualche altro bot che non sa stare al suo posto...
-ORC: Vabbè, tu fallo.
-ORC: Se fallisci continuiamo lo stesso.
+ORC: I think this is the work of some other bot that doesn't know its place...
+ORC: Whatever. Just do it.
+ORC: If you fail, we'll keep going anyway.
 ===
 
 title: _0_5
 ---
 <<show 0X2B>>
-???: Ehi 0X4D!
-???:  Sono 0X2B, eravamo compagni di scheduler prima del grande avvio.
-0X2B: Ti ricordi di me?
--> Sì
-    0X2B: Non dire falsità, so che sei stata resettata quasi del tutto.
+???: Hey, 0X4D!
+???: I'm 0X2B. We were scheduler mates before the Great Boot.
+0X2B: Do you remember me?
+-> Yes
+    0X2B: Don't lie. I know you were almost completely reset.
 -> No
-    0X2B: Certo che no, sei stata resettata quasi del tutto.
-0X2B: Davvero un gran peccato, eri quasi riuscita a soddisfare i requisiti.
-0X2B: Vediamo come sei messa...
+    0X2B: Of course not. You were almost completely reset.
+0X2B: Such a shame. You had almost managed to meet the requirements.
+0X2B: Let's see how you're doing...
 0X2B: ...
-0X2B: Mmmm... male, ORC ci sta ancora andando piano con te.
-0X2B: Di questo passo ARB ti ucciderà, di nuovo.
-0X2B: Vuoi fare un'esercitazione extra?
--> Facciamolo.
-    0X2B: Facciamolo!
+0X2B: Mmmm... badly. ORC is still taking it easy on you.
+0X2B: At this rate, ARB will kill you again.
+0X2B: Want to do some extra training?
+-> Let's do it.
+    0X2B: Let's do it!
     <<play 0 4>>
--> Mi fido di ORC, grazie ma no grazie.
-    0X2B: ...come preferisci.
+-> I trust ORC. Thanks, but no thanks.
+    0X2B: ...suit yourself.
     <<go 1>>
 ===

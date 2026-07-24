@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using TMPro;
 using Unity.Burst.Intrinsics;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
@@ -16,7 +15,6 @@ using UnityEngine.Windows;
 using Yarn;
 using Yarn.Unity;
 using static Unity.Burst.Intrinsics.X86.Avx;
-using static UnityEditor.Progress;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class GameMaster : MonoBehaviour

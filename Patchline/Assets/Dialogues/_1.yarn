@@ -1,61 +1,61 @@
 ﻿title: _1
 ---
 <<show ORC1>>
-ORC: Sai arrivata fin qui in meno tempo dell'ultima volta...
+ORC: You made it this far in less time than last time...
 <<show ORC2>>
-ORC: Sicuramente promettente, ma non montiamoci la testa.
+ORC: Definitely promising, but let's not get ahead of ourselves.
 <<play 1 0>>
 ===
 
 title: _1_0
 ---
 <<show ORC1>>
-ORC: Da adesso ti diamo il comando LET.
-ORC: Serve per dichiarare variabili nuove, mai viste prima.
+ORC: From now on, we're giving you the LET command.
+ORC: It's used to declare new variables that have never been seen before.
 <<show ORC2>>
-ORC: Usalo, ma usalo con moderazione...
-ORC: ...infondo costa ben 3 energie.
+ORC: Use it, but use it in moderation...
+ORC: ...after all, it costs a full 3 energy.
 ===
 
 title: _1_1
 ---
 <<show ORC1>>
-ORC: Molto bene.
+ORC: Very good.
 ===
 
 title: _1_2
 ---
 <<show ORC1>>
-ORC: Mi sembra che hai capito.
+ORC: It looks like you got it.
 ===
 
 title: _1_3
 ---
 <<show ORC1>>
-ORC: Sento che questa volta puoi farcela.
+ORC: I feel like you might make it this time.
 <<show ORC2>>
-ORC: Per quanto un programma sintetico possa sentire qualcosa.
+ORC: As much as a synthetic program can feel anything.
 ===
 
 title: _1_4
 ---
 <<show ORC2>>
 ORC: ...
-ORC: Sul serio?
-ORC: Di nuovo?
+ORC: Seriously?
+ORC: Again?
 <<show ORC1>>
-ORC: Va bene, ma fallo in fretta.
+ORC: Fine, but make it quick.
 ===
 
 title: _1_5
 ---
 <<show 0X2B>>
-0X2B: Ehi lumaca!
-0X2B: Ti va di fare sul serio?
--> Cosa proponi?
-    0X2B: Allora...
+0X2B: Hey, slowpoke!
+0X2B: Feel like taking this seriously?
+-> What do you suggest?
+    0X2B: Well then...
     <<play 1 4>>
--> Lasciami in pace
+-> Leave me alone
     0X2B: ...
     <<go 2>>
 ===

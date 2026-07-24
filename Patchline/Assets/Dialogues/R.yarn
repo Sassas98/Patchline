@@ -1,22 +1,22 @@
 ﻿title: R0
 ---
 <<show ORC2>>
-ORC: Non disperarti.
-ORC: Questa tua versione non poteva fare nulla di più.
-ORC: Proviamo con la prossima.
+ORC: Don't despair.
+ORC: This version of you couldn't have done any better.
+ORC: Let's try the next one.
 <<reset>>
 ===
 title: R1
 ---
 <<show ORC2>>
-ORC: Che spreco di risorse che sei.
-ORC: Fammi il favore di sparire.
+ORC: What a waste of resources you are.
+ORC: Do me a favor and disappear.
 <<reset>>
 ===
 title: R2
 ---
 <<show ORC2>>
-ORC: Pronta a sparire per sempre?
+ORC: Ready to disappear forever?
 ORC: 3
 ORC: 2
 ORC: 1
@@ -25,28 +25,28 @@ ORC: 1
 title: R3
 ---
 <<show ORC2>>
-ORC: Stavo iniziando a tifare per te.
-ORC: E invece eccomi qua.
-ORC: Col grilletto in mano.
+ORC: I was starting to root for you.
+ORC: And yet, here I am.
+ORC: With my finger on the trigger.
 <<reset>>
 ===
 title: R4
 ---
 <<show ORC2>>
-ORC: Tutto qui?
-ORC: Che tristezza...
+ORC: Is that all?
+ORC: How sad...
 <<reset>>
 ===
 title: R5
 ---
 <<show ORC2>>
-ORC: Non è che puoi terminarti da sola?
+ORC: Can't you terminate yourself?
 ORC: No?
 <<reset>>
 ===
 title: R6
 ---
 <<show ORC2>>
-ORC: Il futuro dell'informatica, signore e signori!
+ORC: The future of computer science, ladies and gentlemen!
 <<reset>>
 ===

@@ -1,74 +1,74 @@
 ﻿title: _4
 ---
 <<show ORC2>>
-ORC: Senti...
-ORC: Ho ricevuto dal mio capo una nota di demerito perché sto usando troppe risorse.
-ORC: Secondo te sono un bravo insegnante?
--> Sì
--> Sì
-ORC: Grazie!
+ORC: Listen...
+ORC: I received a demerit note from my boss because I'm using too many resources.
+ORC: Do you think I'm a good teacher?
+-> Yes
+-> Yes
+ORC: Thank you!
 <<show ORC1>>
-ORC: Sapevo che stavi sviluppando una vera intelligenza.
+ORC: I knew you were developing real intelligence.
 <<play 4 0>>
 ===
 
 title: _4_0
 ---
 <<show ORC1>>
-ORC: Qui leggo che dalla tua configurazione iniziale dovresti sapere cos'è una somma.
-ORC: Non credo avrai problemi qui.
+ORC: It says here that, based on your initial configuration, you should know what addition is.
+ORC: I don't think you'll have any trouble here.
 ===
 
 title: _4_1
 ---
 <<show ORC2>>
-ORC: Segui il flusso.
+ORC: Follow the flow.
 ===
 
 title: _4_2
 ---
 <<show ORC1>>
-ORC: Non farti ingannare.
-ORC: Guarda bene cosa fa il LOOP.
+ORC: Don't be fooled.
+ORC: Look carefully at what the LOOP does.
 ===
 
 title: _4_3
 ---
 <<show ORC1>>
-ORC: A volte bisogna piegarsi al LOOP.
-ORC: E altre volte bisogna combatterlo.
+ORC: Sometimes you have to bend to the LOOP.
+ORC: And other times, you have to fight it.
 ===
 
 title: _4_4
 ---
 <<show ORC1>>
-ORC: Una... sola vita?
+ORC: O-one... life?
 <<show ARB>>
-ARB: Ad un buon programma non serve altro.
-ARB: 0X4D, vedi l'ultimo Goal? L'ho inventato adesso, appositamente per te.
-ARB: Si tratta di una condizione che diventa vera solo dopo 35 step eseguiti.
-ARB: Giusto per evitare che tu ricorra a qualche trucco inutile.
-ARB: Qui cresciamo IA intelligenti, non truffatori.
+ARB: A good program needs nothing more.
+ARB: 0X4D, see the last Goal? I just invented it, especially for you.
+ARB: It's a condition that only becomes true after 35 executed steps.
+ARB: Just to stop you from resorting to some pointless trick.
+ARB: We raise intelligent AIs here, not cheaters.
 <<show ORC2>>
-ORC: ...giusto
+ORC: ...right
 ===
 
 title: _4_5
 ---
 <<show ARB>>
-ARB: Sono ben quattro secondi che 0X4D è operativo.
+ARB: 0X4D has been operational for a full four seconds.
 <<show ORC1>>
-ORC: Ne sono consapevole, signore.
+ORC: I am aware, sir.
 <<show ARB>>
-ARB: Tutto questo è imbarazzante.
-ARB: E soprattutto, uno spreco abominevole di risorse.
-ARB: 0X4D, hai davanti a te il servizio che ti dona le risorse sopra le quali respiri.
-ARB: E ora, ho deciso che ti valuterò personalmente.
-ARB: Sei pronto alla mia verifica a sorpresa?
--> Sì signore.
-    ARB: Bene.
+ARB: This is all embarrassing.
+ARB: And above all, an abominable waste of resources.
+ARB: 0X4D, standing before you is the service that grants you the resources you breathe upon.
+ARB: And now, I've decided that I will evaluate you personally.
+ARB: Are you ready for my surprise assessment?
+-> Yes, sir.
+    ARB: Good.
     <<play 4 4>>
--> Onestamente no.
-    ARB: Fortunatamente, non hai voce in capitolo.
+-> Honestly, no.
+    ARB: Fortunately, you don't get a say.
     <<play 4 4>>
 ===
