@@ -1,44 +1,55 @@
 ﻿title: _1
 ---
+<<show ORC1>>
 ORC: Sai arrivata fin qui in meno tempo dell'ultima volta...
+<<show ORC2>>
 ORC: Sicuramente promettente, ma non montiamoci la testa.
 <<play 1 0>>
 ===
 
 title: _1_0
 ---
+<<show ORC1>>
 ORC: Da adesso ti diamo il comando LET.
 ORC: Serve per dichiarare variabili nuove, mai viste prima.
+<<show ORC2>>
 ORC: Usalo, ma usalo con moderazione...
 ORC: ...infondo costa ben 3 energie.
 ===
 
 title: _1_1
 ---
+<<show ORC1>>
 ORC: Molto bene.
 ===
 
 title: _1_2
 ---
+<<show ORC1>>
 ORC: Mi sembra che hai capito.
 ===
 
 title: _1_3
 ---
+<<show ORC1>>
 ORC: Sento che questa volta puoi farcela.
+<<show ORC2>>
 ORC: Per quanto un programma sintetico possa sentire qualcosa.
 ===
 
 title: _1_4
 ---
+<<show ORC2>>
 ORC: ...
 ORC: Sul serio?
 ORC: Di nuovo?
+<<show ORC1>>
 ORC: Va bene, ma fallo in fretta.
 ===
 
 title: _1_5
 ---
+<<show 0X2B>>
 0X2B: Ehi lumaca!
 0X2B: Ti va di fare sul serio?
 -> Cosa proponi?

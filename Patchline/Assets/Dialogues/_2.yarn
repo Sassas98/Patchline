@@ -1,50 +1,60 @@
 ﻿title: _2
 ---
+<<show ORC1>>
 ORC: Mentre facevi il precedente livello, abbiamo eliminato un modello simile a te.
 ORC: Prendila come una bella notizia: ne dovevamo scegliere una e non ti abbiamo scelta.
 ORC: Ai piani alti credono tutti che stai portando risultati.
+<<show ORC2>>
 ORC: Impegnati affinché continuino a pensarlo.
 <<play 2 0>>
 ===
 
 title: _2_0
 ---
+<<show ORC1>>
 ORC: Lavora un altro po' con le variabili.
 ORC: Ti servirà.
 ===
 
 title: _2_1
 ---
+<<show ORC1>>
 ORC: Non distrarti.
 ORC: Leggi bene i tuoi goals.
 ===
 
 title: _2_2
 ---
+<<show ORC1>>
 ORC: Stai prendendo la strada giusta.
 ORC: Vedi che abbiamo fatto bene a non buttarti via?
 ===
 
 title: _2_3
 ---
+<<show ORC1>>
 ORC: ...può andare come soluzione.
 ORC: Però ricorda che è sempre meglio spendere meno energia possibile.
-ORC: Sicuro che era la soluzione più economica possibile?
+<<show ORC2>>
+ORC: Sicura che era la soluzione più economica possibile?
 ===
 
 title: _2_4
 ---
+<<show ORC3>>
 ORC: Stiamo scherzando?
 ORC: Questo non è neanche stato assegnato a te!
 ORC: Si può sapere cosa diavolo sta accadendo?!
+<<show ORC2>>
 ORC: Tu fallo, io intanto cerco di capire quale merdoso processo orfano ha pesanto fosse una buona idea.
 ===
 
 title: _2_5
 ---
+<<show 0X1B>>
 0X1B: Ehi ciao! Sono il tuo vicino di core, mi chiamo 0X1B.
 -> Ehi piacere, io sono 0X4D.
-    0X2B: Piacere mio!
+    0X1B: Piacere mio!
 -> Quello che dici non ha senso, veniamo spostati molto velocemente nel processore.
     0X1B: Maledizione, ne ho beccato uno saccente...
 0X1B: Senti, sono ad un passo dalla disintallazione.

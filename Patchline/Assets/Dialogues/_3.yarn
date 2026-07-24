@@ -1,39 +1,116 @@
 ﻿title: _3
 ---
-ORC: Lavora, schiavo!
+<<show ORC2>>
+ORC: ...
+<<show ORC1>>
+ORC: Da adesso le cose inizieranno a farsi... complesse.
+ORC: Fino ad ora hai visto che ogni istruzione viene eseguita solo una volta.
+ORC: Dalla prima all'ultima, dall'alto verso il basso.
+ORC: Con l'introduzione dei LOOP le istruzioni potranno essere eseguite per sempre, mai o un certo numero di volte.
+<<show ORC2>>
+ORC: Preferibilmente un certo numero di volte.
 <<play 3 0>>
 ===
 
 title: _3_0
 ---
-ORC: Lavora, schiavo!
+<<show ORC1>>
+ORC: I LOOP hanno condizioni che possono essere vere, oppure false.
+ORC: Come ad esempio i Goal che devi soddisfare.
+ORC: E una sequenza di altre operazioni che appartengono a quel LOOP.
+<<show ORC2>>
+ORC: Sono tipo le righe con i trattini davanti.
+<<show ORC1>>
+ORC: Quando il compilatore ci arriva, vede se la condizione è vera.
+ORC: Se lo è, entra nel suo blocco personale.
+ORC: Altrimenti, salta tutto il blocco e va avanti.
+ORC: Una volta dentro, esegue una per una le istruzioni del blocco, e poi torna all'istruzione di LOOP.
+ORC: Quindi, se è diventata vera, rientra dentro e continua da capo...
+<<jump dom5>>
+===
+
+title: dom5
+---
+<<show ORC1>>
+ORC: Tutto chiaro?
+-> Ridimmi come funziona il loop perfavore.
+    ORC: I LOOP hanno una condizione che può essere vera, oppure falsa.
+    ORC: Come ad esempio i Goal che devi soddisfare.
+    ORC: E una sequenza di altre operazioni che appartengono a quel LOOP.
+    <<show ORC2>>
+    ORC: Sono tipo le righe con i trattini davanti.
+    <<show ORC1>>
+    ORC: Quando il compilatore ci arriva, vede se la condizione è vera.
+    ORC: Se lo è, entra nel suo blocco personale.
+    ORC: Altrimenti, salta tutto il blocco e va avanti.
+    ORC: Una volta dentro, esegue una per una le istruzioni del blocco, e poi torna all'istruzione di LOOP.
+    ORC: Quindi, se è diventata vera, rientra dentro e continua da capo...
+    <<jump dom5>>
+-> Ma se il codice gira all'infinito, la mia prova è superata o no?
+    ORC: Se gira all'infinito la tua prova è considerata FALLITA.
+    ORC: Ricorda che ad ogni giro ricontrolla la stessa condizione.
+    ORC: Che dipende da variabili.
+    <<show ORC2>>
+    ORC: E tu puoi cambiare il valore dell variabili con SET.
+    <<jump dom5>>
+-> Posso creare un LOOP anche io?
+    ORC: Sì puoi e dovrai...
+    <<show ORC2>>
+    ORC: ...prima o poi.
+    <<show ORC1>>
+    ORC: Costa 4 energie, ma se ben usato può fartene risparmiare molte di più.
+    ORC: Dopo averlo creato tutte le istruzioni successive andranno nel suo blocco.
+    ORC: Poi se ne vuoi scrivere altre fuori puoi usare il bottone <--
+    ORC: Per ora però ti consiglio di concentrarti sull'imparare come funziona.
+    <<jump dom5>>
+-> Chiarissimo
+    <<show ORC2>>
+    ORC: Speriamo.
 ===
 
 title: _3_1
 ---
-ORC: Lavora, schiavo!
+<<show ORC1>>
+ORC: A volte ci è utile controllare l'ingresso e l'uscita dal LOOP cambiandogli le variabili da sotto il naso.
+ORC: Altre volte no.
+ORC: Ora vediamo blocchi di LOOP più consistenti.
+<<show ORC2>>
+ORC: Non deludermi.
 ===
 
 title: _3_2
 ---
-ORC: Lavora, schiavo!
+<<show ORC1>>
+ORC: Scegli la strada più semplice.
+<<show ORC2>>
+ORC: Non complicarti la vita.
 ===
 
 title: _3_3
 ---
-ORC: Lavora, schiavo!
+<<show ORC1>>
+ORC: Leggi bene il codice legacy.
+ORC: Intuisci cosa accadrà durante l'esecuzione.
+ORC: Spesso quello che devi scrivere non è tanto codice.
+ORC: Ma poco, e ben pensato.
 ===
 
 title: _3_4
 ---
-ORC: Lavora, schiavo!
+<<show ORC2>>
+ORC: ...
+ORC: Non mi faccio più domande guarda.
 ===
 
 title: _3_5
 ---
-ORC: Lavora, schiavo!
--> Sì
+<<show 0X2B>>
+0X2B: Ho visto che hai messo mano ai cicli.
+0X2B: Non male, ma ne vorresti vedere uno vero?
+-> Vediamo.
+    0X2B: Ottima risposta.
     <<play 3 4>>
--> No
+-> Per stavolta passo...
+    0X2B: A tuo rischio e pericolo.
     <<go 4>>
 ===
