@@ -1,14 +1,5 @@
-dialoghi reset x 7
-dialoghi delusione x 7
-dialoghi lv0
-dialoghi lv1
-dialoghi lv2
-dialoghi lv3
-dialoghi lv4
-titolo gioco
-end of content
-week 4
-1. riguardare tabella
-2. pitch
-3. scrittura gdd
-4. presentazione
+lingua ita-eng
+audio impostabile
+effetto scorrimento asggiustato
+aggiunta tentativi aggiuntivi
+primi livelli semplificati
