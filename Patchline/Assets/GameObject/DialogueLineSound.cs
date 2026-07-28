@@ -22,7 +22,9 @@ public sealed class DialogueLineSound : ActionMarkupHandler
         MarkupParseResult line,
         TMP_Text text)
     {
-        if (audioSource == null || lineSound == null)
+        if (audioSource == null 
+            || lineSound == null 
+            || audioSource.isPlaying)
         {
             return;
         }

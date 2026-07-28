@@ -43,8 +43,17 @@ title: _0_0
 ORC: Well then, what you see here are the tools that will turn you into a process that's actually useful for something!
 ORC: On the left is the "legacy" code. It's code that has outlived its usefulness and can no longer change.
 ORC: On the right are your "goals", your objectives. The idea is that, once everything is finished, each of them should be true.
-ORC: In the middle is your empty space. That's the part you write.
-ORC: At the bottom, you have SET to change the value of words and PLAY to run the program.
+ORC: In the middle is your empty space. but we'll see it later.
+ORC: Now click the PLAY button to start the program.
+===
+
+title: _0_1
+---
+<<show ORC2>>
+ORC: Now we can really get started.
+<<show ORC1>>
+ORC: The space in between is special, it's an empty space that you can fill however you want.
+ORC: Over time you will have many more options, but for now learn to use SET well.
 <<jump dom2>>
 ===
 
@@ -76,7 +85,7 @@ ORC: Everything clear?
     ORC: Good. Let's get to work.
 ===
 
-title: _0_1
+title: _0_2
 ---
 <<show ORC2>>
 ORC: Excellent. The current version simulates basic intelligence quite well...
@@ -116,11 +125,19 @@ ORC: Questions?
     ORC: Between challenges, I'll try to recharge your energy as much as I can.
     ORC: Just try not to use all of it.
     <<jump dom3>>
+    <<jump dom3>>
+-> I don't understand what that != between the goals means...
+    <<show ORC2>>
+    ORC: Are you sure you're a program?
+    <<show ORC1>>
+    ORC: Alright.
+    ORC: As == means equals, != means different..
+    <<jump dom3>>
 -> No questions
     ORC: All right. Let's proceed.
 ===
 
-title: _0_2
+title: _0_3
 ---
 <<show ORC1>>
 ORC: You made it this far. I have a feeling this might finally be the one.
@@ -155,15 +172,6 @@ ORC: Everything clear?
 -> Everything's clear
     <<show ORC2>>
     ORC: We'll see about that.
-===
-
-title: _0_3
----
-<<show ORC2>>
-ORC: It seems to be a stable model...
-ORC: Its answers are consistent with the context...
-ORC: It didn't even overdo the useless instructions...
-ORC: Let's test it again.
 ===
 
 title: _0_4

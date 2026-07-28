@@ -66,6 +66,8 @@ ORC: Everything clear?
 -> Crystal clear
     <<show ORC2>>
     ORC: Let's hope so.
+    <<show ORC1>>
+    ORC: For now just click START and follow the flow.
 ===
 
 title: _3_1

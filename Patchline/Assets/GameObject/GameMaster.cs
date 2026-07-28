@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using TMPro;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
@@ -50,6 +51,7 @@ public class GameMaster : MonoBehaviour
     [SerializeField] private AudioClip theme, error1, error2, help, so_verify, senior, reset
                                      , btn1, btn2, btn3, cancel, fail, step1, step2, success;
     [SerializeField] private Image targetImage;
+    [SerializeField] private AudioSource dialogSource;
     private AudioSource musicSource;
     private AudioSource sfxSource;
     private bool stepflag = false;
@@ -248,7 +250,7 @@ public class GameMaster : MonoBehaviour
     public void UpdatePalette()
     {
         (string Keyword, string Simboli, string Variabili, string Numeri)
-            = palette[Global.State.Vite == 3 ? 0 : Global.State.Vite == 2 ? 1 : 2];
+            = palette[Global.State.Vite > 2 ? 0 : Global.State.Vite == 2 ? 1 : 2];
         palette_applier.SetPalette(Keyword, Simboli, Variabili, Numeri);
     }
 
@@ -271,7 +273,7 @@ public class GameMaster : MonoBehaviour
         var ll = levelMaster.GetLevel(Global.State.LivelloCorrente, Global.State.StepCorrente);
         text = ll.Code;
         goals = ll.Goals;
-        Global.State.Vite = Global.State.StepCorrente == 4 ? 1 : 3;
+        Global.State.Vite = ll.Lives;
         Global.State.Energia = Global.State.StepCorrente == 0 || Global.State.StepCorrente == 4 ? ll.Energy : Global.State.Energia + ll.Energy;
         gs.SetText(goals);
         vars.SetText("");
@@ -311,6 +313,24 @@ public class GameMaster : MonoBehaviour
 
         set_modal.SetActive(true);
         if_modal.SetActive(true);
+        GameObject.Find("volume").GetComponent<Button>()
+            .onClick.AddListener(() => {
+                var image = GameObject.Find("volume").GetComponent<Image>();
+                if (sfxSource.volume == 1)
+                {
+                    sfxSource.volume = 0;
+                    musicSource.volume = 0;
+                    dialogSource.volume = 0;
+                    image.sprite = Resources.Load<Sprite>("mute");
+                }
+                else
+                {
+                    sfxSource.volume = 1;
+                    musicSource.volume = 0.4f;
+                    dialogSource.volume = 0.8f;
+                    image.sprite = Resources.Load<Sprite>("volume");
+                }
+            });
         GameObject.Find("set_back").GetComponent<Button>()
             .onClick.AddListener(() => {
                 CancelEffect();

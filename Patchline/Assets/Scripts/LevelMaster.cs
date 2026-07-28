@@ -8,6 +8,7 @@ namespace Assets.Scripts
         public string Code { get; set; }
         public string Goals { get; set; }
         public int Energy { get; set; }
+        public int Lives { get; set; }
     }
 
     public class LevelMaster
@@ -26,16 +27,20 @@ namespace Assets.Scripts
             return L(result.Code.Replace("\r", ""), result.Goals.Replace("\r", ""), result.Energy);
         }
 
-        private static LevelData L(string code, string goals, int energy) => new()
+        private static LevelData L(string code, string goals, int energy, int lives = 3) => new()
         {
             Code = code,
             Goals = goals,
-            Energy = energy
+            Energy = energy,
+            Lives = lives
         };
 
         private readonly List<LevelData> datas = new()
         {
             // Level 0 - SET / WAIT
+            L(@"LET A = 2
+A = 3
+A = 4", @"A == 4", 0),
             L(@"LET A = 2
 WAIT", @"A == 9", 12),
             L(@"LET B = 3
@@ -51,17 +56,6 @@ WAIT
 C = C + 1
 WAIT", @"C == 11
 D < C", 4),
-            L(@"LET TEMP = 5
-LET AUX = 8
-WAIT
-TEMP = TEMP + 1
-WAIT
-TEMP = TEMP + 1
-WAIT
-TEMP = TEMP + 1
-WAIT
-TEMP = TEMP + 1", @"TEMP == 12
-AUX < TEMP", 11),
             L(@"LET CORE = 6
 LET SIDE = 11
 WAIT
@@ -74,7 +68,7 @@ WAIT
 CORE = CORE + 1
 WAIT
 CORE = CORE + 1", @"CORE == 13
-SIDE <= 10", 23),
+SIDE <= 10", 23, 1),
 
             // Level 1 - LET snapshots
             L(@"LET BASE = 5
@@ -116,7 +110,7 @@ LET D1 = 4
 D0 = D0 + 2", @"MARK == 9
 MODE == 9
 D0 != 7
-D1 > MODE", 13),
+D1 > MODE", 13, 1),
 
             // Level 2 - LET expressions
             L(@"LET A = 6
@@ -146,7 +140,7 @@ WIDE = WIDE + 1
 WAIT
 TEMP = TEMP - 1", @"AREA == 99
 TALL < 11
-WIDE >= 11", 2),
+WIDE >= 11", 2, 1),
             L(@"LET LEFT = 10
 RITE = 12
 LEFT = LEFT + 1
@@ -160,7 +154,11 @@ D3 = D2 + 1", @"SPAN == -2", 24),
             L(@"LET CNT = 0
 LOOP CNT < 10
    CNT = CNT + 1
-WAIT", @"CNT <= 5", 18),
+WAIT", @"CNT == 10", 0, 3),
+            L(@"LET CNT = 0
+LOOP CNT < 10
+   CNT = CNT + 1
+WAIT", @"CNT == 9", 18, 4),
             L(@"LET RATE = 2
 LIM = 10
 LOOP CNT < LIM
@@ -176,16 +174,6 @@ LOOP CNT > 0
    USED = USED + 1
 WAIT", @"USED == 9
 CNT == 9000", 5),
-            L(@"LET LIM = 4
-LET STEP = 2
-LET TEMP = 0
-LOOP TEMP < LIM
-   TEMP = TEMP + 1
-   SUM = SUM + STEP
-SUM = SUM + TEMP
-WAIT", @"TEMP >= LIM
-SUM >= 18
-STEP < SUM", 10),
             L(@"LET WIDE = 4
 LET HIGH = 3
 LET X = 0
@@ -196,7 +184,7 @@ LOOP X < WIDE
       X = X + 1
 WAIT", @"X >= 3
 Y != 4
-HIGH <= WIDE", 15),
+HIGH <= WIDE", 15, 2),
 
             // Level 4 - LOOP accumulators
             L(@"LET LIM = 4
@@ -207,7 +195,7 @@ LOOP I < LIM
    SUM = SUM + I
 WAIT", @"LIM == 5
 I <= 5
-SUM != 16", 12),
+SUM != 16", 12, 4),
             L(@"LET LIM = 4
 LET I = 0
 LET PROD = 2
@@ -249,7 +237,7 @@ LOOP X > 0
    X = X - 1", @"X > 10
 Y == 10
 Z != 10
-| 35 |", 13),
+| 35 |", 13, 2),
 
             // Level 5 - STOP basics
             L(@"LET ADD = 2
@@ -300,7 +288,7 @@ WAIT", @"WIDE == 4
 X <= 4
 CELL != 5
 Y < WIDE
-HIGH <= CELL", 10),
+HIGH <= CELL", 10, 1),
             L(@"LET WIDE = 3
 LET HIGH = 5
 LET X = 0
@@ -320,7 +308,7 @@ SUM != 16
 X < RATE
 Y >= 1
 HIGH > Y
-WIDE != 4", 50),
+WIDE != 4", 50, 2),
 
             // Level 6 - STOP reinforcement
             L(@"LET RATE = 3
@@ -394,7 +382,7 @@ SUM > ADD
 X >= 4
 Y <= 1
 HIGH >= 5
-WIDE < SUM", 37),
+WIDE < SUM", 37, 1),
 
             // Level 7 - SKIP reading
             L(@"LET LIM = 3
@@ -471,7 +459,7 @@ SUM >= 21
 X <= 3
 Y != 4
 HIGH != 4
-WIDE < SUM", 17),
+WIDE < SUM", 17, 1),
 
             // Level 8 - IF / ELSE
             L(@"LET CUT = 8
@@ -567,7 +555,7 @@ FLAG != 0
 HIGH < CUT
 WIDE >= 2
 X != 4
-Y <= WIDE", 12),
+Y <= WIDE", 12, 2),
 
             // Level 9 - conditions in LOOP
             L(@"LET CUT = 2
@@ -662,7 +650,7 @@ X > CUT
 Y >= 3
 CNT <= 9
 HIGH <= 4
-WIDE != 4", 12),
+WIDE != 4", 12, 2),
 
             // Level 10 - compound conditions
             L(@"LET LOW = 2
@@ -762,7 +750,7 @@ X <= 4
 Y != 4
 LOW >= 0
 WIDE < HIT
-YMAX >= 2", 13),
+YMAX >= 2", 13, 1),
 
             // Level 11 - ELIF / LIST
             L(@"LET HIGH = 3
@@ -871,7 +859,7 @@ C <= 0
 I != 5
 A < HIGH
 LENGTH:BUF >= 0
-LIM <= 5", 12),
+LIM <= 5", 12, 1),
 
             // Level 12 - FIRST / LAST
             L(@"LET HIGH = 3
@@ -982,7 +970,7 @@ C != 1
 I >= HIGH
 A >= 1
 LENGTH:BUF == 0
-LIM >= 3", 12),
+LIM >= 3", 12, 1),
 
             // Level 13 - list reading
             L(@"LET HIGH = 3
@@ -1105,7 +1093,7 @@ I >= 4
 A <= 1
 LENGTH:BUF >= 0
 LENGTH:AUX == 0
-LIM != 5", 12),
+LIM != 5", 12, 1),
 
             // Level 14 - PUSH basics
             L(@"LET LOW = 2
@@ -1224,7 +1212,7 @@ LOW >= 2
 I <= 5
 OUT == [2,2,3,4,5]
 LENGTH:OUT == 5
-LIM <= 6", 13),
+LIM <= 6", 13, 1),
 
             // Level 15 - PUSH filtering
             L(@"LET LOW = 2
@@ -1343,7 +1331,7 @@ LOW <= 2
 I != 6
 OUT == [2,2,3,4,5]
 LENGTH:OUT >= 4
-LIM >= 4", 13),
+LIM >= 4", 13, 1),
 
             // Level 16 - PUSH transforms
             L(@"LET LOW = 2
@@ -1483,7 +1471,7 @@ I >= 5
 HEAD <= 2
 OUT == [2,2,3,4,5]
 LENGTH:OUT == 5
-LIM <= HIGH", 13),
+LIM <= HIGH", 13, 1),
 
             // Level 17 - INJECT basics
             L(@"LET CUT = 2
@@ -1594,7 +1582,7 @@ SUM != 13
 I > CUT
 OUT == [3,3,2,1,9,3]
 LENGTH:OUT >= 5
-LIM > CUT", 12),
+LIM > CUT", 12, 1),
 
             // Level 18 - deque operations
             L(@"LET CUT = 2
@@ -1733,7 +1721,7 @@ TAIL <= 3
 I != 6
 OUT == [3,3,2,1,9,3]
 LENGTH:OUT == 6
-LIM <= 6", 12),
+LIM <= 6", 12, 1),
 
             // Level 19 - list filtering
             L(@"LET CUT = 4
@@ -1875,7 +1863,7 @@ SUM <= 15
 CNT != 3
 OUT == [11,4,0]
 LENGTH:OUT >= 2
-LENGTH:SRC == 0", 12),
+LENGTH:SRC == 0", 12, 1),
 
             // Level 20 - map / reduce
             L(@"LET RATE = 2
@@ -2001,7 +1989,7 @@ WAIT", @"RATE == 3
 VAL <= 8
 SUM != 22
 LENGTH:SRC == 0
-LENGTH:OUT >= 3", 12),
+LENGTH:OUT >= 3", 12, 1),
 
             // Level 21 - retry queues
             L(@"LET CUT = 5
@@ -2128,7 +2116,7 @@ VAL != 9
 RET < CUT
 DONE == [0,7,10,8]
 LENGTH:DONE >= 3
-LENGTH:QUE == 0", 12),
+LENGTH:QUE == 0", 12, 1),
 
             // Level 22 - stack transforms
             L(@"LET CUT = 3
@@ -2250,7 +2238,7 @@ VAL < CUT
 SUM >= 21
 OUT == [5,7,0,9]
 LENGTH:OUT == 4
-LENGTH:STK >= 0", 12),
+LENGTH:STK >= 0", 12, 1),
 
             // Level 23 - dual buffers
             L(@"LET CUT = 4
@@ -2407,7 +2395,7 @@ CNT <= 5
 OUT == [6,8,5,0,11,9]
 LENGTH:OUT >= 5
 LENGTH:A == 0
-LENGTH:B >= 0", 12),
+LENGTH:B >= 0", 12, 1),
 
             // Level 24 - threshold routing
             L(@"LET LOW = 5
@@ -2557,7 +2545,7 @@ LENGTH:SRC == 0
 LENGTH:A >= 2
 LENGTH:B == 1
 LENGTH:C >= 0
-LOW <= 6", 13),
+LOW <= 6", 13, 1),
 
             // Level 25 - bounded retries
             L(@"LET CUT = 5
@@ -2704,7 +2692,7 @@ VAL != 8
 RET < LIM
 LENGTH:QUE >= 0
 LENGTH:DONE == 4
-CUT > RET", 13),
+CUT > RET", 13, 1),
 
             // Level 26 - aggregation
             L(@"LET CUT = 5
@@ -2871,7 +2859,7 @@ MAX != 13
 LOW == [7,9,6,0]
 LENGTH:LOW == 4
 LENGTH:HIGH >= 0
-LENGTH:DATA == 0", 12),
+LENGTH:DATA == 0", 12, 1),
 
             // Level 27 - ordered merging
             L(@"LET CUT = 6
@@ -3028,7 +3016,7 @@ VAL >= 12
 CNT <= 6
 LENGTH:A >= 0
 LENGTH:B == 0
-LENGTH:OUT >= 6", 12),
+LENGTH:OUT >= 6", 12, 1),
 
             // Level 28 - priority scheduler
             L(@"LET CUT = 7
@@ -3180,7 +3168,7 @@ VAL <= 13
 PCNT != 3
 LENGTH:NORM == 0
 LENGTH:PRIO >= 0
-LENGTH:DONE == 6", 12),
+LENGTH:DONE == 6", 12, 1),
 
             // Level 29 - sentinels
             L(@"LET CUT = 5
@@ -3327,7 +3315,7 @@ SUM > CUT
 CNT >= 2
 DONE == [9,7,0]
 LENGTH:DONE >= 2
-LENGTH:IN == 1", 12),
+LENGTH:IN == 1", 12, 1),
 
             // Level 30 - final dispatch
             L(@"LET CUT = 5
@@ -3484,7 +3472,7 @@ CNT <= 2
 RET == [8,9,0]
 LENGTH:RET == 3
 LENGTH:IN >= 0
-LENGTH:GOOD == 1", 12),
+LENGTH:GOOD == 1", 12, 1),
 
         };
     }
