@@ -42,7 +42,7 @@ namespace Assets.Scripts
 A IS 3
 A IS 4", @"A == 4", 0),
             L(@"LET A AS 2
-WAIT", @"A == 9", 12),
+WAIT", @"A == 9", 12, 4),
             L(@"LET B AS 3
 LET C AS 7
 WAIT
@@ -148,7 +148,7 @@ WAIT
 D0 IS 1
 D1 IS D0 + 1
 D2 IS D1 + 1
-D3 IS D2 + 1", @"SPAN == -2", 24),
+D3 IS D2 + 1", @"SPAN == -2", 24, 1),
 
             // Level 3 - LOOP basics
             L(@"LET CNT AS 0
@@ -184,7 +184,7 @@ LOOP X < WIDE
       X IS X + 1
 WAIT", @"X >= 3
 Y != 4
-HIGH <= WIDE", 15, 2),
+HIGH <= WIDE", 15, 1),
 
             // Level 4 - LOOP accumulators
             L(@"LET LIM AS 4
@@ -237,7 +237,7 @@ LOOP X > 0
    X IS X - 1", @"X > 10
 Y == 10
 Z != 10
-| 35 |", 13, 2),
+| 35 |", 13, 1),
 
             // Level 5 - STOP basics
             L(@"LET ADD AS 2
@@ -308,7 +308,7 @@ SUM != 16
 X < RATE
 Y >= 1
 HIGH > Y
-WIDE != 4", 50, 2),
+WIDE != 4", 50, 1),
 
             // Level 6 - STOP reinforcement
             L(@"LET RATE AS 3
@@ -555,7 +555,7 @@ FLAG != 0
 HIGH < CUT
 WIDE >= 2
 X != 4
-Y <= WIDE", 12, 2),
+Y <= WIDE", 12, 1),
 
             // Level 9 - conditions in LOOP
             L(@"LET CUT AS 2
@@ -650,7 +650,7 @@ X > CUT
 Y >= 3
 CNT <= 9
 HIGH <= 4
-WIDE != 4", 12, 2),
+WIDE != 4", 12, 1),
 
             // Level 10 - compound conditions
             L(@"LET LOW AS 2
@@ -836,7 +836,7 @@ A >= 1
 B <= 2
 C != 1
 LENGTH:BUF == 0
-LIM < HIGH", 0),
+LIM < HIGH", 10),
             L(@"LET HIGH AS 3
 LET LIM AS 4
 LIST BUF

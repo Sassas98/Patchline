@@ -227,8 +227,7 @@ public class GameMaster : MonoBehaviour
             Global.State.Vite == 2 ? error1 :
             Global.State.StepCorrente < 4 ? error2 :
             (Global.State.LivelloCorrente + 1) % 5 == 0 ? so_verify :
-            (Global.State.LivelloCorrente + 1) % 3 == 0 ? help :
-            senior;
+            (Global.State.LivelloCorrente + 1) % 3 == 0 ? theme : theme;
 
         if(clip != musicSource.clip)
         {
