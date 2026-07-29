@@ -1,4 +1,4 @@
-\# Patchline
+# Patchline
 
 
 
@@ -6,7 +6,7 @@ Patchline is an educational puzzle game developed in Unity, where players learn 
 
 
 
-\## Gameplay
+## Gameplay
 
 
 
@@ -14,9 +14,9 @@ Each level features two panels:
 
 
 
-\* \*\*Legacy Code\*\*: the original system code, which cannot be modified.
+* **Legacy Code**: the original system code, which cannot be modified.
 
-\* \*\*Patch Code\*\*: the area where the player builds their solution.
+* **Patch Code**: the area where the player builds their solution.
 
 
 
@@ -24,53 +24,53 @@ The goal is to make the program produce the required result using a limited numb
 
 
 
-\## Features
+## Features
 
 
 
-\* A custom programming language designed specifically for the game.
+* A custom programming language designed specifically for the game.
 
-\* Gradual introduction to fundamental programming concepts.
+* Gradual introduction to fundamental programming concepts.
 
-\* Turn-based execution between legacy code and the player's patch.
+* Turn-based execution between legacy code and the player's patch.
 
-\* A narrative setting inspired by operating systems and artificial intelligence.
+* A narrative setting inspired by operating systems and artificial intelligence.
 
-\* A fully mouse-driven interface.
-
-
-
-\## Technologies
+* A fully mouse-driven interface.
 
 
 
-\* Unity
-
-\* C#
-
-\* Yarn Spinner
-
-\* TextMesh Pro
+## Technologies
 
 
 
-\## How to Play
+* Unity
+
+* C#
+
+* Yarn Spinner
+
+* TextMesh Pro
 
 
 
-1\. Launch the game.
-
-2\. Study the legacy code.
-
-3\. Build your patch using the available commands.
-
-4\. Execute the program.
-
-5\. Refine your solution until the desired behavior is achieved.
+## How to Play
 
 
 
-\## License
+1. Launch the game.
+
+2. Study the legacy code.
+
+3. Build your patch using the available commands.
+
+4. Execute the program.
+
+5. Refine your solution until the desired behavior is achieved.
+
+
+
+## License
 
 
 
