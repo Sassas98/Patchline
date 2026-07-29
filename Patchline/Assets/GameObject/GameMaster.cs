@@ -351,6 +351,7 @@ public class GameMaster : MonoBehaviour
                 }
                 if(Global.State.LivelloCorrente == 4 && Global.State.StepCorrente == 4)
                 {
+                    Global.EliminaSalvataggio();
                     SceneManager.LoadScene("EndOfContent");
                 }
                 else if (++Global.State.StepCorrente == 4)
