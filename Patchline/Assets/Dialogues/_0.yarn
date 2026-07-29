@@ -65,9 +65,13 @@ ORC: Everything clear?
     <<show ORC2>>
     ORC: At the bottom, you have SET to change the value of words and PLAY to run the program.
     <<jump dom2>>
--> What is the = symbol for?
-    ORC: It's used to assign a new value to a word.
-    ORC: When you read X = 27, think of it as "X is now worth 27".
+-> What is the == symbol for?
+    ORC: It is used to indicate that a certain variable must be equal to a certain number.
+    <<show ORC2>>
+    ORC: Or to another variable.
+    <<show ORC1>>
+    ORC: For example, let's assume you see X = 7.
+    ORC: This means that to make that condition true, you must make x equal to 7.
     <<jump dom2>>
 -> What do the other buttons do?
     ORC: I'll explain the rest later. You don't need them right now.
