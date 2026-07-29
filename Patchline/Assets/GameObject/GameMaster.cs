@@ -584,7 +584,9 @@ public class GameMaster : MonoBehaviour
                 var value = GameObject.Find("Set_Dropdown").Childrens()[0]
                     .GetComponent<TextMeshProUGUI>().text.Trim();
                 var input = GameObject.Find("set_input").GetComponent<TextMeshProUGUI>().text.Trim();
-                AddOnCodeWork((cmd == CMD.Set ? string.Empty : cmd.ToString().ToUpper() + " ") + $"{value} = {input}");
+                var cmd_string = cmd == CMD.Set ? string.Empty : cmd.ToString().ToUpper() + " ";
+                var sym_string = cmd == CMD.Let ? "AS" : "IS";
+                AddOnCodeWork($"{cmd_string}{value} {sym_string} {input}");
                 set_modal.SetActive(false);
                 Global.State.Energia -= cmd.DaiCosto();
                 UpdateInfoLabels();

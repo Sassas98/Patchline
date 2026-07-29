@@ -38,271 +38,271 @@ namespace Assets.Scripts
         private readonly List<LevelData> datas = new()
         {
             // Level 0 - SET / WAIT
-            L(@"LET A = 2
-A = 3
-A = 4", @"A == 4", 0),
-            L(@"LET A = 2
+            L(@"LET A AS 2
+A IS 3
+A IS 4", @"A == 4", 0),
+            L(@"LET A AS 2
 WAIT", @"A == 9", 12),
-            L(@"LET B = 3
-LET C = 7
+            L(@"LET B AS 3
+LET C AS 7
 WAIT
 WAIT", @"B == 10
 C != 7", 4),
-            L(@"LET C = 4
-LET D = 7
+            L(@"LET C AS 4
+LET D AS 7
 WAIT
-C = C + 1
+C IS C + 1
 WAIT
-C = C + 1
+C IS C + 1
 WAIT", @"C == 11
 D < C", 4),
-            L(@"LET CORE = 6
-LET SIDE = 11
+            L(@"LET CORE AS 6
+LET SIDE AS 11
 WAIT
-CORE = CORE + 1
+CORE IS CORE + 1
 WAIT
-CORE = CORE + 1
+CORE IS CORE + 1
 WAIT
-CORE = CORE + 1
+CORE IS CORE + 1
 WAIT
-CORE = CORE + 1
+CORE IS CORE + 1
 WAIT
-CORE = CORE + 1", @"CORE == 13
+CORE IS CORE + 1", @"CORE == 13
 SIDE <= 10", 23, 1),
 
             // Level 1 - LET snapshots
-            L(@"LET BASE = 5
-BASE = BASE + 1
+            L(@"LET BASE AS 5
+BASE IS BASE + 1
 WAIT", @"COPY == 5
 BASE >= 5", 23),
-            L(@"LET SEED = 6
-SEED = SEED + 1
+            L(@"LET SEED AS 6
+SEED IS SEED + 1
 WAIT
-LET D0 = 0", @"SNAP == 6
+LET D0 AS 0", @"SNAP == 6
 SEED != 8
 D0 < SNAP", 5),
-            L(@"LET RATE = 7
-RATE = RATE + 1
+            L(@"LET RATE AS 7
+RATE IS RATE + 1
 WAIT
-LET D0 = 1
-D0 = D0 + 1
-LET D1 = 2
-D0 = D0 + 2", @"GAIN == 7
+LET D0 AS 1
+D0 IS D0 + 1
+LET D1 AS 2
+D0 IS D0 + 2", @"GAIN == 7
 RATE > D0
 D1 <= 1
 D0 != 4", 0),
-            L(@"LET LIM = 8
-LIM = LIM + 1
+            L(@"LET LIM AS 8
+LIM IS LIM + 1
 WAIT
 WAIT
 WAIT
-LET D0 = 2
-LET D3 = 5
-D3 = D3 + 1", @"SAVE == 8
+LET D0 AS 2
+LET D3 AS 5
+D3 IS D3 + 1", @"SAVE == 8
 D0 == 5
 D3 < D0", 10),
-            L(@"LET MODE = 9
-MODE = MODE + 1
+            L(@"LET MODE AS 9
+MODE IS MODE + 1
 WAIT
-LET D0 = 3
-D0 = D0 + 2
-LET D1 = 4
-D0 = D0 + 2", @"MARK == 9
+LET D0 AS 3
+D0 IS D0 + 2
+LET D1 AS 4
+D0 IS D0 + 2", @"MARK == 9
 MODE == 9
 D0 != 7
 D1 > MODE", 13, 1),
 
             // Level 2 - LET expressions
-            L(@"LET A = 6
-LET B = 8
-A = A + 1
+            L(@"LET A AS 6
+LET B AS 8
+A IS A + 1
 WAIT", @"SUM == 14
 A != 8
 B < SUM", 24),
-            L(@"LET X = 7
-LET Y = 9
-X = X + 1
+            L(@"LET X AS 7
+LET Y AS 9
+X IS X + 1
 WAIT
-LET D0 = 7", @"X > D0
+LET D0 AS 7", @"X > D0
 Y > DIFF
 D0 <= 8", 0),
-            L(@"LET BASE = 8
-LET RATE = 10
-BASE = BASE + 1
+            L(@"LET BASE AS 8
+LET RATE AS 10
+BASE IS BASE + 1
 WAIT
-LET D0 = 8", @"PROD == 80
+LET D0 AS 8", @"PROD == 80
 BASE > D0
 RATE >= 9
 D0 != 8", 10),
-            L(@"LET WIDE = 9
-LET TALL = 11
-WIDE = WIDE + 1
+            L(@"LET WIDE AS 9
+LET TALL AS 11
+WIDE IS WIDE + 1
 WAIT
-TEMP = TEMP - 1", @"AREA == 99
+TEMP IS TEMP - 1", @"AREA == 99
 TALL < 11
 WIDE >= 11", 2, 1),
-            L(@"LET LEFT = 10
-RITE = 12
-LEFT = LEFT + 1
+            L(@"LET LEFT AS 10
+RITE IS 12
+LEFT IS LEFT + 1
 WAIT
-D0 = 1
-D1 = D0 + 1
-D2 = D1 + 1
-D3 = D2 + 1", @"SPAN == -2", 24),
+D0 IS 1
+D1 IS D0 + 1
+D2 IS D1 + 1
+D3 IS D2 + 1", @"SPAN == -2", 24),
 
             // Level 3 - LOOP basics
-            L(@"LET CNT = 0
+            L(@"LET CNT AS 0
 LOOP CNT < 10
-   CNT = CNT + 1
+   CNT IS CNT + 1
 WAIT", @"CNT == 10", 0, 3),
-            L(@"LET CNT = 0
+            L(@"LET CNT AS 0
 LOOP CNT < 10
-   CNT = CNT + 1
+   CNT IS CNT + 1
 WAIT", @"CNT == 9", 18, 4),
-            L(@"LET RATE = 2
-LIM = 10
+            L(@"LET RATE AS 2
+LIM IS 10
 LOOP CNT < LIM
-   CNT = CNT + 1
-   SUM = SUM + RATE
+   CNT IS CNT + 1
+   SUM IS SUM + RATE
 WAIT", @"RATE == 3
 SUM == 30
 CNT == 10", 10),
-            L(@"LET CNT = 6
-LET USED = 0
+            L(@"LET CNT AS 6
+LET USED AS 0
 LOOP CNT > 0
-   CNT = CNT - 1
-   USED = USED + 1
+   CNT IS CNT - 1
+   USED IS USED + 1
 WAIT", @"USED == 9
 CNT == 9000", 5),
-            L(@"LET WIDE = 4
-LET HIGH = 3
-LET X = 0
-LET Y = 0
+            L(@"LET WIDE AS 4
+LET HIGH AS 3
+LET X AS 0
+LET Y AS 0
 LOOP X < WIDE
    LOOP Y < HIGH
-      Y = Y + 1
-      X = X + 1
+      Y IS Y + 1
+      X IS X + 1
 WAIT", @"X >= 3
 Y != 4
 HIGH <= WIDE", 15, 2),
 
             // Level 4 - LOOP accumulators
-            L(@"LET LIM = 4
-LET I = 0
-LET SUM = 0
+            L(@"LET LIM AS 4
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
-   SUM = SUM + I
+   I IS I + 1
+   SUM IS SUM + I
 WAIT", @"LIM == 5
 I <= 5
 SUM != 16", 12, 4),
-            L(@"LET LIM = 4
-LET I = 0
-LET PROD = 2
+            L(@"LET LIM AS 4
+LET I AS 0
+LET PROD AS 2
 WAIT
 WAIT
 WAIT
 WAIT
 WAIT
 LOOP I < LIM
-   I = I + 1
-   PROD = PROD * PROD", @"PROD == 16", 10),
-            L(@"LET A = 8
-LET B = 1
+   I IS I + 1
+   PROD IS PROD * PROD", @"PROD == 16", 10),
+            L(@"LET A AS 8
+LET B AS 1
 WAIT
 WAIT
 WAIT
 LOOP A != B
-   A = A + 1
-   B = B - 1
+   A IS A + 1
+   B IS B - 1
 WAIT
 WAIT", @"A == B", 5),
-            L(@"LET X = 10
-LET Y = 0
-LET Z = 0
+            L(@"LET X AS 10
+LET Y AS 0
+LET Z AS 0
 LOOP X > Y
-   Y = X - Y
+   Y IS X - Y
    LOOP Y > Z
-      Z = Y - Z
-      Y = X - Z
-   X = X + 1
+      Z IS Y - Z
+      Y IS X - Z
+   X IS X + 1
 WAIT", @"Y < 3
 X != Y", 10),
-            L(@"LET Y = 0
-LET Z = 0
+            L(@"LET Y AS 0
+LET Z AS 0
 LOOP X > 0
    LOOP Y < X
-      Y = Y + 1
-      Z = Z - 1
-   X = X - 1", @"X > 10
+      Y IS Y + 1
+      Z IS Z - 1
+   X IS X - 1", @"X > 10
 Y == 10
 Z != 10
 | 35 |", 13, 2),
 
             // Level 5 - STOP basics
-            L(@"LET ADD = 2
-LET CNT = 0
-LET SUM = 0
+            L(@"LET ADD AS 2
+LET CNT AS 0
+LET SUM AS 0
 LOOP CNT < 5
-   CNT = CNT + 1
-   SUM = SUM + ADD
+   CNT IS CNT + 1
+   SUM IS SUM + ADD
    STOP
 WAIT", @"ADD == 5
 SUM != 6
 CNT < ADD", 22),
-            L(@"LET BASE = 4
-LET CNT = 0
-LET OUT = 0
+            L(@"LET BASE AS 4
+LET CNT AS 0
+LET OUT AS 0
 LOOP CNT < 8
-   CNT = CNT + 1
-   OUT = BASE * CNT
+   CNT IS CNT + 1
+   OUT IS BASE * CNT
    STOP
-OUT = OUT + BASE
+OUT IS OUT + BASE
 WAIT", @"BASE == 6
 OUT > BASE
 CNT >= 1", 10),
-            L(@"LET STEP = 2
-LET CNT = 9
-LET USED = 0
+            L(@"LET STEP AS 2
+LET CNT AS 9
+LET USED AS 0
 LOOP CNT > 0
-   CNT = CNT - STEP
-   USED = USED + 1
+   CNT IS CNT - STEP
+   USED IS USED + 1
    STOP
-CNT = CNT - STEP
+CNT IS CNT - STEP
 WAIT", @"STEP == 3
 CNT >= 3
 USED <= 1", 10),
-            L(@"LET WIDE = 3
-LET HIGH = 4
-LET X = 0
-LET Y = 0
-LET CELL = 0
+            L(@"LET WIDE AS 3
+LET HIGH AS 4
+LET X AS 0
+LET Y AS 0
+LET CELL AS 0
 LOOP X < WIDE
-   Y = 0
+   Y IS 0
    LOOP Y < HIGH
-      CELL = CELL + 1
-      Y = Y + 1
+      CELL IS CELL + 1
+      Y IS Y + 1
       STOP
-   X = X + 1
+   X IS X + 1
 WAIT", @"WIDE == 4
 X <= 4
 CELL != 5
 Y < WIDE
 HIGH <= CELL", 10, 1),
-            L(@"LET WIDE = 3
-LET HIGH = 5
-LET X = 0
-LET Y = 0
-LET SUM = 0
-LET RATE = 2
+            L(@"LET WIDE AS 3
+LET HIGH AS 5
+LET X AS 0
+LET Y AS 0
+LET SUM AS 0
+LET RATE AS 2
 LOOP X < WIDE
-   Y = 0
+   Y IS 0
    LOOP Y < HIGH
-      SUM = SUM + RATE
-      Y = Y + 1
+      SUM IS SUM + RATE
+      Y IS Y + 1
       STOP
-   SUM = SUM + X
-   X = X + 1
+   SUM IS SUM + X
+   X IS X + 1
 WAIT", @"RATE == 4
 SUM != 16
 X < RATE
@@ -311,72 +311,72 @@ HIGH > Y
 WIDE != 4", 50, 2),
 
             // Level 6 - STOP reinforcement
-            L(@"LET RATE = 3
-LET CNT = 0
-LET SUM = 1
+            L(@"LET RATE AS 3
+LET CNT AS 0
+LET SUM AS 1
 LOOP CNT < 9
-   CNT = CNT + 1
-   SUM = SUM * RATE
+   CNT IS CNT + 1
+   SUM IS SUM * RATE
    STOP
-SUM = SUM + CNT
+SUM IS SUM + CNT
 WAIT", @"RATE == 4
 SUM > RATE
 CNT >= 1", 22),
-            L(@"LET ADD = 2
-LET CNT = 0
-LET SUM = 0
+            L(@"LET ADD AS 2
+LET CNT AS 0
+LET SUM AS 0
 LOOP CNT < 9
-   CNT = CNT + 1
-   SUM = SUM + ADD
-   SUM = SUM + CNT
+   CNT IS CNT + 1
+   SUM IS SUM + ADD
+   SUM IS SUM + CNT
    STOP
 WAIT", @"ADD == 5
 SUM >= 6
 CNT <= 1", 10),
-            L(@"LET LIM = 7
-LET CNT = 0
-LET SUM = 0
+            L(@"LET LIM AS 7
+LET CNT AS 0
+LET SUM AS 0
 LOOP CNT < LIM
-   CNT = CNT + 2
-   SUM = SUM + CNT
+   CNT IS CNT + 2
+   SUM IS SUM + CNT
    STOP
-SUM = SUM + LIM
+SUM IS SUM + LIM
 WAIT", @"LIM == 9
 SUM <= 11
 CNT != 3", 0),
-            L(@"LET WIDE = 3
-LET HIGH = 4
-LET X = 0
-LET Y = 0
-LET SUM = 0
+            L(@"LET WIDE AS 3
+LET HIGH AS 4
+LET X AS 0
+LET Y AS 0
+LET SUM AS 0
 LOOP X < WIDE
-   Y = 0
+   Y IS 0
    LOOP Y < HIGH
-      Y = Y + 1
-      SUM = SUM + Y
+      Y IS Y + 1
+      SUM IS SUM + Y
       STOP
-   SUM = SUM + X
-   X = X + 1
+   SUM IS SUM + X
+   X IS X + 1
 WAIT", @"WIDE == 4
 X != 5
 SUM > WIDE
 Y >= 1
 HIGH > Y", 10),
-            L(@"LET WIDE = 4
-LET HIGH = 6
-LET X = 0
-LET Y = 0
-LET SUM = 0
-LET ADD = 1
+            L(@"LET WIDE AS 4
+LET HIGH AS 6
+LET X AS 0
+LET Y AS 0
+LET SUM AS 0
+LET ADD AS 1
 LOOP X < WIDE
-   Y = 0
+   Y IS 0
    LOOP Y < HIGH
-      Y = Y + 1
-      SUM = SUM + ADD
+      Y IS Y + 1
+      SUM IS SUM + ADD
       STOP
-   SUM = SUM + X
-   X = X + 1
-SUM = SUM + HIGH
+   SUM IS SUM + X
+   X IS X + 1
+SUM IS SUM + HIGH
 WAIT", @"ADD == 3
 SUM > ADD
 X >= 4
@@ -385,75 +385,75 @@ HIGH >= 5
 WIDE < SUM", 37, 1),
 
             // Level 7 - SKIP reading
-            L(@"LET LIM = 3
-LET CNT = 0
-LET SUM = 0
+            L(@"LET LIM AS 3
+LET CNT AS 0
+LET SUM AS 0
 LOOP CNT < LIM
-   CNT = CNT + 1
-   SUM = SUM + CNT
+   CNT IS CNT + 1
+   SUM IS SUM + CNT
    SKIP
-   SUM = 99
+   SUM IS 99
 WAIT", @"LIM == 4
 CNT >= 4
 SUM <= 10", 12),
-            L(@"LET RATE = 2
-LET LIM = 4
-LET CNT = 0
-LET SUM = 0
+            L(@"LET RATE AS 2
+LET LIM AS 4
+LET CNT AS 0
+LET SUM AS 0
 LOOP CNT < LIM
-   CNT = CNT + 1
-   SUM = SUM + RATE
+   CNT IS CNT + 1
+   SUM IS SUM + RATE
    SKIP
-   RATE = 99
+   RATE IS 99
 WAIT", @"RATE == 3
 SUM <= 12
 CNT != 5
 LIM < SUM", 0),
-            L(@"LET STEP = 2
-LET CNT = 0
-LET SUM = 0
+            L(@"LET STEP AS 2
+LET CNT AS 0
+LET SUM AS 0
 LOOP CNT < 6
-   CNT = CNT + STEP
-   SUM = SUM + CNT
+   CNT IS CNT + STEP
+   SUM IS SUM + CNT
    SKIP
-   SUM = 0
-SUM = SUM + STEP
+   SUM IS 0
+SUM IS SUM + STEP
 WAIT", @"STEP == 3
 SUM != 13
 CNT > STEP", 0),
-            L(@"LET WIDE = 3
-LET HIGH = 2
-LET X = 0
-LET Y = 0
-LET SUM = 0
+            L(@"LET WIDE AS 3
+LET HIGH AS 2
+LET X AS 0
+LET Y AS 0
+LET SUM AS 0
 LOOP X < WIDE
-   Y = 0
+   Y IS 0
    LOOP Y < HIGH
-      Y = Y + 1
-      SUM = SUM + Y
+      Y IS Y + 1
+      SUM IS SUM + Y
       SKIP
-      SUM = 99
-   X = X + 1
+      SUM IS 99
+   X IS X + 1
 WAIT", @"HIGH == 3
 Y >= HIGH
 SUM >= 18
 X <= 3
 WIDE != 4", 0),
-            L(@"LET WIDE = 3
-LET HIGH = 3
-LET X = 0
-LET Y = 0
-LET SUM = 0
-LET ADD = 1
+            L(@"LET WIDE AS 3
+LET HIGH AS 3
+LET X AS 0
+LET Y AS 0
+LET SUM AS 0
+LET ADD AS 1
 LOOP X < WIDE
-   Y = 0
+   Y IS 0
    LOOP Y < HIGH
-      Y = Y + 1
-      SUM = SUM + ADD
+      Y IS Y + 1
+      SUM IS SUM + ADD
       SKIP
-      ADD = 20
-   SUM = SUM + X
-   X = X + 1
+      ADD IS 20
+   SUM IS SUM + X
+   X IS X + 1
 WAIT", @"ADD == 2
 SUM >= 21
 X <= 3
@@ -462,68 +462,68 @@ HIGH != 4
 WIDE < SUM", 17, 1),
 
             // Level 8 - IF / ELSE
-            L(@"LET CUT = 8
-LET CNT = 0
-LET SUM = 0
+            L(@"LET CUT AS 8
+LET CNT AS 0
+LET SUM AS 0
 LOOP CNT < 3
-   CNT = CNT + 1
-   SUM = SUM + CNT
+   CNT IS CNT + 1
+   SUM IS SUM + CNT
 IF SUM >= CUT
-   SUM = SUM + 1
+   SUM IS SUM + 1
 ELSE
-   SUM = SUM - 1
+   SUM IS SUM - 1
 WAIT", @"CUT == 6
 SUM <= 7
 CNT != 4", 12),
-            L(@"LET RATE = 2
-LET LIM = 4
-LET CNT = 0
-LET SUM = 0
-LET FLAG = 0
+            L(@"LET RATE AS 2
+LET LIM AS 4
+LET CNT AS 0
+LET SUM AS 0
+LET FLAG AS 0
 LOOP CNT < LIM
-   CNT = CNT + 1
-   SUM = SUM + RATE
+   CNT IS CNT + 1
+   SUM IS SUM + RATE
 IF SUM > LIM
-   FLAG = SUM
+   FLAG IS SUM
 ELSE
-   FLAG = LIM
+   FLAG IS LIM
 WAIT", @"RATE == 1
 SUM != 5
 FLAG > RATE
 CNT <= LIM
 LIM >= 3", 0),
-            L(@"LET CUT = 5
-LET CNT = 6
-LET USED = 0
-LET FLAG = 0
+            L(@"LET CUT AS 5
+LET CNT AS 6
+LET USED AS 0
+LET FLAG AS 0
 LOOP CNT > 0
-   CNT = CNT - 2
-   USED = USED + 1
+   CNT IS CNT - 2
+   USED IS USED + 1
 IF USED == CUT
-   FLAG = 1
+   FLAG IS 1
 ELSE
-   FLAG = USED
+   FLAG IS USED
 WAIT", @"CUT == 3
 FLAG < CUT
 USED >= 3
 CNT <= 1", 0),
-            L(@"LET CUT = 10
-LET WIDE = 3
-LET HIGH = 2
-LET X = 0
-LET Y = 0
-LET CELL = 0
-LET FLAG = 0
+            L(@"LET CUT AS 10
+LET WIDE AS 3
+LET HIGH AS 2
+LET X AS 0
+LET Y AS 0
+LET CELL AS 0
+LET FLAG AS 0
 LOOP X < WIDE
-   Y = 0
+   Y IS 0
    LOOP Y < HIGH
-      CELL = CELL + 1
-      Y = Y + 1
-   X = X + 1
+      CELL IS CELL + 1
+      Y IS Y + 1
+   X IS X + 1
 IF CELL >= CUT
-   FLAG = 1
+   FLAG IS 1
 ELSE
-   FLAG = CELL
+   FLAG IS CELL
 WAIT", @"CUT == 6
 FLAG >= 1
 CELL <= 6
@@ -531,24 +531,24 @@ HIGH < CELL
 WIDE <= 4
 X >= 2
 Y != 3", 0),
-            L(@"LET CUT = 12
-LET WIDE = 3
-LET HIGH = 3
-LET X = 0
-LET Y = 0
-LET SUM = 0
-LET FLAG = 0
+            L(@"LET CUT AS 12
+LET WIDE AS 3
+LET HIGH AS 3
+LET X AS 0
+LET Y AS 0
+LET SUM AS 0
+LET FLAG AS 0
 LOOP X < WIDE
-   Y = 0
+   Y IS 0
    LOOP Y < HIGH
-      SUM = SUM + X
-      Y = Y + 1
-   X = X + 1
+      SUM IS SUM + X
+      Y IS Y + 1
+   X IS X + 1
 IF SUM != CUT
-   FLAG = SUM
+   FLAG IS SUM
 ELSE
-   FLAG = -1
-SUM = SUM + FLAG
+   FLAG IS -1
+SUM IS SUM + FLAG
 WAIT", @"CUT == 9
 SUM <= 8
 FLAG != 0
@@ -558,92 +558,92 @@ X != 4
 Y <= WIDE", 12, 2),
 
             // Level 9 - conditions in LOOP
-            L(@"LET CUT = 2
-LET LIM = 4
-LET I = 0
-LET SUM = 0
+            L(@"LET CUT AS 2
+LET LIM AS 4
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I > CUT
-      SUM = SUM + I
+      SUM IS SUM + I
    ELSE
-      SUM = SUM + CUT
+      SUM IS SUM + CUT
 WAIT", @"CUT == 1
 SUM != 11
 I > CUT
 LIM >= 3", 12),
-            L(@"LET MOD = 2
-LET LIM = 5
-LET I = 0
-LET REM = 0
-LET HIT = 0
-LET MISS = 0
+            L(@"LET MOD AS 2
+LET LIM AS 5
+LET I AS 0
+LET REM AS 0
+LET HIT AS 0
+LET MISS AS 0
 LOOP I < LIM
-   I = I + 1
-   REM = I % MOD
+   I IS I + 1
+   REM IS I % MOD
    IF REM == 0
-      HIT = HIT + 1
+      HIT IS HIT + 1
    ELSE
-      MISS = MISS + 1
+      MISS IS MISS + 1
 WAIT", @"MOD == 3
 HIT < MOD
 MISS >= 4
 I <= 5
 LIM != 6", 0),
-            L(@"LET CUT = 4
-LET LIM = 6
-LET I = 0
-LET LOW = 0
-LET HIGH = 0
+            L(@"LET CUT AS 4
+LET LIM AS 6
+LET I AS 0
+LET LOW AS 0
+LET HIGH AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I <= CUT
-      LOW = LOW + I
+      LOW IS LOW + I
    ELSE
-      HIGH = HIGH + I
+      HIGH IS HIGH + I
 WAIT", @"CUT == 3
 LOW >= 6
 HIGH <= 15
 I != 7
 LIM < HIGH", 0),
-            L(@"LET CUT = 3
-LET WIDE = 4
-LET HIGH = 2
-LET X = 0
-LET Y = 0
-LET SUM = 0
+            L(@"LET CUT AS 3
+LET WIDE AS 4
+LET HIGH AS 2
+LET X AS 0
+LET Y AS 0
+LET SUM AS 0
 LOOP X < WIDE
-   Y = 0
+   Y IS 0
    LOOP Y < HIGH
-      Y = Y + 1
+      Y IS Y + 1
       IF X < CUT
-         SUM = SUM + Y
+         SUM IS SUM + Y
       ELSE
-         SUM = SUM + X
-   X = X + 1
+         SUM IS SUM + X
+   X IS X + 1
 WAIT", @"CUT == 2
 SUM <= 16
 X != 5
 Y >= CUT
 HIGH <= Y
 WIDE <= 5", 0),
-            L(@"LET CUT = 2
-LET WIDE = 3
-LET HIGH = 3
-LET X = 0
-LET Y = 0
-LET SUM = 0
-LET CNT = 0
+            L(@"LET CUT AS 2
+LET WIDE AS 3
+LET HIGH AS 3
+LET X AS 0
+LET Y AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP X < WIDE
-   Y = 0
+   Y IS 0
    LOOP Y < HIGH
-      Y = Y + 1
+      Y IS Y + 1
       IF Y > CUT
-         SUM = SUM + X
+         SUM IS SUM + X
       ELSE
-         SUM = SUM + Y
-      CNT = CNT + 1
-   X = X + 1
+         SUM IS SUM + Y
+      CNT IS CNT + 1
+   X IS X + 1
 WAIT", @"CUT == 1
 SUM != 10
 X > CUT
@@ -653,71 +653,71 @@ HIGH <= 4
 WIDE != 4", 12, 2),
 
             // Level 10 - compound conditions
-            L(@"LET LOW = 2
-LET HIGH = 4
-LET LIM = 5
-LET I = 0
-LET HIT = 0
+            L(@"LET LOW AS 2
+LET HIGH AS 4
+LET LIM AS 5
+LET I AS 0
+LET HIT AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I >= LOW AND I <= HIGH
-      HIT = HIT + I
+      HIT IS HIT + I
    ELSE
-      HIT = HIT + 0
+      HIT IS HIT + 0
 WAIT", @"LOW == 1
 HIT > LOW
 I >= 5
 HIGH <= 5", 12),
-            L(@"LET MOD = 2
-LET CUT = 3
-LET LIM = 6
-LET I = 0
-LET REM = 0
-LET HIT = 0
+            L(@"LET MOD AS 2
+LET CUT AS 3
+LET LIM AS 6
+LET I AS 0
+LET REM AS 0
+LET HIT AS 0
 LOOP I < LIM
-   I = I + 1
-   REM = I % MOD
+   I IS I + 1
+   REM IS I % MOD
    IF REM == 0 AND I > CUT
-      HIT = HIT + 1
+      HIT IS HIT + 1
    ELSE
-      HIT = HIT + 0
+      HIT IS HIT + 0
 WAIT", @"CUT == 1
 HIT >= 3
 I <= 6
 LIM > REM
 MOD <= 3", 0),
-            L(@"LET LOW = 2
-LET HIGH = 5
-LET LIM = 7
-LET I = 0
-LET SUM = 0
+            L(@"LET LOW AS 2
+LET HIGH AS 5
+LET LIM AS 7
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW OR I > HIGH
-      SUM = SUM + I
+      SUM IS SUM + I
    ELSE
-      SUM = SUM + LOW
+      SUM IS SUM + LOW
 WAIT", @"HIGH == 4
 SUM <= 25
 I != 8
 LIM > HIGH
 LOW <= 3", 0),
-            L(@"LET LOW = 1
-LET HIGH = 3
-LET WIDE = 4
-LET YMAX = 3
-LET X = 0
-LET Y = 0
-LET HIT = 0
+            L(@"LET LOW AS 1
+LET HIGH AS 3
+LET WIDE AS 4
+LET YMAX AS 3
+LET X AS 0
+LET Y AS 0
+LET HIT AS 0
 LOOP X < WIDE
-   Y = 0
+   Y IS 0
    LOOP Y < YMAX
-      Y = Y + 1
+      Y IS Y + 1
       IF X >= LOW AND Y <= HIGH
-         HIT = HIT + 1
+         HIT IS HIT + 1
       ELSE
-         HIT = HIT + 0
-   X = X + 1
+         HIT IS HIT + 0
+   X IS X + 1
 WAIT", @"LOW == 2
 HIT != 7
 X > LOW
@@ -725,24 +725,24 @@ Y >= 3
 HIGH < X
 WIDE >= 3
 YMAX < WIDE", 0),
-            L(@"LET LOW = 1
-LET HIGH = 3
-LET WIDE = 4
-LET YMAX = 3
-LET X = 0
-LET Y = 0
-LET SUM = 0
-LET HIT = 0
+            L(@"LET LOW AS 1
+LET HIGH AS 3
+LET WIDE AS 4
+LET YMAX AS 3
+LET X AS 0
+LET Y AS 0
+LET SUM AS 0
+LET HIT AS 0
 LOOP X < WIDE
-   Y = 0
+   Y IS 0
    LOOP Y < YMAX
-      Y = Y + 1
+      Y IS Y + 1
       IF X >= LOW AND Y <= HIGH
-         SUM = SUM + X
-         HIT = HIT + 1
+         SUM IS SUM + X
+         HIT IS HIT + 1
       ELSE
-         SUM = SUM + Y
-   X = X + 1
+         SUM IS SUM + Y
+   X IS X + 1
 WAIT", @"HIGH == 2
 SUM > HIGH
 HIT >= 6
@@ -753,83 +753,83 @@ WIDE < HIT
 YMAX >= 2", 13, 1),
 
             // Level 11 - ELIF / LIST
-            L(@"LET HIGH = 3
+            L(@"LET HIGH AS 3
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
 LOOP I < 3
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      B = B + 2
+      B IS B + 2
 WAIT", @"HIGH == 4
 I >= 3
 A <= 1
 B != 3
 LENGTH:BUF >= 0", 12),
-            L(@"LET HIGH = 4
-LET LIM = 4
+            L(@"LET HIGH AS 4
+LET LIM AS 4
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
-LET C = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
+LET C AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      C = C + 1
+      C IS C + 1
 WAIT", @"HIGH == 5
 I <= 4
 A != 2
 B < HIGH
 C >= 0
 LENGTH:BUF == 0", 0),
-            L(@"LET HIGH = 3
-LET LIM = 5
+            L(@"LET HIGH AS 3
+LET LIM AS 5
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
-LET C = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
+LET C AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      C = C + 1
-B = B + LENGTH:BUF
+      C IS C + 1
+B IS B + LENGTH:BUF
 WAIT", @"HIGH == 4
 B != 4
 C < HIGH
 I >= 5
 A <= 1
 LENGTH:BUF >= 0", 0),
-            L(@"LET HIGH = 4
-LET LIM = 3
+            L(@"LET HIGH AS 4
+LET LIM AS 3
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
-LET C = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
+LET C AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      C = C + 1
-B = B + LENGTH:BUF
+      C IS C + 1
+B IS B + LENGTH:BUF
 WAIT", @"HIGH == 5
 I < HIGH
 A >= 1
@@ -837,22 +837,22 @@ B <= 2
 C != 1
 LENGTH:BUF == 0
 LIM < HIGH", 0),
-            L(@"LET HIGH = 3
-LET LIM = 4
+            L(@"LET HIGH AS 3
+LET LIM AS 4
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
-LET C = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
+LET C AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      C = C + 1
-B = B + LENGTH:BUF
+      C IS C + 1
+B IS B + LENGTH:BUF
 WAIT", @"HIGH == 4
 B >= 3
 C <= 0
@@ -862,85 +862,85 @@ LENGTH:BUF >= 0
 LIM <= 5", 12, 1),
 
             // Level 12 - FIRST / LAST
-            L(@"LET HIGH = 3
+            L(@"LET HIGH AS 3
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
 LOOP I < 3
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      B = B + 2
-   B = B + LENGTH:BUF
+      B IS B + 2
+   B IS B + LENGTH:BUF
 WAIT", @"HIGH == 4
 I <= 3
 A != 2
 B < HIGH
 LENGTH:BUF == 0", 12),
-            L(@"LET HIGH = 4
-LET LIM = 4
+            L(@"LET HIGH AS 4
+LET LIM AS 4
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
-LET C = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
+LET C AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      C = C + 1
-   B = B + LENGTH:BUF
+      C IS C + 1
+   B IS B + LENGTH:BUF
 WAIT", @"HIGH == 5
 I != 5
 A < HIGH
 B >= 3
 C <= 0
 LENGTH:BUF >= 0", 0),
-            L(@"LET HIGH = 3
-LET LIM = 5
+            L(@"LET HIGH AS 3
+LET LIM AS 5
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
-LET C = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
+LET C AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      C = C + 1
-   B = B + LENGTH:BUF
+      C IS C + 1
+   B IS B + LENGTH:BUF
 WAIT", @"HIGH == 4
 B < HIGH
 C >= 1
 I <= 5
 A != 2
 LENGTH:BUF == 0", 0),
-            L(@"LET HIGH = 4
-LET LIM = 3
+            L(@"LET HIGH AS 4
+LET LIM AS 3
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
-LET C = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
+LET C AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      C = C + 1
-   B = B + LENGTH:BUF
+      C IS C + 1
+   B IS B + LENGTH:BUF
 WAIT", @"HIGH == 5
 I >= 3
 A <= 1
@@ -948,22 +948,22 @@ B != 3
 C < HIGH
 LENGTH:BUF >= 0
 LIM <= 4", 0),
-            L(@"LET HIGH = 3
-LET LIM = 4
+            L(@"LET HIGH AS 3
+LET LIM AS 4
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
-LET C = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
+LET C AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      C = C + 1
-   B = B + LENGTH:BUF
+      C IS C + 1
+   B IS B + LENGTH:BUF
 WAIT", @"HIGH == 4
 B <= 3
 C != 1
@@ -973,69 +973,69 @@ LENGTH:BUF == 0
 LIM >= 3", 12, 1),
 
             // Level 13 - list reading
-            L(@"LET HIGH = 3
+            L(@"LET HIGH AS 3
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
 LOOP I < 3
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      B = B + 2
-   B = B + LENGTH:BUF
+      B IS B + 2
+   B IS B + LENGTH:BUF
 LIST AUX
-B = B + LENGTH:AUX", @"HIGH == 4
+B IS B + LENGTH:AUX", @"HIGH == 4
 I != 4
 A < HIGH
 B >= 2
 LENGTH:BUF >= 0
 LENGTH:AUX == 0", 12),
-            L(@"LET HIGH = 4
-LET LIM = 4
+            L(@"LET HIGH AS 4
+LET LIM AS 4
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
-LET C = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
+LET C AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      C = C + 1
-   B = B + LENGTH:BUF
+      C IS C + 1
+   B IS B + LENGTH:BUF
 LIST AUX
-B = B + LENGTH:AUX", @"HIGH == 5
+B IS B + LENGTH:AUX", @"HIGH == 5
 I < HIGH
 A >= 1
 B <= 3
 C != 1
 LENGTH:BUF == 0
 LENGTH:AUX >= 0", 0),
-            L(@"LET HIGH = 3
-LET LIM = 5
+            L(@"LET HIGH AS 3
+LET LIM AS 5
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
-LET C = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
+LET C AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      C = C + 1
-   B = B + LENGTH:BUF
+      C IS C + 1
+   B IS B + LENGTH:BUF
 LIST AUX
-B = B + LENGTH:AUX
+B IS B + LENGTH:AUX
 WAIT", @"HIGH == 4
 B >= 3
 C <= 1
@@ -1043,24 +1043,24 @@ I != 6
 A < HIGH
 LENGTH:BUF >= 0
 LENGTH:AUX == 0", 0),
-            L(@"LET HIGH = 4
-LET LIM = 3
+            L(@"LET HIGH AS 4
+LET LIM AS 3
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
-LET C = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
+LET C AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      C = C + 1
-   B = B + LENGTH:BUF
+      C IS C + 1
+   B IS B + LENGTH:BUF
 LIST AUX
-B = B + LENGTH:AUX
+B IS B + LENGTH:AUX
 WAIT", @"HIGH == 5
 I <= 3
 A != 2
@@ -1068,24 +1068,24 @@ B < HIGH
 C >= 0
 LENGTH:BUF == 0
 LENGTH:AUX >= 0", 0),
-            L(@"LET HIGH = 3
-LET LIM = 4
+            L(@"LET HIGH AS 3
+LET LIM AS 4
 LIST BUF
-LET I = 0
-LET A = 0
-LET B = 0
-LET C = 0
+LET I AS 0
+LET A AS 0
+LET B AS 0
+LET C AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < 2
-      A = A + 1
+      A IS A + 1
    ELIF I <= HIGH
-      B = B + 1
+      B IS B + 1
    ELSE
-      C = C + 1
-   B = B + LENGTH:BUF
+      C IS C + 1
+   B IS B + LENGTH:BUF
 LIST AUX
-B = B + LENGTH:AUX
+B IS B + LENGTH:AUX
 WAIT", @"HIGH == 4
 B != 4
 C < HIGH
@@ -1096,68 +1096,68 @@ LENGTH:AUX == 0
 LIM != 5", 12, 1),
 
             // Level 14 - PUSH basics
-            L(@"LET LOW = 2
-LET HIGH = 4
-LET LIM = 4
+            L(@"LET LOW AS 2
+LET HIGH AS 4
+LET LIM AS 4
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH", @"HIGH == 5
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH", @"HIGH == 5
 LOW < HIGH
 I >= 4
 SUM <= 11
 OUT == [2,2,3,4]
 LENGTH:OUT == 4", 13),
-            L(@"LET LOW = 3
-LET HIGH = 5
-LET LIM = 5
+            L(@"LET LOW AS 3
+LET HIGH AS 5
+LET LIM AS 5
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
 WAIT", @"LOW == 2
 SUM >= 16
 HIGH <= 5
 I != 6
 OUT == [2,2,3,4,5]
 LENGTH:OUT >= 4", 0),
-            L(@"LET LOW = 2
-LET HIGH = 4
-LET LIM = 6
+            L(@"LET LOW AS 2
+LET HIGH AS 4
+LET LIM AS 6
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
 WAIT", @"HIGH == 5
 SUM <= 21
 LOW != 3
@@ -1165,23 +1165,23 @@ I > HIGH
 OUT == [2,2,3,4,5,5]
 LENGTH:OUT == 6
 LIM > HIGH", 0),
-            L(@"LET LOW = 3
-LET HIGH = 5
-LET LIM = 4
+            L(@"LET LOW AS 3
+LET HIGH AS 5
+LET LIM AS 4
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
 WAIT", @"LOW == 2
 SUM != 12
 HIGH > LOW
@@ -1189,23 +1189,23 @@ I >= 4
 OUT == [2,2,3,4]
 LENGTH:OUT >= 3
 LIM <= I", 0),
-            L(@"LET LOW = 2
-LET HIGH = 4
-LET LIM = 5
+            L(@"LET LOW AS 2
+LET HIGH AS 4
+LET LIM AS 5
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
 WAIT", @"HIGH == 5
 SUM > HIGH
 LOW >= 2
@@ -1215,68 +1215,68 @@ LENGTH:OUT == 5
 LIM <= 6", 13, 1),
 
             // Level 15 - PUSH filtering
-            L(@"LET LOW = 2
-LET HIGH = 4
-LET LIM = 4
+            L(@"LET LOW AS 2
+LET HIGH AS 4
+LET LIM AS 4
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH", @"HIGH == 5
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH", @"HIGH == 5
 LOW >= 2
 I <= 4
 SUM != 12
 OUT == [2,2,3,4]
 LENGTH:OUT >= 3", 13),
-            L(@"LET LOW = 3
-LET HIGH = 5
-LET LIM = 5
+            L(@"LET LOW AS 3
+LET HIGH AS 5
+LET LIM AS 5
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
 WAIT", @"LOW == 2
 SUM <= 16
 HIGH != 6
 I > LOW
 OUT == [2,2,3,4,5]
 LENGTH:OUT == 5", 0),
-            L(@"LET LOW = 2
-LET HIGH = 4
-LET LIM = 6
+            L(@"LET LOW AS 2
+LET HIGH AS 4
+LET LIM AS 6
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
 WAIT", @"HIGH == 5
 SUM != 22
 LOW < HIGH
@@ -1284,23 +1284,23 @@ I >= 6
 OUT == [2,2,3,4,5,5]
 LENGTH:OUT >= 5
 LIM > HIGH", 0),
-            L(@"LET LOW = 3
-LET HIGH = 5
-LET LIM = 4
+            L(@"LET LOW AS 3
+LET HIGH AS 5
+LET LIM AS 4
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
 WAIT", @"LOW == 2
 SUM > LOW
 HIGH >= 5
@@ -1308,23 +1308,23 @@ I <= 4
 OUT == [2,2,3,4]
 LENGTH:OUT == 4
 LIM <= 5", 0),
-            L(@"LET LOW = 2
-LET HIGH = 4
-LET LIM = 5
+            L(@"LET LOW AS 2
+LET HIGH AS 4
+LET LIM AS 5
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
 WAIT", @"HIGH == 5
 SUM >= 16
 LOW <= 2
@@ -1334,52 +1334,52 @@ LENGTH:OUT >= 4
 LIM >= 4", 13, 1),
 
             // Level 16 - PUSH transforms
-            L(@"LET LOW = 2
-LET HIGH = 4
-LET LIM = 4
+            L(@"LET LOW AS 2
+LET HIGH AS 4
+LET LIM AS 4
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
-LET HEAD = FIRST:OUT
-SUM = SUM + HEAD", @"HIGH == 5
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
+LET HEAD AS FIRST:OUT
+SUM IS SUM + HEAD", @"HIGH == 5
 LOW <= 2
 I != 5
 SUM > HIGH
 HEAD >= 2
 OUT == [2,2,3,4]
 LENGTH:OUT == 4", 13),
-            L(@"LET LOW = 3
-LET HIGH = 5
-LET LIM = 5
+            L(@"LET LOW AS 3
+LET HIGH AS 5
+LET LIM AS 5
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
-LET HEAD = FIRST:OUT
-SUM = SUM + HEAD
-LET TAIL = LAST:OUT
-SUM = SUM + TAIL", @"LOW == 2
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
+LET HEAD AS FIRST:OUT
+SUM IS SUM + HEAD
+LET TAIL AS LAST:OUT
+SUM IS SUM + TAIL", @"LOW == 2
 SUM != 24
 HEAD >= LOW
 HIGH >= 5
@@ -1387,27 +1387,27 @@ I <= 5
 TAIL != 6
 OUT == [2,2,3,4,5]
 LENGTH:OUT >= 4", 0),
-            L(@"LET LOW = 2
-LET HIGH = 4
-LET LIM = 6
+            L(@"LET LOW AS 2
+LET HIGH AS 4
+LET LIM AS 6
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
-LET HEAD = FIRST:OUT
-SUM = SUM + HEAD
-LET TAIL = LAST:OUT
-SUM = SUM + TAIL", @"HIGH == 5
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
+LET HEAD AS FIRST:OUT
+SUM IS SUM + HEAD
+LET TAIL AS LAST:OUT
+SUM IS SUM + TAIL", @"HIGH == 5
 SUM > HIGH
 TAIL >= 5
 LOW <= 2
@@ -1415,27 +1415,27 @@ I != 7
 HEAD < HIGH
 OUT == [2,2,3,4,5,5]
 LENGTH:OUT == 6", 0),
-            L(@"LET LOW = 3
-LET HIGH = 5
-LET LIM = 4
+            L(@"LET LOW AS 3
+LET HIGH AS 5
+LET LIM AS 4
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
-LET HEAD = FIRST:OUT
-SUM = SUM + HEAD
-LET TAIL = LAST:OUT
-SUM = SUM + TAIL", @"LOW == 2
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
+LET HEAD AS FIRST:OUT
+SUM IS SUM + HEAD
+LET TAIL AS LAST:OUT
+SUM IS SUM + TAIL", @"LOW == 2
 SUM >= 17
 HEAD <= 2
 HIGH != 6
@@ -1443,27 +1443,27 @@ I > LOW
 TAIL >= 4
 OUT == [2,2,3,4]
 LENGTH:OUT >= 3", 0),
-            L(@"LET LOW = 2
-LET HIGH = 4
-LET LIM = 5
+            L(@"LET LOW AS 2
+LET HIGH AS 4
+LET LIM AS 5
 LIST OUT
-LET I = 0
-LET SUM = 0
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < LOW
-      PUSH OUT = LOW
-      SUM = SUM + LOW
+      PUSH OUT IS LOW
+      SUM IS SUM + LOW
    ELIF I <= HIGH
-      PUSH OUT = I
-      SUM = SUM + I
+      PUSH OUT IS I
+      SUM IS SUM + I
    ELSE
-      PUSH OUT = HIGH
-      SUM = SUM + HIGH
-LET HEAD = FIRST:OUT
-SUM = SUM + HEAD
-LET TAIL = LAST:OUT
-SUM = SUM + TAIL", @"HIGH == 5
+      PUSH OUT IS HIGH
+      SUM IS SUM + HIGH
+LET HEAD AS FIRST:OUT
+SUM IS SUM + HEAD
+LET TAIL AS LAST:OUT
+SUM IS SUM + TAIL", @"HIGH == 5
 SUM <= 23
 TAIL != 6
 LOW < HIGH
@@ -1474,110 +1474,110 @@ LENGTH:OUT == 5
 LIM <= HIGH", 13, 1),
 
             // Level 17 - INJECT basics
-            L(@"LET CUT = 2
-LET LIM = 4
+            L(@"LET CUT AS 2
+LET LIM AS 4
 LIST OUT
-PUSH OUT = 9
-LET I = 0
-LET SUM = 0
+PUSH OUT IS 9
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < CUT
-      INJECT OUT = I
-      SUM = SUM + I
+      INJECT OUT IS I
+      SUM IS SUM + I
    ELIF I == CUT
-      PUSH OUT = I
-      SUM = SUM + CUT
+      PUSH OUT IS I
+      SUM IS SUM + CUT
    ELSE
-      INJECT OUT = CUT
-      SUM = SUM + CUT", @"CUT == 3
+      INJECT OUT IS CUT
+      SUM IS SUM + CUT", @"CUT == 3
 SUM != 10
 I > CUT
 OUT == [3,2,1,9,3]
 LENGTH:OUT >= 4", 12),
-            L(@"LET CUT = 3
-LET LIM = 5
+            L(@"LET CUT AS 3
+LET LIM AS 5
 LIST OUT
-PUSH OUT = 9
-LET I = 0
-LET SUM = 0
+PUSH OUT IS 9
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < CUT
-      INJECT OUT = I
-      SUM = SUM + I
+      INJECT OUT IS I
+      SUM IS SUM + I
    ELIF I == CUT
-      PUSH OUT = I
-      SUM = SUM + CUT
+      PUSH OUT IS I
+      SUM IS SUM + CUT
    ELSE
-      INJECT OUT = CUT
-      SUM = SUM + CUT", @"CUT == 4
+      INJECT OUT IS CUT
+      SUM IS SUM + CUT", @"CUT == 4
 SUM > CUT
 I >= 5
 OUT == [4,3,2,1,9,4]
 LENGTH:OUT == 6
 LIM <= 6", 0),
-            L(@"LET CUT = 2
-LET LIM = 6
+            L(@"LET CUT AS 2
+LET LIM AS 6
 LIST OUT
-PUSH OUT = 9
-LET I = 0
-LET SUM = 0
+PUSH OUT IS 9
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < CUT
-      INJECT OUT = I
-      SUM = SUM + I
+      INJECT OUT IS I
+      SUM IS SUM + I
    ELIF I == CUT
-      PUSH OUT = I
-      SUM = SUM + CUT
+      PUSH OUT IS I
+      SUM IS SUM + CUT
    ELSE
-      INJECT OUT = CUT
-      SUM = SUM + CUT", @"CUT == 3
+      INJECT OUT IS CUT
+      SUM IS SUM + CUT", @"CUT == 3
 SUM >= 15
 I <= 6
 OUT == [3,3,3,2,1,9,3]
 LENGTH:OUT >= 6
 LIM >= 5", 0),
-            L(@"LET CUT = 3
-LET LIM = 4
+            L(@"LET CUT AS 3
+LET LIM AS 4
 LIST OUT
-PUSH OUT = 9
-LET I = 0
-LET SUM = 0
+PUSH OUT IS 9
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < CUT
-      INJECT OUT = I
-      SUM = SUM + I
+      INJECT OUT IS I
+      SUM IS SUM + I
    ELIF I == CUT
-      PUSH OUT = I
-      SUM = SUM + CUT
+      PUSH OUT IS I
+      SUM IS SUM + CUT
    ELSE
-      INJECT OUT = CUT
-      SUM = SUM + CUT", @"CUT == 4
+      INJECT OUT IS CUT
+      SUM IS SUM + CUT", @"CUT == 4
 SUM <= 10
 I != 5
 OUT == [3,2,1,9,4]
 LENGTH:OUT == 5
 LIM != 5", 0),
-            L(@"LET CUT = 2
-LET LIM = 5
+            L(@"LET CUT AS 2
+LET LIM AS 5
 LIST OUT
-PUSH OUT = 9
-LET I = 0
-LET SUM = 0
+PUSH OUT IS 9
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < CUT
-      INJECT OUT = I
-      SUM = SUM + I
+      INJECT OUT IS I
+      SUM IS SUM + I
    ELIF I == CUT
-      PUSH OUT = I
-      SUM = SUM + CUT
+      PUSH OUT IS I
+      SUM IS SUM + CUT
    ELSE
-      INJECT OUT = CUT
-      SUM = SUM + CUT", @"CUT == 3
+      INJECT OUT IS CUT
+      SUM IS SUM + CUT", @"CUT == 3
 SUM != 13
 I > CUT
 OUT == [3,3,2,1,9,3]
@@ -1585,108 +1585,108 @@ LENGTH:OUT >= 5
 LIM > CUT", 12, 1),
 
             // Level 18 - deque operations
-            L(@"LET CUT = 2
-LET LIM = 4
+            L(@"LET CUT AS 2
+LET LIM AS 4
 LIST OUT
-PUSH OUT = 9
-LET I = 0
-LET SUM = 0
+PUSH OUT IS 9
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < CUT
-      INJECT OUT = I
-      SUM = SUM + I
+      INJECT OUT IS I
+      SUM IS SUM + I
    ELIF I == CUT
-      PUSH OUT = I
-      SUM = SUM + CUT
+      PUSH OUT IS I
+      SUM IS SUM + CUT
    ELSE
-      INJECT OUT = CUT
-      SUM = SUM + CUT
-LET HEAD = FIRST:OUT
-LET TAIL = LAST:OUT
-SUM = SUM + HEAD
-SUM = SUM + TAIL", @"CUT == 3
+      INJECT OUT IS CUT
+      SUM IS SUM + CUT
+LET HEAD AS FIRST:OUT
+LET TAIL AS LAST:OUT
+SUM IS SUM + HEAD
+SUM IS SUM + TAIL", @"CUT == 3
 SUM > CUT
 HEAD >= 3
 TAIL <= 3
 I != 5
 OUT == [3,2,1,9,3]
 LENGTH:OUT == 5", 12),
-            L(@"LET CUT = 3
-LET LIM = 5
+            L(@"LET CUT AS 3
+LET LIM AS 5
 LIST OUT
-PUSH OUT = 9
-LET I = 0
-LET SUM = 0
+PUSH OUT IS 9
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < CUT
-      INJECT OUT = I
-      SUM = SUM + I
+      INJECT OUT IS I
+      SUM IS SUM + I
    ELIF I == CUT
-      PUSH OUT = I
-      SUM = SUM + CUT
+      PUSH OUT IS I
+      SUM IS SUM + CUT
    ELSE
-      INJECT OUT = CUT
-      SUM = SUM + CUT
-LET HEAD = FIRST:OUT
-LET TAIL = LAST:OUT
-SUM = SUM + HEAD
-SUM = SUM + TAIL", @"CUT == 4
+      INJECT OUT IS CUT
+      SUM IS SUM + CUT
+LET HEAD AS FIRST:OUT
+LET TAIL AS LAST:OUT
+SUM IS SUM + HEAD
+SUM IS SUM + TAIL", @"CUT == 4
 SUM >= 22
 HEAD <= 4
 TAIL != 5
 I > CUT
 OUT == [4,3,2,1,9,4]
 LENGTH:OUT >= 5", 0),
-            L(@"LET CUT = 2
-LET LIM = 6
+            L(@"LET CUT AS 2
+LET LIM AS 6
 LIST OUT
-PUSH OUT = 9
-LET I = 0
-LET SUM = 0
+PUSH OUT IS 9
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < CUT
-      INJECT OUT = I
-      SUM = SUM + I
+      INJECT OUT IS I
+      SUM IS SUM + I
    ELIF I == CUT
-      PUSH OUT = I
-      SUM = SUM + CUT
+      PUSH OUT IS I
+      SUM IS SUM + CUT
    ELSE
-      INJECT OUT = CUT
-      SUM = SUM + CUT
-LET HEAD = FIRST:OUT
-LET TAIL = LAST:OUT
-SUM = SUM + HEAD
-SUM = SUM + TAIL", @"CUT == 3
+      INJECT OUT IS CUT
+      SUM IS SUM + CUT
+LET HEAD AS FIRST:OUT
+LET TAIL AS LAST:OUT
+SUM IS SUM + HEAD
+SUM IS SUM + TAIL", @"CUT == 3
 SUM <= 21
 HEAD != 4
 TAIL >= CUT
 I >= 6
 OUT == [3,3,3,2,1,9,3]
 LENGTH:OUT == 7", 0),
-            L(@"LET CUT = 3
-LET LIM = 4
+            L(@"LET CUT AS 3
+LET LIM AS 4
 LIST OUT
-PUSH OUT = 9
-LET I = 0
-LET SUM = 0
+PUSH OUT IS 9
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < CUT
-      INJECT OUT = I
-      SUM = SUM + I
+      INJECT OUT IS I
+      SUM IS SUM + I
    ELIF I == CUT
-      PUSH OUT = I
-      SUM = SUM + CUT
+      PUSH OUT IS I
+      SUM IS SUM + CUT
    ELSE
-      INJECT OUT = CUT
-      SUM = SUM + CUT
-LET HEAD = FIRST:OUT
-LET TAIL = LAST:OUT
-SUM = SUM + HEAD
-SUM = SUM + TAIL", @"CUT == 4
+      INJECT OUT IS CUT
+      SUM IS SUM + CUT
+LET HEAD AS FIRST:OUT
+LET TAIL AS LAST:OUT
+SUM IS SUM + HEAD
+SUM IS SUM + TAIL", @"CUT == 4
 SUM != 18
 TAIL >= CUT
 I >= 4
@@ -1694,27 +1694,27 @@ HEAD <= 3
 OUT == [3,2,1,9,4]
 LENGTH:OUT >= 4
 LIM > HEAD", 0),
-            L(@"LET CUT = 2
-LET LIM = 5
+            L(@"LET CUT AS 2
+LET LIM AS 5
 LIST OUT
-PUSH OUT = 9
-LET I = 0
-LET SUM = 0
+PUSH OUT IS 9
+LET I AS 0
+LET SUM AS 0
 LOOP I < LIM
-   I = I + 1
+   I IS I + 1
    IF I < CUT
-      INJECT OUT = I
-      SUM = SUM + I
+      INJECT OUT IS I
+      SUM IS SUM + I
    ELIF I == CUT
-      PUSH OUT = I
-      SUM = SUM + CUT
+      PUSH OUT IS I
+      SUM IS SUM + CUT
    ELSE
-      INJECT OUT = CUT
-      SUM = SUM + CUT
-LET HEAD = FIRST:OUT
-LET TAIL = LAST:OUT
-SUM = SUM + HEAD
-SUM = SUM + TAIL", @"CUT == 3
+      INJECT OUT IS CUT
+      SUM IS SUM + CUT
+LET HEAD AS FIRST:OUT
+LET TAIL AS LAST:OUT
+SUM IS SUM + HEAD
+SUM IS SUM + TAIL", @"CUT == 3
 SUM > CUT
 HEAD >= 3
 TAIL <= 3
@@ -1724,27 +1724,27 @@ LENGTH:OUT == 6
 LIM <= 6", 12, 1),
 
             // Level 19 - list filtering
-            L(@"LET CUT = 4
+            L(@"LET CUT AS 4
 LIST SRC
-PUSH SRC = 1
-PUSH SRC = 4
-PUSH SRC = 7
-PUSH SRC = 2
+PUSH SRC IS 1
+PUSH SRC IS 4
+PUSH SRC IS 7
+PUSH SRC IS 2
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < CUT
-      CNT = CNT + 1
+      CNT IS CNT + 1
    ELIF VAL == CUT
-      PUSH OUT = VAL
-      SUM = SUM + VAL
+      PUSH OUT IS VAL
+      SUM IS SUM + VAL
    ELSE
-      INJECT OUT = VAL
-      SUM = SUM + VAL
+      INJECT OUT IS VAL
+      SUM IS SUM + VAL
 WAIT", @"CUT == 3
 VAL >= 2
 SUM <= 11
@@ -1752,27 +1752,27 @@ CNT != 3
 OUT == [7,4,0]
 LENGTH:OUT >= 2
 LENGTH:SRC == 0", 12),
-            L(@"LET CUT = 5
+            L(@"LET CUT AS 5
 LIST SRC
-PUSH SRC = 2
-PUSH SRC = 5
-PUSH SRC = 8
-PUSH SRC = 3
+PUSH SRC IS 2
+PUSH SRC IS 5
+PUSH SRC IS 8
+PUSH SRC IS 3
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < CUT
-      CNT = CNT + 1
+      CNT IS CNT + 1
    ELIF VAL == CUT
-      PUSH OUT = VAL
-      SUM = SUM + VAL
+      PUSH OUT IS VAL
+      SUM IS SUM + VAL
    ELSE
-      INJECT OUT = VAL
-      SUM = SUM + VAL
+      INJECT OUT IS VAL
+      SUM IS SUM + VAL
 WAIT", @"CUT == 4
 VAL <= 3
 SUM != 14
@@ -1780,27 +1780,27 @@ CNT < CUT
 OUT == [8,5,0]
 LENGTH:OUT == 3
 LENGTH:SRC >= 0", 0),
-            L(@"LET CUT = 4
+            L(@"LET CUT AS 4
 LIST SRC
-PUSH SRC = 1
-PUSH SRC = 4
-PUSH SRC = 9
-PUSH SRC = 2
+PUSH SRC IS 1
+PUSH SRC IS 4
+PUSH SRC IS 9
+PUSH SRC IS 2
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < CUT
-      CNT = CNT + 1
+      CNT IS CNT + 1
    ELIF VAL == CUT
-      PUSH OUT = VAL
-      SUM = SUM + VAL
+      PUSH OUT IS VAL
+      SUM IS SUM + VAL
    ELSE
-      INJECT OUT = VAL
-      SUM = SUM + VAL
+      INJECT OUT IS VAL
+      SUM IS SUM + VAL
 WAIT", @"CUT == 3
 VAL != 3
 SUM > CUT
@@ -1808,27 +1808,27 @@ CNT >= 2
 OUT == [9,4,0]
 LENGTH:OUT >= 2
 LENGTH:SRC == 0", 0),
-            L(@"LET CUT = 5
+            L(@"LET CUT AS 5
 LIST SRC
-PUSH SRC = 2
-PUSH SRC = 5
-PUSH SRC = 10
-PUSH SRC = 3
+PUSH SRC IS 2
+PUSH SRC IS 5
+PUSH SRC IS 10
+PUSH SRC IS 3
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < CUT
-      CNT = CNT + 1
+      CNT IS CNT + 1
    ELIF VAL == CUT
-      PUSH OUT = VAL
-      SUM = SUM + VAL
+      PUSH OUT IS VAL
+      SUM IS SUM + VAL
    ELSE
-      INJECT OUT = VAL
-      SUM = SUM + VAL
+      INJECT OUT IS VAL
+      SUM IS SUM + VAL
 WAIT", @"CUT == 4
 VAL < CUT
 SUM >= 15
@@ -1836,27 +1836,27 @@ CNT <= 2
 OUT == [10,5,0]
 LENGTH:OUT == 3
 LENGTH:SRC >= 0", 0),
-            L(@"LET CUT = 4
+            L(@"LET CUT AS 4
 LIST SRC
-PUSH SRC = 1
-PUSH SRC = 4
-PUSH SRC = 11
-PUSH SRC = 2
+PUSH SRC IS 1
+PUSH SRC IS 4
+PUSH SRC IS 11
+PUSH SRC IS 2
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < CUT
-      CNT = CNT + 1
+      CNT IS CNT + 1
    ELIF VAL == CUT
-      PUSH OUT = VAL
-      SUM = SUM + VAL
+      PUSH OUT IS VAL
+      SUM IS SUM + VAL
    ELSE
-      INJECT OUT = VAL
-      SUM = SUM + VAL
+      INJECT OUT IS VAL
+      SUM IS SUM + VAL
 WAIT", @"CUT == 3
 VAL >= 2
 SUM <= 15
@@ -1866,125 +1866,125 @@ LENGTH:OUT >= 2
 LENGTH:SRC == 0", 12, 1),
 
             // Level 20 - map / reduce
-            L(@"LET RATE = 2
+            L(@"LET RATE AS 2
 LIST SRC
-PUSH SRC = 1
-PUSH SRC = 2
-PUSH SRC = 3
+PUSH SRC IS 1
+PUSH SRC IS 2
+PUSH SRC IS 3
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < RATE
-      VAL = VAL + RATE
+      VAL IS VAL + RATE
    ELIF VAL == RATE
-      VAL = VAL * RATE
+      VAL IS VAL * RATE
    ELSE
-      VAL = VAL + 1
-   PUSH OUT = VAL
-   SUM = SUM + VAL
+      VAL IS VAL + 1
+   PUSH OUT IS VAL
+   SUM IS SUM + VAL
 WAIT", @"RATE == 3
 VAL <= 9
 SUM != 19
 OUT == [0,4,5,9]
 LENGTH:OUT == 4
 LENGTH:SRC >= 0", 12),
-            L(@"LET RATE = 3
+            L(@"LET RATE AS 3
 LIST SRC
-PUSH SRC = 2
-PUSH SRC = 3
-PUSH SRC = 4
+PUSH SRC IS 2
+PUSH SRC IS 3
+PUSH SRC IS 4
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < RATE
-      VAL = VAL + RATE
+      VAL IS VAL + RATE
    ELIF VAL == RATE
-      VAL = VAL * RATE
+      VAL IS VAL * RATE
    ELSE
-      VAL = VAL + 1
-   PUSH OUT = VAL
-   SUM = SUM + VAL
+      VAL IS VAL + 1
+   PUSH OUT IS VAL
+   SUM IS SUM + VAL
 WAIT", @"RATE == 4
 VAL != 17
 SUM > RATE
 OUT == [0,6,7,16]
 LENGTH:OUT >= 3
 LENGTH:SRC == 0", 0),
-            L(@"LET RATE = 2
+            L(@"LET RATE AS 2
 LIST SRC
-PUSH SRC = 3
-PUSH SRC = 4
-PUSH SRC = 5
+PUSH SRC IS 3
+PUSH SRC IS 4
+PUSH SRC IS 5
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < RATE
-      VAL = VAL + RATE
+      VAL IS VAL + RATE
    ELIF VAL == RATE
-      VAL = VAL * RATE
+      VAL IS VAL * RATE
    ELSE
-      VAL = VAL + 1
-   PUSH OUT = VAL
-   SUM = SUM + VAL
+      VAL IS VAL + 1
+   PUSH OUT IS VAL
+   SUM IS SUM + VAL
 WAIT", @"RATE == 3
 SUM > RATE
 VAL >= 6
 OUT == [0,9,5,6]
 LENGTH:OUT == 4
 LENGTH:SRC >= 0", 0),
-            L(@"LET RATE = 3
+            L(@"LET RATE AS 3
 LIST SRC
-PUSH SRC = 4
-PUSH SRC = 5
-PUSH SRC = 6
+PUSH SRC IS 4
+PUSH SRC IS 5
+PUSH SRC IS 6
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < RATE
-      VAL = VAL + RATE
+      VAL IS VAL + RATE
    ELIF VAL == RATE
-      VAL = VAL * RATE
+      VAL IS VAL * RATE
    ELSE
-      VAL = VAL + 1
-   PUSH OUT = VAL
-   SUM = SUM + VAL
+      VAL IS VAL + 1
+   PUSH OUT IS VAL
+   SUM IS SUM + VAL
 WAIT", @"RATE == 4
 SUM >= 29
 VAL <= 7
 OUT == [0,16,6,7]
 LENGTH:OUT >= 3
 LENGTH:SRC == 0", 0),
-            L(@"LET RATE = 2
+            L(@"LET RATE AS 2
 LIST SRC
-PUSH SRC = 5
-PUSH SRC = 6
-PUSH SRC = 7
+PUSH SRC IS 5
+PUSH SRC IS 6
+PUSH SRC IS 7
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < RATE
-      VAL = VAL + RATE
+      VAL IS VAL + RATE
    ELIF VAL == RATE
-      VAL = VAL * RATE
+      VAL IS VAL * RATE
    ELSE
-      VAL = VAL + 1
-   PUSH OUT = VAL
-   SUM = SUM + VAL
+      VAL IS VAL + 1
+   PUSH OUT IS VAL
+   SUM IS SUM + VAL
 WAIT", @"RATE == 3
 VAL <= 8
 SUM != 22
@@ -1992,125 +1992,125 @@ LENGTH:SRC == 0
 LENGTH:OUT >= 3", 12, 1),
 
             // Level 21 - retry queues
-            L(@"LET CUT = 5
+            L(@"LET CUT AS 5
 LIST QUE
-PUSH QUE = 1
-PUSH QUE = 6
-PUSH QUE = 2
+PUSH QUE IS 1
+PUSH QUE IS 6
+PUSH QUE IS 2
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET RET = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET RET AS 0
 LOOP LENGTH:QUE > 0
-   VAL = SHIFT:QUE
+   VAL IS SHIFT:QUE
    IF VAL < CUT
-      RET = RET + 1
-      INJECT QUE = VAL + CUT
+      RET IS RET + 1
+      INJECT QUE IS VAL + CUT
       SKIP
    ELIF VAL == CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
 WAIT", @"CUT == 6
 VAL != 9
 RET < CUT
 DONE == [0,7,6,8]
 LENGTH:DONE >= 3
 LENGTH:QUE == 0", 12),
-            L(@"LET CUT = 6
+            L(@"LET CUT AS 6
 LIST QUE
-PUSH QUE = 2
-PUSH QUE = 7
-PUSH QUE = 3
+PUSH QUE IS 2
+PUSH QUE IS 7
+PUSH QUE IS 3
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET RET = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET RET AS 0
 LOOP LENGTH:QUE > 0
-   VAL = SHIFT:QUE
+   VAL IS SHIFT:QUE
    IF VAL < CUT
-      RET = RET + 1
-      INJECT QUE = VAL + CUT
+      RET IS RET + 1
+      INJECT QUE IS VAL + CUT
       SKIP
    ELIF VAL == CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
 WAIT", @"CUT == 7
 VAL > CUT
 RET >= 2
 DONE == [0,9,7,10]
 LENGTH:DONE == 4
 LENGTH:QUE >= 0", 0),
-            L(@"LET CUT = 5
+            L(@"LET CUT AS 5
 LIST QUE
-PUSH QUE = 1
-PUSH QUE = 8
-PUSH QUE = 2
+PUSH QUE IS 1
+PUSH QUE IS 8
+PUSH QUE IS 2
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET RET = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET RET AS 0
 LOOP LENGTH:QUE > 0
-   VAL = SHIFT:QUE
+   VAL IS SHIFT:QUE
    IF VAL < CUT
-      RET = RET + 1
-      INJECT QUE = VAL + CUT
+      RET IS RET + 1
+      INJECT QUE IS VAL + CUT
       SKIP
    ELIF VAL == CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
 WAIT", @"CUT == 6
 VAL >= 8
 RET <= 2
 DONE == [0,7,8,8]
 LENGTH:DONE >= 3
 LENGTH:QUE == 0", 0),
-            L(@"LET CUT = 6
+            L(@"LET CUT AS 6
 LIST QUE
-PUSH QUE = 2
-PUSH QUE = 9
-PUSH QUE = 3
+PUSH QUE IS 2
+PUSH QUE IS 9
+PUSH QUE IS 3
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET RET = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET RET AS 0
 LOOP LENGTH:QUE > 0
-   VAL = SHIFT:QUE
+   VAL IS SHIFT:QUE
    IF VAL < CUT
-      RET = RET + 1
-      INJECT QUE = VAL + CUT
+      RET IS RET + 1
+      INJECT QUE IS VAL + CUT
       SKIP
    ELIF VAL == CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
 WAIT", @"CUT == 7
 VAL <= 10
 RET != 3
 DONE == [0,9,9,10]
 LENGTH:DONE == 4
 LENGTH:QUE >= 0", 0),
-            L(@"LET CUT = 5
+            L(@"LET CUT AS 5
 LIST QUE
-PUSH QUE = 1
-PUSH QUE = 10
-PUSH QUE = 2
+PUSH QUE IS 1
+PUSH QUE IS 10
+PUSH QUE IS 2
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET RET = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET RET AS 0
 LOOP LENGTH:QUE > 0
-   VAL = SHIFT:QUE
+   VAL IS SHIFT:QUE
    IF VAL < CUT
-      RET = RET + 1
-      INJECT QUE = VAL + CUT
+      RET IS RET + 1
+      INJECT QUE IS VAL + CUT
       SKIP
    ELIF VAL == CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
 WAIT", @"CUT == 6
 VAL != 9
 RET < CUT
@@ -2119,120 +2119,120 @@ LENGTH:DONE >= 3
 LENGTH:QUE == 0", 12, 1),
 
             // Level 22 - stack transforms
-            L(@"LET CUT = 3
+            L(@"LET CUT AS 3
 LIST STK
-PUSH STK = 1
-PUSH STK = 3
-PUSH STK = 5
+PUSH STK IS 1
+PUSH STK IS 3
+PUSH STK IS 5
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
 LOOP LENGTH:STK > 0
-   VAL = POP:STK
+   VAL IS POP:STK
    IF VAL < CUT
-      INJECT OUT = VAL
+      INJECT OUT IS VAL
    ELIF VAL == CUT
-      PUSH OUT = VAL
+      PUSH OUT IS VAL
    ELSE
-      PUSH OUT = VAL
-   SUM = SUM + VAL
+      PUSH OUT IS VAL
+   SUM IS SUM + VAL
 WAIT", @"CUT == 4
 VAL < CUT
 SUM >= 9
 OUT == [1,3,0,5]
 LENGTH:OUT == 4
 LENGTH:STK >= 0", 12),
-            L(@"LET CUT = 4
+            L(@"LET CUT AS 4
 LIST STK
-PUSH STK = 2
-PUSH STK = 4
-PUSH STK = 6
+PUSH STK IS 2
+PUSH STK IS 4
+PUSH STK IS 6
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
 LOOP LENGTH:STK > 0
-   VAL = POP:STK
+   VAL IS POP:STK
    IF VAL < CUT
-      INJECT OUT = VAL
+      INJECT OUT IS VAL
    ELIF VAL == CUT
-      PUSH OUT = VAL
+      PUSH OUT IS VAL
    ELSE
-      PUSH OUT = VAL
-   SUM = SUM + VAL
+      PUSH OUT IS VAL
+   SUM IS SUM + VAL
 WAIT", @"CUT == 5
 VAL >= 2
 SUM <= 12
 OUT == [2,4,0,6]
 LENGTH:OUT >= 3
 LENGTH:STK == 0", 0),
-            L(@"LET CUT = 5
+            L(@"LET CUT AS 5
 LIST STK
-PUSH STK = 3
-PUSH STK = 5
-PUSH STK = 7
+PUSH STK IS 3
+PUSH STK IS 5
+PUSH STK IS 7
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
 LOOP LENGTH:STK > 0
-   VAL = POP:STK
+   VAL IS POP:STK
    IF VAL < CUT
-      INJECT OUT = VAL
+      INJECT OUT IS VAL
    ELIF VAL == CUT
-      PUSH OUT = VAL
+      PUSH OUT IS VAL
    ELSE
-      PUSH OUT = VAL
-   SUM = SUM + VAL
+      PUSH OUT IS VAL
+   SUM IS SUM + VAL
 WAIT", @"CUT == 6
 VAL <= 3
 SUM != 16
 OUT == [3,5,0,7]
 LENGTH:OUT == 4
 LENGTH:STK >= 0", 0),
-            L(@"LET CUT = 6
+            L(@"LET CUT AS 6
 LIST STK
-PUSH STK = 4
-PUSH STK = 6
-PUSH STK = 8
+PUSH STK IS 4
+PUSH STK IS 6
+PUSH STK IS 8
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
 LOOP LENGTH:STK > 0
-   VAL = POP:STK
+   VAL IS POP:STK
    IF VAL < CUT
-      INJECT OUT = VAL
+      INJECT OUT IS VAL
    ELIF VAL == CUT
-      PUSH OUT = VAL
+      PUSH OUT IS VAL
    ELSE
-      PUSH OUT = VAL
-   SUM = SUM + VAL
+      PUSH OUT IS VAL
+   SUM IS SUM + VAL
 WAIT", @"CUT == 7
 VAL != 5
 SUM > CUT
 OUT == [4,6,0,8]
 LENGTH:OUT >= 3
 LENGTH:STK == 0", 0),
-            L(@"LET CUT = 7
+            L(@"LET CUT AS 7
 LIST STK
-PUSH STK = 5
-PUSH STK = 7
-PUSH STK = 9
+PUSH STK IS 5
+PUSH STK IS 7
+PUSH STK IS 9
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET SUM = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET SUM AS 0
 LOOP LENGTH:STK > 0
-   VAL = POP:STK
+   VAL IS POP:STK
    IF VAL < CUT
-      INJECT OUT = VAL
+      INJECT OUT IS VAL
    ELIF VAL == CUT
-      PUSH OUT = VAL
+      PUSH OUT IS VAL
    ELSE
-      PUSH OUT = VAL
-   SUM = SUM + VAL
+      PUSH OUT IS VAL
+   SUM IS SUM + VAL
 WAIT", @"CUT == 8
 VAL < CUT
 SUM >= 21
@@ -2241,30 +2241,30 @@ LENGTH:OUT == 4
 LENGTH:STK >= 0", 12, 1),
 
             // Level 23 - dual buffers
-            L(@"LET CUT = 4
+            L(@"LET CUT AS 4
 LIST A
-PUSH A = 1
-PUSH A = 4
-PUSH A = 7
+PUSH A IS 1
+PUSH A IS 4
+PUSH A IS 7
 LIST B
-PUSH B = 2
-PUSH B = 5
+PUSH B IS 2
+PUSH B IS 5
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      VAL = SHIFT:A
+      VAL IS SHIFT:A
    ELIF LENGTH:B > 0
-      VAL = SHIFT:B
+      VAL IS SHIFT:B
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      INJECT OUT = VAL
+      INJECT OUT IS VAL
    ELSE
-      PUSH OUT = VAL
-   CNT = CNT + 1
+      PUSH OUT IS VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 5
 VAL >= 5
 CNT <= 5
@@ -2272,30 +2272,30 @@ OUT == [2,4,1,0,7,5]
 LENGTH:OUT >= 5
 LENGTH:A == 0
 LENGTH:B >= 0", 12),
-            L(@"LET CUT = 5
+            L(@"LET CUT AS 5
 LIST A
-PUSH A = 2
-PUSH A = 5
-PUSH A = 8
+PUSH A IS 2
+PUSH A IS 5
+PUSH A IS 8
 LIST B
-PUSH B = 3
-PUSH B = 6
+PUSH B IS 3
+PUSH B IS 6
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      VAL = SHIFT:A
+      VAL IS SHIFT:A
    ELIF LENGTH:B > 0
-      VAL = SHIFT:B
+      VAL IS SHIFT:B
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      INJECT OUT = VAL
+      INJECT OUT IS VAL
    ELSE
-      PUSH OUT = VAL
-   CNT = CNT + 1
+      PUSH OUT IS VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 6
 VAL <= 6
 CNT != 6
@@ -2303,30 +2303,30 @@ OUT == [3,5,2,0,8,6]
 LENGTH:OUT == 6
 LENGTH:A >= 0
 LENGTH:B == 0", 0),
-            L(@"LET CUT = 6
+            L(@"LET CUT AS 6
 LIST A
-PUSH A = 3
-PUSH A = 6
-PUSH A = 9
+PUSH A IS 3
+PUSH A IS 6
+PUSH A IS 9
 LIST B
-PUSH B = 4
-PUSH B = 7
+PUSH B IS 4
+PUSH B IS 7
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      VAL = SHIFT:A
+      VAL IS SHIFT:A
    ELIF LENGTH:B > 0
-      VAL = SHIFT:B
+      VAL IS SHIFT:B
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      INJECT OUT = VAL
+      INJECT OUT IS VAL
    ELSE
-      PUSH OUT = VAL
-   CNT = CNT + 1
+      PUSH OUT IS VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 7
 VAL != 8
 CNT < CUT
@@ -2334,30 +2334,30 @@ OUT == [4,6,3,0,9,7]
 LENGTH:OUT >= 5
 LENGTH:A == 0
 LENGTH:B >= 0", 0),
-            L(@"LET CUT = 7
+            L(@"LET CUT AS 7
 LIST A
-PUSH A = 4
-PUSH A = 7
-PUSH A = 10
+PUSH A IS 4
+PUSH A IS 7
+PUSH A IS 10
 LIST B
-PUSH B = 5
-PUSH B = 8
+PUSH B IS 5
+PUSH B IS 8
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      VAL = SHIFT:A
+      VAL IS SHIFT:A
    ELIF LENGTH:B > 0
-      VAL = SHIFT:B
+      VAL IS SHIFT:B
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      INJECT OUT = VAL
+      INJECT OUT IS VAL
    ELSE
-      PUSH OUT = VAL
-   CNT = CNT + 1
+      PUSH OUT IS VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 8
 VAL >= CUT
 CNT >= 5
@@ -2365,30 +2365,30 @@ OUT == [5,7,4,0,10,8]
 LENGTH:OUT == 6
 LENGTH:A >= 0
 LENGTH:B == 0", 0),
-            L(@"LET CUT = 8
+            L(@"LET CUT AS 8
 LIST A
-PUSH A = 5
-PUSH A = 8
-PUSH A = 11
+PUSH A IS 5
+PUSH A IS 8
+PUSH A IS 11
 LIST B
-PUSH B = 6
-PUSH B = 9
+PUSH B IS 6
+PUSH B IS 9
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      VAL = SHIFT:A
+      VAL IS SHIFT:A
    ELIF LENGTH:B > 0
-      VAL = SHIFT:B
+      VAL IS SHIFT:B
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      INJECT OUT = VAL
+      INJECT OUT IS VAL
    ELSE
-      PUSH OUT = VAL
-   CNT = CNT + 1
+      PUSH OUT IS VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 9
 VAL >= 9
 CNT <= 5
@@ -2398,28 +2398,28 @@ LENGTH:A == 0
 LENGTH:B >= 0", 12, 1),
 
             // Level 24 - threshold routing
-            L(@"LET LOW = 5
-LET HIGH = 9
+            L(@"LET LOW AS 5
+LET HIGH AS 9
 LIST SRC
-PUSH SRC = 2
-PUSH SRC = 6
-PUSH SRC = 10
-PUSH SRC = 4
+PUSH SRC IS 2
+PUSH SRC IS 6
+PUSH SRC IS 10
+PUSH SRC IS 4
 LIST A
 LIST B
 LIST C
-INJECT A = 0
-LET VAL = 0
-LET CNT = 0
+INJECT A IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < LOW
-      INJECT A = VAL
+      INJECT A IS VAL
    ELIF VAL < HIGH
-      PUSH B = VAL
+      PUSH B IS VAL
    ELSE
-      PUSH C = VAL
-   CNT = CNT + 1
+      PUSH C IS VAL
+   CNT IS CNT + 1
 WAIT", @"HIGH == 10
 VAL <= 4
 CNT != 5
@@ -2427,28 +2427,28 @@ LENGTH:SRC == 0
 LENGTH:A >= 2
 LENGTH:B == 1
 LENGTH:C >= 0", 13),
-            L(@"LET LOW = 6
-LET HIGH = 10
+            L(@"LET LOW AS 6
+LET HIGH AS 10
 LIST SRC
-PUSH SRC = 3
-PUSH SRC = 7
-PUSH SRC = 11
-PUSH SRC = 5
+PUSH SRC IS 3
+PUSH SRC IS 7
+PUSH SRC IS 11
+PUSH SRC IS 5
 LIST A
 LIST B
 LIST C
-INJECT A = 0
-LET VAL = 0
-LET CNT = 0
+INJECT A IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < LOW
-      INJECT A = VAL
+      INJECT A IS VAL
    ELIF VAL < HIGH
-      PUSH B = VAL
+      PUSH B IS VAL
    ELSE
-      PUSH C = VAL
-   CNT = CNT + 1
+      PUSH C IS VAL
+   CNT IS CNT + 1
 WAIT", @"HIGH == 11
 VAL != 6
 CNT < HIGH
@@ -2456,28 +2456,28 @@ LENGTH:SRC >= 0
 LENGTH:A == 3
 LENGTH:B >= 0
 LENGTH:C == 1", 0),
-            L(@"LET LOW = 5
-LET HIGH = 9
+            L(@"LET LOW AS 5
+LET HIGH AS 9
 LIST SRC
-PUSH SRC = 2
-PUSH SRC = 6
-PUSH SRC = 12
-PUSH SRC = 4
+PUSH SRC IS 2
+PUSH SRC IS 6
+PUSH SRC IS 12
+PUSH SRC IS 4
 LIST A
 LIST B
 LIST C
-INJECT A = 0
-LET VAL = 0
-LET CNT = 0
+INJECT A IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < LOW
-      INJECT A = VAL
+      INJECT A IS VAL
    ELIF VAL < HIGH
-      PUSH B = VAL
+      PUSH B IS VAL
    ELSE
-      PUSH C = VAL
-   CNT = CNT + 1
+      PUSH C IS VAL
+   CNT IS CNT + 1
 WAIT", @"HIGH == 10
 VAL < HIGH
 CNT >= 4
@@ -2486,28 +2486,28 @@ LENGTH:A >= 2
 LENGTH:B == 1
 LENGTH:C >= 0
 LOW < HIGH", 0),
-            L(@"LET LOW = 6
-LET HIGH = 10
+            L(@"LET LOW AS 6
+LET HIGH AS 10
 LIST SRC
-PUSH SRC = 3
-PUSH SRC = 7
-PUSH SRC = 13
-PUSH SRC = 5
+PUSH SRC IS 3
+PUSH SRC IS 7
+PUSH SRC IS 13
+PUSH SRC IS 5
 LIST A
 LIST B
 LIST C
-INJECT A = 0
-LET VAL = 0
-LET CNT = 0
+INJECT A IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < LOW
-      INJECT A = VAL
+      INJECT A IS VAL
    ELIF VAL < HIGH
-      PUSH B = VAL
+      PUSH B IS VAL
    ELSE
-      PUSH C = VAL
-   CNT = CNT + 1
+      PUSH C IS VAL
+   CNT IS CNT + 1
 WAIT", @"HIGH == 11
 VAL >= 5
 CNT <= 4
@@ -2516,28 +2516,28 @@ LENGTH:A == 3
 LENGTH:B >= 0
 LENGTH:C == 1
 LOW > VAL", 0),
-            L(@"LET LOW = 5
-LET HIGH = 9
+            L(@"LET LOW AS 5
+LET HIGH AS 9
 LIST SRC
-PUSH SRC = 2
-PUSH SRC = 6
-PUSH SRC = 14
-PUSH SRC = 4
+PUSH SRC IS 2
+PUSH SRC IS 6
+PUSH SRC IS 14
+PUSH SRC IS 4
 LIST A
 LIST B
 LIST C
-INJECT A = 0
-LET VAL = 0
-LET CNT = 0
+INJECT A IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:SRC > 0
-   VAL = SHIFT:SRC
+   VAL IS SHIFT:SRC
    IF VAL < LOW
-      INJECT A = VAL
+      INJECT A IS VAL
    ELIF VAL < HIGH
-      PUSH B = VAL
+      PUSH B IS VAL
    ELSE
-      PUSH C = VAL
-   CNT = CNT + 1
+      PUSH C IS VAL
+   CNT IS CNT + 1
 WAIT", @"HIGH == 10
 VAL <= 4
 CNT != 5
@@ -2548,145 +2548,145 @@ LENGTH:C >= 0
 LOW <= 6", 13, 1),
 
             // Level 25 - bounded retries
-            L(@"LET CUT = 5
-LET LIM = 2
+            L(@"LET CUT AS 5
+LET LIM AS 2
 LIST QUE
-PUSH QUE = 1
-PUSH QUE = 6
-PUSH QUE = 2
+PUSH QUE IS 1
+PUSH QUE IS 6
+PUSH QUE IS 2
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET RET = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET RET AS 0
 LOOP LENGTH:QUE > 0
-   VAL = SHIFT:QUE
+   VAL IS SHIFT:QUE
    IF VAL < CUT
-      RET = RET + 1
-      INJECT QUE = VAL + CUT
+      RET IS RET + 1
+      INJECT QUE IS VAL + CUT
       IF RET >= LIM
          STOP
       ELSE
          SKIP
    ELIF VAL == CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
 WAIT", @"LIM == 3
 VAL != 8
 RET < LIM
 LENGTH:QUE >= 0
 LENGTH:DONE == 4
 CUT <= 6", 13),
-            L(@"LET CUT = 6
-LET LIM = 3
+            L(@"LET CUT AS 6
+LET LIM AS 3
 LIST QUE
-PUSH QUE = 2
-PUSH QUE = 7
-PUSH QUE = 3
+PUSH QUE IS 2
+PUSH QUE IS 7
+PUSH QUE IS 3
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET RET = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET RET AS 0
 LOOP LENGTH:QUE > 0
-   VAL = SHIFT:QUE
+   VAL IS SHIFT:QUE
    IF VAL < CUT
-      RET = RET + 1
-      INJECT QUE = VAL + CUT
+      RET IS RET + 1
+      INJECT QUE IS VAL + CUT
       IF RET >= LIM
          STOP
       ELSE
          SKIP
    ELIF VAL == CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
 WAIT", @"LIM == 4
 VAL > LIM
 RET >= 2
 LENGTH:QUE == 0
 LENGTH:DONE >= 3
 CUT >= 5", 0),
-            L(@"LET CUT = 5
-LET LIM = 2
+            L(@"LET CUT AS 5
+LET LIM AS 2
 LIST QUE
-PUSH QUE = 1
-PUSH QUE = 8
-PUSH QUE = 2
+PUSH QUE IS 1
+PUSH QUE IS 8
+PUSH QUE IS 2
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET RET = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET RET AS 0
 LOOP LENGTH:QUE > 0
-   VAL = SHIFT:QUE
+   VAL IS SHIFT:QUE
    IF VAL < CUT
-      RET = RET + 1
-      INJECT QUE = VAL + CUT
+      RET IS RET + 1
+      INJECT QUE IS VAL + CUT
       IF RET >= LIM
          STOP
       ELSE
          SKIP
    ELIF VAL == CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
 WAIT", @"LIM == 3
 VAL >= 7
 RET <= 2
 LENGTH:QUE >= 0
 LENGTH:DONE == 4
 CUT != 6", 0),
-            L(@"LET CUT = 6
-LET LIM = 3
+            L(@"LET CUT AS 6
+LET LIM AS 3
 LIST QUE
-PUSH QUE = 2
-PUSH QUE = 9
-PUSH QUE = 3
+PUSH QUE IS 2
+PUSH QUE IS 9
+PUSH QUE IS 3
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET RET = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET RET AS 0
 LOOP LENGTH:QUE > 0
-   VAL = SHIFT:QUE
+   VAL IS SHIFT:QUE
    IF VAL < CUT
-      RET = RET + 1
-      INJECT QUE = VAL + CUT
+      RET IS RET + 1
+      INJECT QUE IS VAL + CUT
       IF RET >= LIM
          STOP
       ELSE
          SKIP
    ELIF VAL == CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
 WAIT", @"LIM == 4
 VAL <= 9
 RET != 3
 LENGTH:QUE == 0
 LENGTH:DONE >= 3
 CUT > LIM", 0),
-            L(@"LET CUT = 5
-LET LIM = 2
+            L(@"LET CUT AS 5
+LET LIM AS 2
 LIST QUE
-PUSH QUE = 1
-PUSH QUE = 10
-PUSH QUE = 2
+PUSH QUE IS 1
+PUSH QUE IS 10
+PUSH QUE IS 2
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET RET = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET RET AS 0
 LOOP LENGTH:QUE > 0
-   VAL = SHIFT:QUE
+   VAL IS SHIFT:QUE
    IF VAL < CUT
-      RET = RET + 1
-      INJECT QUE = VAL + CUT
+      RET IS RET + 1
+      INJECT QUE IS VAL + CUT
       IF RET >= LIM
          STOP
       ELSE
          SKIP
    ELIF VAL == CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
 WAIT", @"LIM == 3
 VAL != 8
 RET < LIM
@@ -2695,30 +2695,30 @@ LENGTH:DONE == 4
 CUT > RET", 13, 1),
 
             // Level 26 - aggregation
-            L(@"LET CUT = 5
+            L(@"LET CUT AS 5
 LIST DATA
-PUSH DATA = 2
-PUSH DATA = 5
-PUSH DATA = 8
-PUSH DATA = 3
+PUSH DATA IS 2
+PUSH DATA IS 5
+PUSH DATA IS 8
+PUSH DATA IS 3
 LIST LOW
 LIST HIGH
-INJECT LOW = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
-LET MAX = 0
+INJECT LOW IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
+LET MAX AS 0
 LOOP LENGTH:DATA > 0
-   VAL = SHIFT:DATA
-   SUM = SUM + VAL
-   CNT = CNT + 1
+   VAL IS SHIFT:DATA
+   SUM IS SUM + VAL
+   CNT IS CNT + 1
    IF VAL < CUT
-      INJECT LOW = VAL
+      INJECT LOW IS VAL
    ELIF VAL > MAX
-      PUSH HIGH = VAL
-      MAX = VAL
+      PUSH HIGH IS VAL
+      MAX IS VAL
    ELSE
-      PUSH HIGH = VAL
+      PUSH HIGH IS VAL
 WAIT", @"CUT == 6
 VAL < CUT
 SUM >= 18
@@ -2728,30 +2728,30 @@ LOW == [3,5,2,0]
 LENGTH:LOW == 4
 LENGTH:HIGH >= 0
 LENGTH:DATA == 0", 12),
-            L(@"LET CUT = 6
+            L(@"LET CUT AS 6
 LIST DATA
-PUSH DATA = 3
-PUSH DATA = 6
-PUSH DATA = 9
-PUSH DATA = 4
+PUSH DATA IS 3
+PUSH DATA IS 6
+PUSH DATA IS 9
+PUSH DATA IS 4
 LIST LOW
 LIST HIGH
-INJECT LOW = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
-LET MAX = 0
+INJECT LOW IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
+LET MAX AS 0
 LOOP LENGTH:DATA > 0
-   VAL = SHIFT:DATA
-   SUM = SUM + VAL
-   CNT = CNT + 1
+   VAL IS SHIFT:DATA
+   SUM IS SUM + VAL
+   CNT IS CNT + 1
    IF VAL < CUT
-      INJECT LOW = VAL
+      INJECT LOW IS VAL
    ELIF VAL > MAX
-      PUSH HIGH = VAL
-      MAX = VAL
+      PUSH HIGH IS VAL
+      MAX IS VAL
    ELSE
-      PUSH HIGH = VAL
+      PUSH HIGH IS VAL
 WAIT", @"CUT == 7
 VAL >= 4
 SUM <= 22
@@ -2761,30 +2761,30 @@ LOW == [4,6,3,0]
 LENGTH:LOW >= 3
 LENGTH:HIGH == 1
 LENGTH:DATA >= 0", 0),
-            L(@"LET CUT = 7
+            L(@"LET CUT AS 7
 LIST DATA
-PUSH DATA = 4
-PUSH DATA = 7
-PUSH DATA = 10
-PUSH DATA = 5
+PUSH DATA IS 4
+PUSH DATA IS 7
+PUSH DATA IS 10
+PUSH DATA IS 5
 LIST LOW
 LIST HIGH
-INJECT LOW = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
-LET MAX = 0
+INJECT LOW IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
+LET MAX AS 0
 LOOP LENGTH:DATA > 0
-   VAL = SHIFT:DATA
-   SUM = SUM + VAL
-   CNT = CNT + 1
+   VAL IS SHIFT:DATA
+   SUM IS SUM + VAL
+   CNT IS CNT + 1
    IF VAL < CUT
-      INJECT LOW = VAL
+      INJECT LOW IS VAL
    ELIF VAL > MAX
-      PUSH HIGH = VAL
-      MAX = VAL
+      PUSH HIGH IS VAL
+      MAX IS VAL
    ELSE
-      PUSH HIGH = VAL
+      PUSH HIGH IS VAL
 WAIT", @"CUT == 8
 VAL <= 5
 SUM != 27
@@ -2794,30 +2794,30 @@ LOW == [5,7,4,0]
 LENGTH:LOW == 4
 LENGTH:HIGH >= 0
 LENGTH:DATA == 0", 0),
-            L(@"LET CUT = 8
+            L(@"LET CUT AS 8
 LIST DATA
-PUSH DATA = 5
-PUSH DATA = 8
-PUSH DATA = 11
-PUSH DATA = 6
+PUSH DATA IS 5
+PUSH DATA IS 8
+PUSH DATA IS 11
+PUSH DATA IS 6
 LIST LOW
 LIST HIGH
-INJECT LOW = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
-LET MAX = 0
+INJECT LOW IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
+LET MAX AS 0
 LOOP LENGTH:DATA > 0
-   VAL = SHIFT:DATA
-   SUM = SUM + VAL
-   CNT = CNT + 1
+   VAL IS SHIFT:DATA
+   SUM IS SUM + VAL
+   CNT IS CNT + 1
    IF VAL < CUT
-      INJECT LOW = VAL
+      INJECT LOW IS VAL
    ELIF VAL > MAX
-      PUSH HIGH = VAL
-      MAX = VAL
+      PUSH HIGH IS VAL
+      MAX IS VAL
    ELSE
-      PUSH HIGH = VAL
+      PUSH HIGH IS VAL
 WAIT", @"CUT == 9
 VAL != 7
 SUM > CUT
@@ -2827,30 +2827,30 @@ LOW == [6,8,5,0]
 LENGTH:LOW >= 3
 LENGTH:HIGH == 1
 LENGTH:DATA >= 0", 0),
-            L(@"LET CUT = 9
+            L(@"LET CUT AS 9
 LIST DATA
-PUSH DATA = 6
-PUSH DATA = 9
-PUSH DATA = 12
-PUSH DATA = 7
+PUSH DATA IS 6
+PUSH DATA IS 9
+PUSH DATA IS 12
+PUSH DATA IS 7
 LIST LOW
 LIST HIGH
-INJECT LOW = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
-LET MAX = 0
+INJECT LOW IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
+LET MAX AS 0
 LOOP LENGTH:DATA > 0
-   VAL = SHIFT:DATA
-   SUM = SUM + VAL
-   CNT = CNT + 1
+   VAL IS SHIFT:DATA
+   SUM IS SUM + VAL
+   CNT IS CNT + 1
    IF VAL < CUT
-      INJECT LOW = VAL
+      INJECT LOW IS VAL
    ELIF VAL > MAX
-      PUSH HIGH = VAL
-      MAX = VAL
+      PUSH HIGH IS VAL
+      MAX IS VAL
    ELSE
-      PUSH HIGH = VAL
+      PUSH HIGH IS VAL
 WAIT", @"CUT == 10
 VAL < CUT
 SUM >= 34
@@ -2862,155 +2862,155 @@ LENGTH:HIGH >= 0
 LENGTH:DATA == 0", 12, 1),
 
             // Level 27 - ordered merging
-            L(@"LET CUT = 6
+            L(@"LET CUT AS 6
 LIST A
-PUSH A = 1
-PUSH A = 4
-PUSH A = 7
+PUSH A IS 1
+PUSH A IS 4
+PUSH A IS 7
 LIST B
-PUSH B = 2
-PUSH B = 5
-PUSH B = 8
+PUSH B IS 2
+PUSH B IS 5
+PUSH B IS 8
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      VAL = SHIFT:A
+      VAL IS SHIFT:A
    ELIF LENGTH:B > 0
-      VAL = SHIFT:B
+      VAL IS SHIFT:B
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      PUSH OUT = VAL
+      PUSH OUT IS VAL
    ELSE
-      INJECT OUT = VAL
-   CNT = CNT + 1
+      INJECT OUT IS VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 7
 VAL >= 8
 CNT <= 6
 LENGTH:A >= 0
 LENGTH:B == 0
 LENGTH:OUT >= 6", 12),
-            L(@"LET CUT = 7
+            L(@"LET CUT AS 7
 LIST A
-PUSH A = 2
-PUSH A = 5
-PUSH A = 8
+PUSH A IS 2
+PUSH A IS 5
+PUSH A IS 8
 LIST B
-PUSH B = 3
-PUSH B = 6
-PUSH B = 9
+PUSH B IS 3
+PUSH B IS 6
+PUSH B IS 9
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      VAL = SHIFT:A
+      VAL IS SHIFT:A
    ELIF LENGTH:B > 0
-      VAL = SHIFT:B
+      VAL IS SHIFT:B
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      PUSH OUT = VAL
+      PUSH OUT IS VAL
    ELSE
-      INJECT OUT = VAL
-   CNT = CNT + 1
+      INJECT OUT IS VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 8
 VAL <= 9
 CNT != 7
 LENGTH:A == 0
 LENGTH:B >= 0
 LENGTH:OUT == 7", 0),
-            L(@"LET CUT = 8
+            L(@"LET CUT AS 8
 LIST A
-PUSH A = 3
-PUSH A = 6
-PUSH A = 9
+PUSH A IS 3
+PUSH A IS 6
+PUSH A IS 9
 LIST B
-PUSH B = 4
-PUSH B = 7
-PUSH B = 10
+PUSH B IS 4
+PUSH B IS 7
+PUSH B IS 10
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      VAL = SHIFT:A
+      VAL IS SHIFT:A
    ELIF LENGTH:B > 0
-      VAL = SHIFT:B
+      VAL IS SHIFT:B
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      PUSH OUT = VAL
+      PUSH OUT IS VAL
    ELSE
-      INJECT OUT = VAL
-   CNT = CNT + 1
+      INJECT OUT IS VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 9
 VAL != 11
 CNT < CUT
 LENGTH:A >= 0
 LENGTH:B == 0
 LENGTH:OUT >= 6", 0),
-            L(@"LET CUT = 9
+            L(@"LET CUT AS 9
 LIST A
-PUSH A = 4
-PUSH A = 7
-PUSH A = 10
+PUSH A IS 4
+PUSH A IS 7
+PUSH A IS 10
 LIST B
-PUSH B = 5
-PUSH B = 8
-PUSH B = 11
+PUSH B IS 5
+PUSH B IS 8
+PUSH B IS 11
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      VAL = SHIFT:A
+      VAL IS SHIFT:A
    ELIF LENGTH:B > 0
-      VAL = SHIFT:B
+      VAL IS SHIFT:B
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      PUSH OUT = VAL
+      PUSH OUT IS VAL
    ELSE
-      INJECT OUT = VAL
-   CNT = CNT + 1
+      INJECT OUT IS VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 10
 VAL > CUT
 CNT >= 6
 LENGTH:A == 0
 LENGTH:B >= 0
 LENGTH:OUT == 7", 0),
-            L(@"LET CUT = 10
+            L(@"LET CUT AS 10
 LIST A
-PUSH A = 5
-PUSH A = 8
-PUSH A = 11
+PUSH A IS 5
+PUSH A IS 8
+PUSH A IS 11
 LIST B
-PUSH B = 6
-PUSH B = 9
-PUSH B = 12
+PUSH B IS 6
+PUSH B IS 9
+PUSH B IS 12
 LIST OUT
-INJECT OUT = 0
-LET VAL = 0
-LET CNT = 0
+INJECT OUT IS 0
+LET VAL AS 0
+LET CNT AS 0
 LOOP LENGTH:A > 0 OR LENGTH:B > 0
    IF LENGTH:A > 0
-      VAL = SHIFT:A
+      VAL IS SHIFT:A
    ELIF LENGTH:B > 0
-      VAL = SHIFT:B
+      VAL IS SHIFT:B
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      PUSH OUT = VAL
+      PUSH OUT IS VAL
    ELSE
-      INJECT OUT = VAL
-   CNT = CNT + 1
+      INJECT OUT IS VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 11
 VAL >= 12
 CNT <= 6
@@ -3019,150 +3019,150 @@ LENGTH:B == 0
 LENGTH:OUT >= 6", 12, 1),
 
             // Level 28 - priority scheduler
-            L(@"LET CUT = 7
+            L(@"LET CUT AS 7
 LIST NORM
-PUSH NORM = 3
-PUSH NORM = 6
-PUSH NORM = 9
+PUSH NORM IS 3
+PUSH NORM IS 6
+PUSH NORM IS 9
 LIST PRIO
-INJECT PRIO = 1
-INJECT PRIO = 2
+INJECT PRIO IS 1
+INJECT PRIO IS 2
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET PCNT = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET PCNT AS 0
 LOOP LENGTH:NORM > 0 OR LENGTH:PRIO > 0
    IF LENGTH:PRIO > 0
-      VAL = SHIFT:PRIO
-      PCNT = PCNT + 1
+      VAL IS SHIFT:PRIO
+      PCNT IS PCNT + 1
    ELIF LENGTH:NORM > 0
-      VAL = SHIFT:NORM
+      VAL IS SHIFT:NORM
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      INJECT DONE = VAL
+      INJECT DONE IS VAL
 WAIT", @"CUT == 8
 VAL <= 9
 PCNT != 3
 LENGTH:NORM == 0
 LENGTH:PRIO >= 0
 LENGTH:DONE == 6", 12),
-            L(@"LET CUT = 8
+            L(@"LET CUT AS 8
 LIST NORM
-PUSH NORM = 4
-PUSH NORM = 7
-PUSH NORM = 10
+PUSH NORM IS 4
+PUSH NORM IS 7
+PUSH NORM IS 10
 LIST PRIO
-INJECT PRIO = 2
-INJECT PRIO = 3
+INJECT PRIO IS 2
+INJECT PRIO IS 3
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET PCNT = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET PCNT AS 0
 LOOP LENGTH:NORM > 0 OR LENGTH:PRIO > 0
    IF LENGTH:PRIO > 0
-      VAL = SHIFT:PRIO
-      PCNT = PCNT + 1
+      VAL IS SHIFT:PRIO
+      PCNT IS PCNT + 1
    ELIF LENGTH:NORM > 0
-      VAL = SHIFT:NORM
+      VAL IS SHIFT:NORM
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      INJECT DONE = VAL
+      INJECT DONE IS VAL
 WAIT", @"CUT == 9
 VAL != 11
 PCNT < CUT
 LENGTH:NORM >= 0
 LENGTH:PRIO == 0
 LENGTH:DONE >= 5", 0),
-            L(@"LET CUT = 9
+            L(@"LET CUT AS 9
 LIST NORM
-PUSH NORM = 5
-PUSH NORM = 8
-PUSH NORM = 11
+PUSH NORM IS 5
+PUSH NORM IS 8
+PUSH NORM IS 11
 LIST PRIO
-INJECT PRIO = 3
-INJECT PRIO = 4
+INJECT PRIO IS 3
+INJECT PRIO IS 4
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET PCNT = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET PCNT AS 0
 LOOP LENGTH:NORM > 0 OR LENGTH:PRIO > 0
    IF LENGTH:PRIO > 0
-      VAL = SHIFT:PRIO
-      PCNT = PCNT + 1
+      VAL IS SHIFT:PRIO
+      PCNT IS PCNT + 1
    ELIF LENGTH:NORM > 0
-      VAL = SHIFT:NORM
+      VAL IS SHIFT:NORM
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      INJECT DONE = VAL
+      INJECT DONE IS VAL
 WAIT", @"CUT == 10
 VAL > CUT
 PCNT >= 2
 LENGTH:NORM == 0
 LENGTH:PRIO >= 0
 LENGTH:DONE == 6", 0),
-            L(@"LET CUT = 10
+            L(@"LET CUT AS 10
 LIST NORM
-PUSH NORM = 6
-PUSH NORM = 9
-PUSH NORM = 12
+PUSH NORM IS 6
+PUSH NORM IS 9
+PUSH NORM IS 12
 LIST PRIO
-INJECT PRIO = 4
-INJECT PRIO = 5
+INJECT PRIO IS 4
+INJECT PRIO IS 5
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET PCNT = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET PCNT AS 0
 LOOP LENGTH:NORM > 0 OR LENGTH:PRIO > 0
    IF LENGTH:PRIO > 0
-      VAL = SHIFT:PRIO
-      PCNT = PCNT + 1
+      VAL IS SHIFT:PRIO
+      PCNT IS PCNT + 1
    ELIF LENGTH:NORM > 0
-      VAL = SHIFT:NORM
+      VAL IS SHIFT:NORM
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      INJECT DONE = VAL
+      INJECT DONE IS VAL
 WAIT", @"CUT == 11
 VAL >= 12
 PCNT <= 2
 LENGTH:NORM >= 0
 LENGTH:PRIO == 0
 LENGTH:DONE >= 5", 0),
-            L(@"LET CUT = 11
+            L(@"LET CUT AS 11
 LIST NORM
-PUSH NORM = 7
-PUSH NORM = 10
-PUSH NORM = 13
+PUSH NORM IS 7
+PUSH NORM IS 10
+PUSH NORM IS 13
 LIST PRIO
-INJECT PRIO = 5
-INJECT PRIO = 6
+INJECT PRIO IS 5
+INJECT PRIO IS 6
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET PCNT = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET PCNT AS 0
 LOOP LENGTH:NORM > 0 OR LENGTH:PRIO > 0
    IF LENGTH:PRIO > 0
-      VAL = SHIFT:PRIO
-      PCNT = PCNT + 1
+      VAL IS SHIFT:PRIO
+      PCNT IS PCNT + 1
    ELIF LENGTH:NORM > 0
-      VAL = SHIFT:NORM
+      VAL IS SHIFT:NORM
    ELSE
-      VAL = 0
+      VAL IS 0
    IF VAL < CUT
-      PUSH DONE = VAL
+      PUSH DONE IS VAL
    ELSE
-      INJECT DONE = VAL
+      INJECT DONE IS VAL
 WAIT", @"CUT == 12
 VAL <= 13
 PCNT != 3
@@ -3171,28 +3171,28 @@ LENGTH:PRIO >= 0
 LENGTH:DONE == 6", 12, 1),
 
             // Level 29 - sentinels
-            L(@"LET CUT = 5
+            L(@"LET CUT AS 5
 LIST IN
-PUSH IN = 3
-PUSH IN = 5
-PUSH IN = 0
-PUSH IN = 8
+PUSH IN IS 3
+PUSH IN IS 5
+PUSH IN IS 0
+PUSH IN IS 8
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:IN > 0
-   VAL = SHIFT:IN
+   VAL IS SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL < CUT
-      INJECT DONE = VAL
-      SUM = SUM + VAL
+      INJECT DONE IS VAL
+      SUM IS SUM + VAL
    ELSE
-      PUSH DONE = VAL
-      SUM = SUM + VAL
-   CNT = CNT + 1
+      PUSH DONE IS VAL
+      SUM IS SUM + VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 6
 VAL != 1
 SUM > CUT
@@ -3200,28 +3200,28 @@ CNT >= 2
 DONE == [5,3,0]
 LENGTH:DONE >= 2
 LENGTH:IN == 1", 12),
-            L(@"LET CUT = 6
+            L(@"LET CUT AS 6
 LIST IN
-PUSH IN = 4
-PUSH IN = 6
-PUSH IN = 0
-PUSH IN = 9
+PUSH IN IS 4
+PUSH IN IS 6
+PUSH IN IS 0
+PUSH IN IS 9
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:IN > 0
-   VAL = SHIFT:IN
+   VAL IS SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL < CUT
-      INJECT DONE = VAL
-      SUM = SUM + VAL
+      INJECT DONE IS VAL
+      SUM IS SUM + VAL
    ELSE
-      PUSH DONE = VAL
-      SUM = SUM + VAL
-   CNT = CNT + 1
+      PUSH DONE IS VAL
+      SUM IS SUM + VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 7
 VAL < CUT
 SUM >= 10
@@ -3229,28 +3229,28 @@ CNT <= 2
 DONE == [6,4,0]
 LENGTH:DONE == 3
 LENGTH:IN >= 0", 0),
-            L(@"LET CUT = 7
+            L(@"LET CUT AS 7
 LIST IN
-PUSH IN = 5
-PUSH IN = 7
-PUSH IN = 0
-PUSH IN = 10
+PUSH IN IS 5
+PUSH IN IS 7
+PUSH IN IS 0
+PUSH IN IS 10
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:IN > 0
-   VAL = SHIFT:IN
+   VAL IS SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL < CUT
-      INJECT DONE = VAL
-      SUM = SUM + VAL
+      INJECT DONE IS VAL
+      SUM IS SUM + VAL
    ELSE
-      PUSH DONE = VAL
-      SUM = SUM + VAL
-   CNT = CNT + 1
+      PUSH DONE IS VAL
+      SUM IS SUM + VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 8
 VAL >= 0
 SUM <= 12
@@ -3258,28 +3258,28 @@ CNT != 3
 DONE == [7,5,0]
 LENGTH:DONE >= 2
 LENGTH:IN == 1", 0),
-            L(@"LET CUT = 8
+            L(@"LET CUT AS 8
 LIST IN
-PUSH IN = 6
-PUSH IN = 8
-PUSH IN = 0
-PUSH IN = 11
+PUSH IN IS 6
+PUSH IN IS 8
+PUSH IN IS 0
+PUSH IN IS 11
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:IN > 0
-   VAL = SHIFT:IN
+   VAL IS SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL < CUT
-      INJECT DONE = VAL
-      SUM = SUM + VAL
+      INJECT DONE IS VAL
+      SUM IS SUM + VAL
    ELSE
-      PUSH DONE = VAL
-      SUM = SUM + VAL
-   CNT = CNT + 1
+      PUSH DONE IS VAL
+      SUM IS SUM + VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 9
 VAL <= 0
 SUM != 15
@@ -3287,28 +3287,28 @@ CNT < CUT
 DONE == [8,6,0]
 LENGTH:DONE == 3
 LENGTH:IN >= 0", 0),
-            L(@"LET CUT = 9
+            L(@"LET CUT AS 9
 LIST IN
-PUSH IN = 7
-PUSH IN = 9
-PUSH IN = 0
-PUSH IN = 12
+PUSH IN IS 7
+PUSH IN IS 9
+PUSH IN IS 0
+PUSH IN IS 12
 LIST DONE
-INJECT DONE = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT DONE IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:IN > 0
-   VAL = SHIFT:IN
+   VAL IS SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL < CUT
-      INJECT DONE = VAL
-      SUM = SUM + VAL
+      INJECT DONE IS VAL
+      SUM IS SUM + VAL
    ELSE
-      PUSH DONE = VAL
-      SUM = SUM + VAL
-   CNT = CNT + 1
+      PUSH DONE IS VAL
+      SUM IS SUM + VAL
+   CNT IS CNT + 1
 WAIT", @"CUT == 10
 VAL != 1
 SUM > CUT
@@ -3318,29 +3318,29 @@ LENGTH:DONE >= 2
 LENGTH:IN == 1", 12, 1),
 
             // Level 30 - final dispatch
-            L(@"LET CUT = 5
+            L(@"LET CUT AS 5
 LIST IN
-PUSH IN = 3
-PUSH IN = 8
-PUSH IN = 1
-PUSH IN = 0
-PUSH IN = 6
+PUSH IN IS 3
+PUSH IN IS 8
+PUSH IN IS 1
+PUSH IN IS 0
+PUSH IN IS 6
 LIST GOOD
 LIST RET
-INJECT RET = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT RET IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:IN > 0
-   VAL = SHIFT:IN
+   VAL IS SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL >= CUT
-      PUSH GOOD = VAL
-      SUM = SUM + VAL
+      PUSH GOOD IS VAL
+      SUM IS SUM + VAL
    ELSE
-      INJECT RET = VAL + CUT
-      CNT = CNT + 1
+      INJECT RET IS VAL + CUT
+      CNT IS CNT + 1
 WAIT", @"CUT == 6
 VAL < CUT
 SUM >= 8
@@ -3349,29 +3349,29 @@ RET == [7,9,0]
 LENGTH:RET == 3
 LENGTH:IN >= 0
 LENGTH:GOOD == 1", 12),
-            L(@"LET CUT = 6
+            L(@"LET CUT AS 6
 LIST IN
-PUSH IN = 4
-PUSH IN = 9
-PUSH IN = 2
-PUSH IN = 0
-PUSH IN = 7
+PUSH IN IS 4
+PUSH IN IS 9
+PUSH IN IS 2
+PUSH IN IS 0
+PUSH IN IS 7
 LIST GOOD
 LIST RET
-INJECT RET = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT RET IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:IN > 0
-   VAL = SHIFT:IN
+   VAL IS SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL >= CUT
-      PUSH GOOD = VAL
-      SUM = SUM + VAL
+      PUSH GOOD IS VAL
+      SUM IS SUM + VAL
    ELSE
-      INJECT RET = VAL + CUT
-      CNT = CNT + 1
+      INJECT RET IS VAL + CUT
+      CNT IS CNT + 1
 WAIT", @"CUT == 7
 VAL >= 0
 SUM <= 9
@@ -3380,29 +3380,29 @@ RET == [9,11,0]
 LENGTH:RET >= 2
 LENGTH:IN == 1
 LENGTH:GOOD >= 0", 0),
-            L(@"LET CUT = 5
+            L(@"LET CUT AS 5
 LIST IN
-PUSH IN = 3
-PUSH IN = 10
-PUSH IN = 3
-PUSH IN = 0
-PUSH IN = 8
+PUSH IN IS 3
+PUSH IN IS 10
+PUSH IN IS 3
+PUSH IN IS 0
+PUSH IN IS 8
 LIST GOOD
 LIST RET
-INJECT RET = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT RET IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:IN > 0
-   VAL = SHIFT:IN
+   VAL IS SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL >= CUT
-      PUSH GOOD = VAL
-      SUM = SUM + VAL
+      PUSH GOOD IS VAL
+      SUM IS SUM + VAL
    ELSE
-      INJECT RET = VAL + CUT
-      CNT = CNT + 1
+      INJECT RET IS VAL + CUT
+      CNT IS CNT + 1
 WAIT", @"CUT == 6
 VAL <= 0
 SUM != 11
@@ -3411,29 +3411,29 @@ RET == [9,9,0]
 LENGTH:RET == 3
 LENGTH:IN >= 0
 LENGTH:GOOD == 1", 0),
-            L(@"LET CUT = 6
+            L(@"LET CUT AS 6
 LIST IN
-PUSH IN = 4
-PUSH IN = 11
-PUSH IN = 1
-PUSH IN = 0
-PUSH IN = 9
+PUSH IN IS 4
+PUSH IN IS 11
+PUSH IN IS 1
+PUSH IN IS 0
+PUSH IN IS 9
 LIST GOOD
 LIST RET
-INJECT RET = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT RET IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:IN > 0
-   VAL = SHIFT:IN
+   VAL IS SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL >= CUT
-      PUSH GOOD = VAL
-      SUM = SUM + VAL
+      PUSH GOOD IS VAL
+      SUM IS SUM + VAL
    ELSE
-      INJECT RET = VAL + CUT
-      CNT = CNT + 1
+      INJECT RET IS VAL + CUT
+      CNT IS CNT + 1
 WAIT", @"CUT == 7
 VAL != 1
 SUM > CUT
@@ -3442,29 +3442,29 @@ RET == [8,11,0]
 LENGTH:RET >= 2
 LENGTH:IN == 1
 LENGTH:GOOD >= 0", 0),
-            L(@"LET CUT = 5
+            L(@"LET CUT AS 5
 LIST IN
-PUSH IN = 3
-PUSH IN = 12
-PUSH IN = 2
-PUSH IN = 0
-PUSH IN = 10
+PUSH IN IS 3
+PUSH IN IS 12
+PUSH IN IS 2
+PUSH IN IS 0
+PUSH IN IS 10
 LIST GOOD
 LIST RET
-INJECT RET = 0
-LET VAL = 0
-LET SUM = 0
-LET CNT = 0
+INJECT RET IS 0
+LET VAL AS 0
+LET SUM AS 0
+LET CNT AS 0
 LOOP LENGTH:IN > 0
-   VAL = SHIFT:IN
+   VAL IS SHIFT:IN
    IF VAL == 0
       STOP
    ELIF VAL >= CUT
-      PUSH GOOD = VAL
-      SUM = SUM + VAL
+      PUSH GOOD IS VAL
+      SUM IS SUM + VAL
    ELSE
-      INJECT RET = VAL + CUT
-      CNT = CNT + 1
+      INJECT RET IS VAL + CUT
+      CNT IS CNT + 1
 WAIT", @"CUT == 6
 VAL < CUT
 SUM >= 12

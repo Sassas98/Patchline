@@ -61,6 +61,8 @@ public class CodePaletteApplier
 	{
 		return word.ToLower() == "or" 
 			|| word.ToLower() == "and" 
+			|| word.ToLower() == "is" 
+			|| word.ToLower() == "as" 
 			|| !word.Any(c => char.IsLetter(c));
 	}
 	private bool IsCMD(string word)
