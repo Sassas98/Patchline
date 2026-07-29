@@ -70,7 +70,7 @@ ORC: Everything clear?
     <<show ORC2>>
     ORC: Or to another variable.
     <<show ORC1>>
-    ORC: For example, let's assume you see X = 7.
+    ORC: For example, let's assume you see X == 7.
     ORC: This means that to make that condition true, you must make x equal to 7.
     <<jump dom2>>
 -> What do the other buttons do?
@@ -149,10 +149,10 @@ ORC: You made it this far. I have a feeling this might finally be the one.
 ORC: Now let's look at something new...
 ORC: A variable's value can be based on the current value of other variables.
 <<show ORC2>>
-ORC: For example, if X = 10 and then Y = X + 1, Y is worth 11.
+ORC: For example, if X IS 10 and then Y IS X + 1, Y is worth 11.
 <<show ORC1>>
 ORC: However, you can also do this with the same variable as it changes.
-ORC: For example, if X = 7 and then X = X + 1, X is worth 8.
+ORC: For example, if X IS 7 and then X IS X + 1, X is worth 8.
 <<show ORC2>>
 ORC: Because it's like saying, "the new value of X becomes its previous value + 1".
 <<jump dom4>>

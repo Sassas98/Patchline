@@ -34,7 +34,7 @@ public class CodePaletteApplier
 				{
 					if (string.IsNullOrEmpty(word))
 						spaces++;
-					else if (word.All(c => char.IsNumber(c)))
+					else if (word.All(c => char.IsNumber(c)) || (word.Count() > 1 && word[0] == '-' && word.Skip(1).All(c => char.IsNumber(c))) )
 						list2.Add(MarkText(word, Numeri));
 					else if (IsCMD(word))
 						list2.Add(MarkText(word, Keyword));
@@ -59,15 +59,15 @@ public class CodePaletteApplier
 
 	private bool IsSymbol(string word)
 	{
-		return word.ToLower() == "or" 
-			|| word.ToLower() == "and" 
-			|| word.ToLower() == "is" 
-			|| word.ToLower() == "as" 
-			|| !word.Any(c => char.IsLetter(c));
+		return !word.Any(c => char.IsLetter(c));
 	}
 	private bool IsCMD(string word)
 	{
-		return Enum.GetNames(typeof(CMD))
+		return word.ToLower() == "or"
+            || word.ToLower() == "and"
+            || word.ToLower() == "is"
+            || word.ToLower() == "as"
+            || Enum.GetNames(typeof(CMD))
 			.Select(z => z.ToUpper())
 			.Contains(word.Trim().ToUpper());
 	}

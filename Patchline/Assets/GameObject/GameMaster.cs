@@ -830,6 +830,7 @@ public class GameMaster : MonoBehaviour
         set_modal.SetActive(true);
         var input = GameObject.Find("set_input").GetComponent<TextMeshProUGUI>();
         GameObject.Find("CMD").GetComponent<TextMeshProUGUI>().SetText(cmd == CMD.Set ? "" : cmd.ToString().ToUpper());
+        GameObject.Find("IS").GetComponent<TextMeshProUGUI>().SetText(cmd == CMD.Let ? "AS" : "IS");
         input.text = "0";
         var content = GameObject.Find("set_content");
         content.Childrens().ForEach(e => Destroy(e));
